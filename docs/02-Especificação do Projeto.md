@@ -1,25 +1,37 @@
 # Especificações do Projeto
 
-<span style="color:red">Pré-requisitos: <a href="1-Documentação de Contexto.md"> Documentação de Contexto</a></span>
+O projeto visa criar uma plataforma mobile de e-commerce, proporcionando a aquisição de artigos farmacêuticos, artigos de conveniência e equipamentos médicos sem que haja necessidade de deslocamento do cliente.
 
-Definição do problema e ideia de solução a partir da perspectiva do usuário. É composta pela definição do  diagrama de personas, histórias de usuários, requisitos funcionais e não funcionais além das restrições do projeto.
-
-Apresente uma visão geral do que será abordado nesta parte do documento, enumerando as técnicas e/ou ferramentas utilizadas para realizar a especificações do projeto
 
 ## Personas
 
-Pedro Paulo tem 26 anos, é arquiteto recém-formado e autônomo. Pensa em se desenvolver profissionalmente através de um mestrado fora do país, pois adora viajar, é solteiro e sempre quis fazer um intercâmbio. Está buscando uma agência que o ajude a encontrar universidades na Europa que aceitem alunos estrangeiros.
+### Persona 1:
+Maria, 35 anos, mãe ocupada.
+Maria é uma mãe de dois filhos pequenos, com idades entre 4 e 7 anos.
+Ela trabalha em período integral como gerente de vendas em uma empresa de médio porte.
+Devido ao seu horário de trabalho agitado e suas responsabilidades familiares, Maria tem pouco tempo livre durante o dia.
+Recentemente, ela foi diagnosticada com hipertensão e precisa tomar medicamentos regularmente.
+Maria está em busca de uma maneira conveniente de comprar seus medicamentos sem precisar interromper sua rotina agitada ou fazer longas filas em farmácias.
 
-Enumere e detalhe as personas da sua solução. Para tanto, baseie-se tanto nos documentos disponibilizados na disciplina e/ou nos seguintes links:
+### Persona 2:
+Pedro, 26 anos, estudante universitário.
+Pedro é um estudante universitário em seu último ano de Engenharia de Software.
+Ele é um entusiasta da tecnologia e adora explorar novos aplicativos e soluções online.
+Pedro mora sozinho em um apartamento próximo ao campus da universidade.
+Recentemente, ele contraiu uma gripe e precisa de medicamentos para aliviar os sintomas.
+Como Pedro está ocupado com os estudos e projetos da faculdade, ele procura uma maneira rápida e fácil de comprar seus remédios sem precisar sair de casa.
+Persona 3: José, 60 anos, aposentado
 
-> **Links Úteis**:
-> - [Rock Content](https://rockcontent.com/blog/personas/)
-> - [Hotmart](https://blog.hotmart.com/pt-br/como-criar-persona-negocio/)
-> - [O que é persona?](https://resultadosdigitais.com.br/blog/persona-o-que-e/)
-> - [Persona x Público-alvo](https://flammo.com.br/blog/persona-e-publico-alvo-qual-a-diferenca/)
-> - [Mapa de Empatia](https://resultadosdigitais.com.br/blog/mapa-da-empatia/)
-> - [Mapa de Stalkeholders](https://www.racecomunicacao.com.br/blog/como-fazer-o-mapeamento-de-stakeholders/)
->
+### Persona 2: 
+José, aposentado;
+José é um aposentado que recentemente se mudou para uma cidadezinha no interior após décadas morando na capital.
+Ele tem uma série de condições de saúde, incluindo pressão alta e diabetes, que exigem medicação regular.
+José é bastante familiarizado com tecnologia, pois sempre teve interesse em aprender e acompanhar as novidades.
+Ele não possui carro e depende do transporte público para se locomover, o que pode ser inconveniente, especialmente em dias de mau tempo.
+José está interessado em encontrar uma maneira de comprar seus remédios de forma conveniente e segura, sem precisar enfrentar longas viagens até a farmácia mais próxima.
+
+
+
 Lembre-se que você deve ser enumerar e descrever precisamente e personalizada todos os clientes ideais que sua solução almeja.
 
 ## Histórias de Usuários
