@@ -1,46 +1,21 @@
 # Introdução
 
-Texto descritivo com a visão geral do projeto abordado. Inclui o contexto, o problema, os objetivos, a justificativa e o público-alvo do projeto.
+A demanda por uma aquisição ágil e simplificada de medicamentos e produtos farmacêuticos é uma realidade presente no cotidiano de muitas pessoas. A prioridade dada à saúde torna crucial o acesso imediato a esses itens quando surge a necessidade. No entanto, o método tradicional de adquirir fármacos, por meio de visitas físicas a farmácias ou drogarias, frequentemente se revela inconveniente. Diante desse cenário, surge a necessidade de desenvolver soluções que atendam às exigências contemporâneas de forma eficaz e prática.
 
 ## Problema
-Nesse momento você deve apresentar o problema que a sua aplicação deve  resolver. No entanto, não é a hora de comentar sobre a aplicação.
-
-Descreva também o contexto em que essa aplicação será usada, se  houver: empresa, tecnologias, etc. Novamente, descreva apenas o que de  fato existir, pois ainda não é a hora de apresentar requisitos  detalhados ou projetos.
-
-Nesse momento, o grupo pode optar por fazer uso  de ferramentas como Design Thinking, que permite um olhar de ponta a ponta para o problema.
-
-> **Links Úteis**:
-> - [Objetivos, Problema de pesquisa e Justificativa](https://medium.com/@versioparole/objetivos-problema-de-pesquisa-e-justificativa-c98c8233b9c3)
-> - [Matriz Certezas, Suposições e Dúvidas](https://medium.com/educa%C3%A7%C3%A3o-fora-da-caixa/matriz-certezas-suposi%C3%A7%C3%B5es-e-d%C3%BAvidas-fa2263633655)
-> - [Brainstorming](https://www.euax.com.br/2018/09/brainstorming/)
+A saúde é uma prioridade, e quando surge a necessidade de um medicamento ou produto específico, o acesso imediato a esses itens é crucial. No entanto, a maneira tradicional de adquirir fármacos, através de visitas presenciais a farmácias ou drogarias, muitas vezes se mostra inconveniente. Recentemente passamos por uma pandemia na qual era quase impossivel se deslocar até uma farmacia para a compra de algum tipo de medicamento. Devido ao nosso dia-a-dia corrido, muitas vezes quando adoecemos preferimos o conforto de nossa casa e nao ter a inconveniencia de se dirigir a um local fisico.
 
 ## Objetivos
 
-Aqui você deve descrever os objetivos do trabalho indicando que o objetivo geral é desenvolver um software para solucionar o problema apresentado acima. 
-
-Apresente também alguns (pelo menos 2) objetivos específicos dependendo de onde você vai querer concentrar a sua prática investigativa, ou como você vai aprofundar no seu trabalho.
- 
-> **Links Úteis**:
-> - [Objetivo geral e objetivo específico: como fazer e quais verbos utilizar](https://blog.mettzer.com/diferenca-entre-objetivo-geral-e-objetivo-especifico/)
+Desenvolver um software de e-commerce para facilitar a compra de medicamentos aos consumidores proporcionando um acesso rápido, conveniente e seguro a esses itens. Fornecer uma descrição basica do medicamento contendo a atualização das informações sobre a disponibilidade.
 
 ## Justificativa
 
-Descreva a importância ou a motivação para trabalhar com esta aplicação que você escolheu. Indique as razões pelas quais você escolheu seus objetivos específicos ou as razões para aprofundar em certos aspectos do software.
+A escolha de desenvolver um aplicativo móvel para e-commerce de produtos farmacêuticos é motivada pela crescente dependência e uso generalizado de dispositivos móveis na vida cotidiana das pessoas. Com a proliferação de smartphones e tablets, os consumidores estão cada vez mais acostumados a realizar tarefas e transações importantes através de aplicativos móveis, tornando-os uma plataforma ideal para atender às necessidades de saúde dos indivíduos de forma rápida, conveniente e acessível.
 
-O grupo de trabalho pode fazer uso de questionários, entrevistas e dados estatísticos, que podem ser apresentados, com o objetivo de esclarecer detalhes do problema que será abordado pelo grupo.
+Em resumo, a decisão de desenvolver um aplicativo móvel para e-commerce de produtos farmacêuticos é motivada pela necessidade de oferecer aos consumidores uma maneira conveniente, segura e eficiente de acessar medicamentos e produtos de saúde. Ao abordar os objetivos específicos selecionados, o aplicativo móvel tem o potencial de transformar a maneira como as pessoas cuidam de sua saúde e bem-estar, proporcionando uma experiência de compra superior e contribuindo para uma melhoria significativa na prestação de serviços de saúde.
 
-> **Links Úteis**:
-> - [Como montar a justificativa](https://guiadamonografia.com.br/como-montar-justificativa-do-tcc/)
 
 ## Público-Alvo
 
-Descreva quem serão as pessoas que usarão a sua aplicação indicando os diferentes perfis. O objetivo aqui não é definir quem serão os clientes ou quais serão os papéis dos usuários na aplicação. A ideia é, dentro do possível, conhecer um pouco mais sobre o perfil dos usuários: conhecimentos prévios, relação com a tecnologia, relações
-hierárquicas, etc.
-
-Adicione informações sobre o público-alvo por meio de uma descrição textual, diagramas de personas e mapa de stakeholders.
-
-> **Links Úteis**:
-> - [Público-alvo](https://blog.hotmart.com/pt-br/publico-alvo/)
-> - [Como definir o público alvo](https://exame.com/pme/5-dicas-essenciais-para-definir-o-publico-alvo-do-seu-negocio/)
-> - [Público-alvo: o que é, tipos, como definir seu público e exemplos](https://klickpages.com.br/blog/publico-alvo-o-que-e/)
-> - [Qual a diferença entre público-alvo e persona?](https://rockcontent.com/blog/diferenca-publico-alvo-e-persona/)
+Pessoas com interesse em obter produtos de saúde, higiene e bem estar de forma rapida sem necessidade de locomoção.
