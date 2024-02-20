@@ -45,22 +45,25 @@ Com base na análise das personas forma identificadas as seguintes histórias de
 
 Apresente aqui as histórias de usuário que são relevantes para o projeto de sua solução. As Histórias de Usuário consistem em uma ferramenta poderosa para a compreensão e elicitação dos requisitos funcionais e não funcionais da sua aplicação. Se possível, agrupe as histórias de usuário por contexto, para facilitar consultas recorrentes à essa parte do documento.
 
-> **Links Úteis**:
-> - [Histórias de usuários com exemplos e template](https://www.atlassian.com/br/agile/project-management/user-stories)
-> - [Como escrever boas histórias de usuário (User Stories)](https://medium.com/vertice/como-escrever-boas-users-stories-hist%C3%B3rias-de-usu%C3%A1rios-b29c75043fac)
-> - [User Stories: requisitos que humanos entendem](https://www.luiztools.com.br/post/user-stories-descricao-de-requisitos-que-humanos-entendem/)
-> - [Histórias de Usuários: mais exemplos](https://www.reqview.com/doc/user-stories-example.html)
-> - [9 Common User Story Mistakes](https://airfocus.com/blog/user-story-mistakes/)
 
 ## Modelagem do Processo de Negócio 
 
 ### Análise da Situação Atual
+Compra em Farmácias Físicas:
 
-Apresente aqui os problemas existentes que viabilizam sua proposta. Apresente o modelo do sistema como ele funciona hoje. Caso sua proposta seja inovadora e não existam processos claramente definidos, apresente como as tarefas que o seu sistema pretende implementar são executadas atualmente, mesmo que não se utilize tecnologia computacional. 
+A necessidade de os clientes se deslocarem até uma farmácia física para comprar medicamentos e produtos de saúde pode ser bastante inconveniente por várias razões como:
+
+ 1- Mobilidade Limitada: Para pessoas idosas, com deficiências físicas ou com mobilidade limitada, sair de casa e se deslocar até uma farmácia pode ser uma tarefa difícil e até mesmo impossível sem assistência adicional.
+ 2- Distância Geográfica: Em algumas áreas, as farmácias podem estar localizadas a uma distância considerável das residências dos clientes. Isso pode resultar em viagens demoradas e custosas, especialmente para aqueles que não têm acesso a transporte próprio.
+ 3- Restrições de Tempo: Muitas pessoas têm agendas ocupadas, o que torna difícil encontrar tempo para visitar uma farmácia física durante o horário comercial. Isso pode levar a atrasos na obtenção de medicamentos essenciais ou produtos de saúde.
+ 4- Fatores Climáticos: Em determinadas condições climáticas, como chuvas fortes, neve ou calor extremo, sair de casa para ir à farmácia pode ser desconfortável e até mesmo perigoso.
+ 5- Riscos à Saúde: Especialmente durante pandemias ou surtos de doenças, como a gripe sazonal, ir a locais públicos como farmácias físicas pode aumentar o risco de exposição a germes e infecções.
+
 
 ### Descrição Geral da Proposta
 
-Apresente aqui uma descrição da sua proposta abordando seus limites e suas ligações com as estratégias e objetivos do negócio. Apresente aqui as oportunidades de melhorias.
+O sistema irá se comportar como uma loja online em que os clientes poderam comprar os produtos após um cadastro de login e senha, em cada cadastro o cliente podera escolher o endereço de entrega do medicamento e tambem poderá acompanhar a etapa de entrega do seu produto.
+
 
 ### Processo 1 – NOME DO PROCESSO
 
@@ -68,11 +71,6 @@ Apresente aqui o nome e as oportunidades de melhorias para o processo 1. Em segu
 
 ![Processo 1](img/02-bpmn-proc1.png)
 
-### Processo 2 – NOME DO PROCESSO
-
-Apresente aqui o nome e as oportunidades de melhorias para o processo 2. Em seguida, apresente o modelo do processo 2, descrito no padrão BPMN.
-
-![Processo 2](img/02-bpmn-proc2.png)
 
 ## Indicadores de Desempenho
 
@@ -91,8 +89,10 @@ As tabelas que se seguem apresentam os requisitos funcionais e não funcionais q
 
 |ID    | Descrição do Requisito  | Prioridade |
 |------|-----------------------------------------|----|
-|RF-001| Permitir que o usuário cadastre tarefas | ALTA | 
-|RF-002| Emitir um relatório de tarefas no mês   | MÉDIA |
+|RF-001| Permitir que o usuário crie um usuario | ALTA | 
+|RF-002| Permitir que o usuário consiga efetivar compras  | ALTA |
+|RF-003| Permitir que o usuário consiga cadastrar seu endereço | Media |
+
 
 ### Requisitos não Funcionais
 
