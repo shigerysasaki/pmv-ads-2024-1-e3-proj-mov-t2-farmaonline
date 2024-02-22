@@ -22,7 +22,7 @@ Recentemente, ele contraiu uma gripe e precisa de medicamentos para aliviar os s
 Como Pedro está ocupado com os estudos e projetos da faculdade, ele procura uma maneira rápida e fácil de comprar seus remédios sem precisar sair de casa.
 Persona 3: José, 60 anos, aposentado
 
-### Persona 2: 
+### Persona 3: 
 José, aposentado;
 José é um aposentado que recentemente se mudou para uma cidadezinha no interior após décadas morando na capital.
 Ele tem uma série de condições de saúde, incluindo pressão alta e diabetes, que exigem medicação regular.
@@ -31,8 +31,13 @@ Ele não possui carro e depende do transporte público para se locomover, o que 
 José está interessado em encontrar uma maneira de comprar seus remédios de forma conveniente e segura, sem precisar enfrentar longas viagens até a farmácia mais próxima.
 
 
+### Persona 4:
+Luísa é uma empreendedora de 35 anos que possui uma pequena farmácia localizada em um bairro residencial tranquilo. Ela adquiriu a farmácia há três anos e desde então tem trabalhado arduamente para construir e manter uma boa reputação na comunidade. Como proprietária de uma pequena farmácia, Luísa desempenha várias funções, desde gerenciamento de estoque até atendimento ao cliente. Ela está constantemente procurando maneiras de melhorar sua farmácia e se destacar da concorrência, que inclui grandes redes de farmácias e serviços de entrega online.
 
-Lembre-se que você deve ser enumerar e descrever precisamente e personalizada todos os clientes ideais que sua solução almeja.
+Luísa reconhece a importância de ter uma presença online para atrair novos clientes e atender às necessidades daqueles que preferem a conveniência das compras online. No entanto, ela também valoriza o contato pessoal com os clientes e deseja manter o ambiente acolhedor e familiar de sua farmácia física. Luísa está interessada em uma solução de e-commerce que seja acessível e fácil de usar, mesmo para alguém sem conhecimentos técnicos avançados. Ela precisa de uma plataforma que permita listar seus produtos de maneira clara e organizada, oferecer opções de pagamento seguras e integrar-se facilmente ao seu sistema de gerenciamento de estoque existente.
+
+Além disso, Luísa deseja uma solução que não exija um grande investimento inicial e que possa ser escalada à medida que sua farmácia cresce. Ela valoriza o suporte técnico confiável e o atendimento ao cliente personalizado, procurando uma empresa parceira que compreenda as necessidades específicas de uma pequena empresa local. Para Luísa, é importante que a solução de e-commerce ajude a impulsionar as vendas online enquanto complementa o serviço excepcional que ela oferece na loja física, ajudando-a a manter sua posição como uma parte vital da comunidade local.
+
 
 ## Histórias de Usuários
 
@@ -65,11 +70,11 @@ A necessidade de os clientes se deslocarem até uma farmácia física para compr
 O sistema irá se comportar como uma loja online em que os clientes poderam comprar os produtos após um cadastro de login e senha, em cada cadastro o cliente podera escolher o endereço de entrega do medicamento e tambem poderá acompanhar a etapa de entrega do seu produto.
 
 
-### Processo 1 – NOME DO PROCESSO
+### Processo 1 – Processo de Venda
 
-Apresente aqui o nome e as oportunidades de melhorias para o processo 1. Em seguida, apresente o modelo do processo 1, descrito no padrão BPMN. 
 
-![Processo 1](img/02-bpmn-proc1.png)
+![Captura de tela 2024-02-21 190124](https://github.com/shigerysasaki/pmv-ads-2024-1-e3-proj-mov-t2-farmaonline/assets/126729120/4f2c9e20-6f12-4e37-b52a-7f3de41783c1)
+
 
 
 ## Indicadores de Desempenho
@@ -89,32 +94,29 @@ As tabelas que se seguem apresentam os requisitos funcionais e não funcionais q
 
 |ID    | Descrição do Requisito  | Prioridade |
 |------|-----------------------------------------|----|
-|RF-001| Permitir que o usuário crie um usuario | ALTA | 
+|RF-001| Permitir que o usuário crie uma conta | ALTA | 
 |RF-002| Permitir que o usuário consiga efetivar compras  | ALTA |
 |RF-003| Permitir que o usuário consiga cadastrar seu endereço | Media |
+|RF-004| Permitir que o usuário pesquise produtos | ALTA |
+|RF-005| Permitir que o usuário tenha um carrinho | ALTA |
+|RF-006| Permitir que exista um usuário adiministrador | ALTA |
+|RF-007| Permitir que exista uma forma de conferir a etapa do processamento do pedido| ALTA |
+|RF-008| Permitir que exista uma barra de favoritos| BAIXA |
+|RF-008| O sistema deve ter um sistema de feedback e avaliação de produtos para auxiliar os clientes na tomada de decisão | Média |
+|RF-009| O sistema deve permitir que o usuario recupere sua senha | Média |
+
 
 
 ### Requisitos não Funcionais
 
 |ID     | Descrição do Requisito  |Prioridade |
 |-------|-------------------------|----|
-|RNF-001| O sistema deve ser responsivo para rodar em um dispositivos móvel | MÉDIA | 
+|RNF-001| O sistema deve ser responsivo para rodar em um dispositivos móvel | Alta | 
 |RNF-002| Deve processar requisições do usuário em no máximo 3s |  BAIXA | 
+|RNF-003| Deve rodar em IOS e Android | Alta | 
+|RNF-004| O sistema deve garantir a consistência e atualização em tempo real do estoque de produtos disponíveis | Alta | 
+|RNF-005| O sistema deve ser responsivo para se adaptar a diferentes dispositivos móveis. | Média | 
 
-Com base nas Histórias de Usuário, enumere os requisitos da sua solução. Classifique esses requisitos em dois grupos:
-
-- [Requisitos Funcionais
- (RF)](https://pt.wikipedia.org/wiki/Requisito_funcional):
- correspondem a uma funcionalidade que deve estar presente na
-  plataforma (ex: cadastro de usuário).
-- [Requisitos Não Funcionais
-  (RNF)](https://pt.wikipedia.org/wiki/Requisito_n%C3%A3o_funcional):
-  correspondem a uma característica técnica, seja de usabilidade,
-  desempenho, confiabilidade, segurança ou outro (ex: suporte a
-  dispositivos iOS e Android).
-Lembre-se que cada requisito deve corresponder à uma e somente uma
-característica alvo da sua solução. Além disso, certifique-se de que
-todos os aspectos capturados nas Histórias de Usuário foram cobertos.
 
 ## Restrições
 
@@ -123,13 +125,8 @@ O projeto está restrito pelos itens apresentados na tabela a seguir.
 |ID| Restrição                                             |
 |--|-------------------------------------------------------|
 |01| O projeto deverá ser entregue até o final do semestre |
-|02| Não pode ser desenvolvido um módulo de backend        |
-
-Enumere as restrições à sua solução. Lembre-se de que as restrições geralmente limitam a solução candidata.
-
-> **Links Úteis**:
-> - [O que são Requisitos Funcionais e Requisitos Não Funcionais?](https://codificar.com.br/requisitos-funcionais-nao-funcionais/)
-> - [O que são requisitos funcionais e requisitos não funcionais?](https://analisederequisitos.com.br/requisitos-funcionais-e-requisitos-nao-funcionais-o-que-sao/)
+|02| O uso do projeto para fins pessoais não é permitido.  |
+|03| O projeto nao vai ser desenvolvido por terceiros   |
 
 ## Diagrama de Casos de Uso
 
