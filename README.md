@@ -12,12 +12,12 @@ Descrever resumidamente, em um ou dois parágrafos, o projeto que está sendo de
 
 * Natali Xavier da Costa
 * Shigery França Dutra Sasaki
-* Nome completo do aluno 3
+* Ana Clara Rozinholi
 * Nome completo do aluno 4
 
 ## Orientador
 
-* Nome completo do professor 1
+* Udo Fritzke Junior
 
 ## Instruções de utilização
 
