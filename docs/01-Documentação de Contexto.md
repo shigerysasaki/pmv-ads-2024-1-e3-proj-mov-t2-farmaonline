@@ -3,7 +3,9 @@
 A demanda por uma aquisição ágil e simplificada de medicamentos e produtos farmacêuticos é uma realidade presente no cotidiano de muitas pessoas. A prioridade dada à saúde torna crucial o acesso imediato a esses itens quando surge a necessidade. No entanto, o método tradicional de adquirir fármacos, por meio de visitas físicas a farmácias ou drogarias, frequentemente se revela inconveniente. Diante desse cenário, surge a necessidade de desenvolver soluções que atendam às exigências contemporâneas de forma eficaz e prática.
 
 ## Problema
-A saúde é uma prioridade, e quando surge a necessidade de um medicamento ou produto específico, o acesso imediato a esses itens é crucial. No entanto, a maneira tradicional de adquirir fármacos, através de visitas presenciais a farmácias ou drogarias, muitas vezes se mostra inconveniente. Recentemente passamos por uma pandemia na qual era quase impossivel se deslocar até uma farmacia para a compra de algum tipo de medicamento. Devido ao nosso dia-a-dia corrido, muitas vezes quando adoecemos preferimos o conforto de nossa casa e nao ter a inconveniencia de se dirigir a um local fisico.
+A saúde é uma prioridade fundamental e, quando surge a necessidade de medicamentos ou produtos específicos, o acesso imediato a esses itens é crucial. No entanto, o método tradicional de obtenção desses produtos, através de visitas pessoais a farmácias ou drogarias, frequentemente se mostra inconveniente. Durante a recente pandemia, em particular, a dificuldade em se deslocar até uma farmácia física tornou-se quase insuperável. Além disso, nosso estilo de vida agitado muitas vezes nos leva a preferir o conforto de nossa casa quando estamos doentes, evitando assim a inconveniência de nos dirigirmos a um local físico.
+
+Nesse contexto, é importante notar que muitas pequenas farmácias ainda não possuem aplicativos para facilitar a compra online de medicamentos. Isso torna ainda mais difícil para os consumidores acessarem os produtos de que necessitam, especialmente em momentos de urgência ou emergência médica. Portanto, há uma necessidade crescente de soluções que possam fornecer acesso conveniente a medicamentos, tanto para as pequenas farmácias que ainda não têm presença online quanto para os consumidores que preferem a comodidade de comprar de casa.
 
 ## Objetivos
 
@@ -18,4 +20,4 @@ Em resumo, a decisão de desenvolver um aplicativo móvel para e-commerce de pro
 
 ## Público-Alvo
 
-Pessoas com interesse em obter produtos de saúde, higiene e bem estar de forma rapida sem necessidade de locomoção.
+"Nosso público-alvo se divide em duas vertentes distintas. A primeira é representada pelas pequenas farmácias que adquirem o direito de utilização de nosso aplicativo. No entanto, é igualmente importante lembrar que o usuário final, ou seja, o cliente da farmácia, também faz parte desse público, pois são eles que utilizam o aplicativo."
