@@ -34,9 +34,7 @@ José está interessado em encontrar uma maneira de comprar seus remédios de fo
 ### Persona 4:
 Luísa é uma empreendedora de 35 anos que possui uma pequena farmácia localizada em um bairro residencial tranquilo. Ela adquiriu a farmácia há três anos e desde então tem trabalhado arduamente para construir e manter uma boa reputação na comunidade. Como proprietária de uma pequena farmácia, Luísa desempenha várias funções, desde gerenciamento de estoque até atendimento ao cliente. Ela está constantemente procurando maneiras de melhorar sua farmácia e se destacar da concorrência, que inclui grandes redes de farmácias e serviços de entrega online.
 
-Luísa reconhece a importância de ter uma presença online para atrair novos clientes e atender às necessidades daqueles que preferem a conveniência das compras online. No entanto, ela também valoriza o contato pessoal com os clientes e deseja manter o ambiente acolhedor e familiar de sua farmácia física. Luísa está interessada em uma solução de e-commerce que seja acessível e fácil de usar, mesmo para alguém sem conhecimentos técnicos avançados. Ela precisa de uma plataforma que permita listar seus produtos de maneira clara e organizada, oferecer opções de pagamento seguras e integrar-se facilmente ao seu sistema de gerenciamento de estoque existente.
 
-Além disso, Luísa deseja uma solução que não exija um grande investimento inicial e que possa ser escalada à medida que sua farmácia cresce. Ela valoriza o suporte técnico confiável e o atendimento ao cliente personalizado, procurando uma empresa parceira que compreenda as necessidades específicas de uma pequena empresa local. Para Luísa, é importante que a solução de e-commerce ajude a impulsionar as vendas online enquanto complementa o serviço excepcional que ela oferece na loja física, ajudando-a a manter sua posição como uma parte vital da comunidade local.
 
 
 ## Histórias de Usuários
