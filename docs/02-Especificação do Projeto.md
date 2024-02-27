@@ -5,34 +5,8 @@ O projeto visa criar uma plataforma mobile de e-commerce, proporcionando a aquis
 
 ## Personas
 
-### Persona 1:
-Maria, 35 anos, mãe ocupada.
-Maria é uma mãe de dois filhos pequenos, com idades entre 4 e 7 anos.
-Ela trabalha em período integral como gerente de vendas em uma empresa de médio porte.
-Devido ao seu horário de trabalho agitado e suas responsabilidades familiares, Maria tem pouco tempo livre durante o dia.
-Recentemente, ela foi diagnosticada com hipertensão e precisa tomar medicamentos regularmente.
-Maria está em busca de uma maneira conveniente de comprar seus medicamentos sem precisar interromper sua rotina agitada ou fazer longas filas em farmácias.
+![Pedro (1)](https://github.com/ICEI-PUC-Minas-PMV-ADS/pmv-ads-2024-1-e3-proj-mov-t2-farmaonline/assets/128405733/df5314d0-e22e-42fc-931d-2aab9d077cec)
 
-### Persona 2:
-Pedro, 26 anos, estudante universitário.
-Pedro é um estudante universitário em seu último ano de Engenharia de Software.
-Ele é um entusiasta da tecnologia e adora explorar novos aplicativos e soluções online.
-Pedro mora sozinho em um apartamento próximo ao campus da universidade.
-Recentemente, ele contraiu uma gripe e precisa de medicamentos para aliviar os sintomas.
-Como Pedro está ocupado com os estudos e projetos da faculdade, ele procura uma maneira rápida e fácil de comprar seus remédios sem precisar sair de casa.
-
-
-### Persona 3: 
-José, 60 anos, aposentado
-José é um aposentado que recentemente se mudou para uma cidadezinha no interior após décadas morando na capital.
-Ele tem uma série de condições de saúde, incluindo pressão alta e diabetes, que exigem medicação regular.
-José é bastante familiarizado com tecnologia, pois sempre teve interesse em aprender e acompanhar as novidades.
-Ele não possui carro e depende do transporte público para se locomover, o que pode ser inconveniente, especialmente em dias de mau tempo.
-José está interessado em encontrar uma maneira de comprar seus remédios de forma conveniente e segura, sem precisar enfrentar longas viagens até a farmácia mais próxima.
-
-
-### Persona 4:
-Luísa é uma empreendedora de 35 anos que possui uma pequena farmácia localizada em um bairro residencial tranquilo. Ela adquiriu a farmácia há três anos e desde então tem trabalhado arduamente para construir e manter uma boa reputação na comunidade. Como proprietária de uma pequena farmácia, Luísa desempenha várias funções, desde gerenciamento de estoque até atendimento ao cliente. Ela está constantemente procurando maneiras de melhorar sua farmácia e se destacar da concorrência, que inclui grandes redes de farmácias e serviços de entrega online.
 
 
 
