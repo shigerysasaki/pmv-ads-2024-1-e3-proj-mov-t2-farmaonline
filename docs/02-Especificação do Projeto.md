@@ -6,6 +6,9 @@ O projeto visa criar uma plataforma mobile de e-commerce, proporcionando a aquis
 ## Personas
 
 ![Pedro (1)](https://github.com/ICEI-PUC-Minas-PMV-ADS/pmv-ads-2024-1-e3-proj-mov-t2-farmaonline/assets/128405733/df5314d0-e22e-42fc-931d-2aab9d077cec)
+![Jose](https://github.com/ICEI-PUC-Minas-PMV-ADS/pmv-ads-2024-1-e3-proj-mov-t2-farmaonline/assets/128405733/cca38a70-8696-4dc0-893b-302c6fef0672)
+![Maria](https://github.com/ICEI-PUC-Minas-PMV-ADS/pmv-ads-2024-1-e3-proj-mov-t2-farmaonline/assets/128405733/141c237e-1055-4072-b28d-ab6ffea33432)
+![Luisa](https://github.com/ICEI-PUC-Minas-PMV-ADS/pmv-ads-2024-1-e3-proj-mov-t2-farmaonline/assets/128405733/7d58ce45-08f3-4a04-b300-22a104353c89)
 
 
 
