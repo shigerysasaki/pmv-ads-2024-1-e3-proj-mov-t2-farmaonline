@@ -20,4 +20,4 @@ Em resumo, a decisão de desenvolver um aplicativo móvel para e-commerce de pro
 
 ## Público-Alvo
 
-"Nosso público-alvo se divide em duas vertentes distintas. A primeira é representada pelas pequenas farmácias que adquirem o direito de utilização de nosso aplicativo. No entanto, é igualmente importante lembrar que o usuário final, ou seja, o cliente da farmácia, também faz parte desse público, pois são eles que utilizam o aplicativo."
+Nosso público-alvo se divide em duas vertentes distintas. A primeira é representada pelas pequenas farmácias que adquirem o direito de utilização de nosso aplicativo. No entanto, é igualmente importante lembrar que o usuário final, ou seja, o cliente da farmácia, também faz parte desse público, pois são eles que utilizam o aplicativo.
