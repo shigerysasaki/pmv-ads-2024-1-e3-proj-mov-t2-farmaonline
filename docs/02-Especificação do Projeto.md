@@ -20,10 +20,10 @@ Ele é um entusiasta da tecnologia e adora explorar novos aplicativos e soluçõ
 Pedro mora sozinho em um apartamento próximo ao campus da universidade.
 Recentemente, ele contraiu uma gripe e precisa de medicamentos para aliviar os sintomas.
 Como Pedro está ocupado com os estudos e projetos da faculdade, ele procura uma maneira rápida e fácil de comprar seus remédios sem precisar sair de casa.
-Persona 3: José, 60 anos, aposentado
+
 
 ### Persona 3: 
-José, aposentado;
+José, 60 anos, aposentado
 José é um aposentado que recentemente se mudou para uma cidadezinha no interior após décadas morando na capital.
 Ele tem uma série de condições de saúde, incluindo pressão alta e diabetes, que exigem medicação regular.
 José é bastante familiarizado com tecnologia, pois sempre teve interesse em aprender e acompanhar as novidades.
@@ -43,8 +43,10 @@ Com base na análise das personas forma identificadas as seguintes histórias de
 
 |EU COMO... `PERSONA`| QUERO/PRECISO ... `FUNCIONALIDADE` |PARA ... `MOTIVO/VALOR`                 |
 |--------------------|------------------------------------|----------------------------------------|
-|Usuário do sistema  | Registrar minhas tarefas           | Não esquecer de fazê-las               |
-|Administrador       | Alterar permissões                 | Permitir que possam administrar contas |
+|Maria | Compras ágeis          | Não interromper sua rotina agitada             |
+|Luísa       | Otimizar seu negocio               | Se destacar perante a concorrencia |
+|José | Segurança e comodidade nas compras        | Dificuldade no deslocamento               |
+|Pedro       |Facilidade na compra             | Não sair de casa |
 
 Apresente aqui as histórias de usuário que são relevantes para o projeto de sua solução. As Histórias de Usuário consistem em uma ferramenta poderosa para a compreensão e elicitação dos requisitos funcionais e não funcionais da sua aplicação. Se possível, agrupe as histórias de usuário por contexto, para facilitar consultas recorrentes à essa parte do documento.
 
@@ -57,10 +59,10 @@ Compra em Farmácias Físicas:
 A necessidade de os clientes se deslocarem até uma farmácia física para comprar medicamentos e produtos de saúde pode ser bastante inconveniente por várias razões como:
 
  1- Mobilidade Limitada: Para pessoas idosas, com deficiências físicas ou com mobilidade limitada, sair de casa e se deslocar até uma farmácia pode ser uma tarefa difícil e até mesmo impossível sem assistência adicional.
- 2- Distância Geográfica: Em algumas áreas, as farmácias podem estar localizadas a uma distância considerável das residências dos clientes. Isso pode resultar em viagens demoradas e custosas, especialmente para aqueles que não têm acesso a transporte próprio.
- 3- Restrições de Tempo: Muitas pessoas têm agendas ocupadas, o que torna difícil encontrar tempo para visitar uma farmácia física durante o horário comercial. Isso pode levar a atrasos na obtenção de medicamentos essenciais ou produtos de saúde.
- 4- Fatores Climáticos: Em determinadas condições climáticas, como chuvas fortes, neve ou calor extremo, sair de casa para ir à farmácia pode ser desconfortável e até mesmo perigoso.
- 5- Riscos à Saúde: Especialmente durante pandemias ou surtos de doenças, como a gripe sazonal, ir a locais públicos como farmácias físicas pode aumentar o risco de exposição a germes e infecções.
+ <p> 2- Distância Geográfica: Em algumas áreas, as farmácias podem estar localizadas a uma distância considerável das residências dos clientes. Isso pode resultar em viagens demoradas e custosas, especialmente para aqueles que não têm acesso a transporte próprio.
+<p> 3- Restrições de Tempo: Muitas pessoas têm agendas ocupadas, o que torna difícil encontrar tempo para visitar uma farmácia física durante o horário comercial. Isso pode levar a atrasos na obtenção de medicamentos essenciais ou produtos de saúde.
+<p> 4- Fatores Climáticos: Em determinadas condições climáticas, como chuvas fortes, neve ou calor extremo, sair de casa para ir à farmácia pode ser desconfortável e até mesmo perigoso.
+<p> 5- Riscos à Saúde: Especialmente durante pandemias ou surtos de doenças, como a gripe sazonal, ir a locais públicos como farmácias físicas pode aumentar o risco de exposição a germes e infecções.
 
 
 ### Descrição Geral da Proposta
