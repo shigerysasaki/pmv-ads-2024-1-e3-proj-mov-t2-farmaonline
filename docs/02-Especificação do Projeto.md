@@ -92,7 +92,7 @@ As tabelas que se seguem apresentam os requisitos funcionais e não funcionais q
 |RNF-002| Deve processar requisições do usuário em no máximo 3s |  BAIXA | 
 |RNF-003| Deve rodar em IOS e Android | Alta | 
 |RNF-004| O sistema deve garantir a consistência e atualização em tempo real do estoque de produtos disponíveis | Alta | 
-|RNF-005| O sistema deve ser responsivo para se adaptar a diferentes dispositivos móveis. | Média | 
+
 
 
 ## Restrições
