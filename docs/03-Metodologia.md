@@ -26,16 +26,6 @@ etiquetas:
 - `enhancement`: uma funcionalidade precisa ser melhorada
 - `feature`: uma nova funcionalidade precisa ser introduzida
 
-Discuta como a configuração do projeto foi feita na ferramenta de versionamento escolhida. Exponha como a gerência de tags, merges, commits e branchs é realizada. Discuta como a gerência de issues foi realizada.
-
-> **Links Úteis**:
-> - [Tutorial GitHub](https://guides.github.com/activities/hello-world/)
-> - [Git e Github](https://www.youtube.com/playlist?list=PLHz_AreHm4dm7ZULPAmadvNhH6vk9oNZA)
->  - [Comparando fluxos de trabalho](https://www.atlassian.com/br/git/tutorials/comparing-workflows)
-> - [Understanding the GitHub flow](https://guides.github.com/introduction/flow/)
-> - [The gitflow workflow - in less than 5 mins](https://www.youtube.com/watch?v=1SXpE08hvGs)
-
-
 ## Gerenciamento de Projeto
 
 ### Divisão de Papéis
@@ -49,21 +39,19 @@ Discuta como a configuração do projeto foi feita na ferramenta de versionament
 #### Desenvolvedores (Devs):
 
 - Natali Xavier Costa
-- Renan Stankevicius
+- Raul Janon Teixeira Leite
 - Ana Clara Rozinholi
 
 #### Design (Devs):
-- Raul 
+- Renan Stankevicius
 
 ### Processo
 
-Coloque  informações sobre detalhes da implementação do Scrum seguido pelo grupo. O grupo poderá fazer uso de ferramentas on-line para acompanhar o andamento do projeto, a execução das tarefas e o status de desenvolvimento da solução.
- 
-> **Links Úteis**:
-> - [Project management, made simple](https://github.com/features/project-management/)
-> - [Sobre quadros de projeto](https://docs.github.com/pt/github/managing-your-work-on-github/about-project-boards)
-> - [Como criar Backlogs no Github](https://www.youtube.com/watch?v=RXEy6CFu9Hk)
-> - [Tutorial Slack](https://slack.com/intl/en-br/)
+A comunicação será realizada por meio do Discord, ferramenta na qual é possível a realização de chamadas em tempo real, compartilhamento de tela e a organização de informações.
+
+A ferramenta escolhida para controle das sprints é o Kanban do próprio GitHub.
+
+![imagem-kanban](https://github.com/ICEI-PUC-Minas-PMV-ADS/pmv-ads-2024-1-e3-proj-mov-t2-farmaonline/assets/89418479/6d5e8fc6-6a32-4782-902d-95632064bb1d)
 
 ### Ferramentas
 
