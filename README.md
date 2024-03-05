@@ -13,8 +13,7 @@ Descrever resumidamente, em um ou dois parágrafos, o projeto que está sendo de
 * Natali Xavier da Costa
 * Shigery França Dutra Sasaki
 * Ana Clara Rozinholi
-* Nome completo do aluno 4
-
+* Renan Stankevicius
 ## Orientador
 
 * Udo Fritzke Junior
