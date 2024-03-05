@@ -1,4 +1,3 @@
-
 # Metodologia
 
 Para criar um aplicativo de e-commerce de forma eficiente, é essencial seguir uma metodologia de trabalho bem definida e utilizar ferramentas adequadas para o desenvolvimento. O grupo optou por utilizar o Kanban como método de divisão de tarefas e é constantemente monitorado pelos membros para garantir que as entregas sejam realizadas de forma correta. Os projetos são divididos em 5 milestones com tarefas proporcionais em cada um deles. Devido à proficiência de alguns membros, tarefas como Design foram direcionadas para essas pessoas.
@@ -57,18 +56,12 @@ A ferramenta escolhida para controle das sprints é o Kanban do próprio GitHub.
 
 As ferramentas empregadas no projeto são:
 
-- Editor de código.
-- Ferramentas de comunicação
-- Ferramentas de desenho de tela (_wireframing_)
+|VSCode|VisualStudio|Discord|WhatsApp|Figma|Lucidchart|
+|-|-|-|-|-|-|
+|<div align="center"><img alt="VsCode" src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/vscode/vscode-original.svg" height="40px" width="50px"/>|<div align="center"><img alt="VisualStudio" src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/visualstudio/visualstudio-original.svg" height="40px" width="50px"/>|<div align="center"><img alt="Discord" src="https://github.com/ICEI-PUC-Minas-PMV-ADS/pmv-ads-2024-1-e3-proj-mov-t2-farmaonline/assets/89418479/6d73575a-22f2-45e6-a885-f1ca615f99bf" height="45px" width="45px"/>|<div align="center"><img alt="WhatsApp" src="https://github.com/ICEI-PUC-Minas-PMV-ADS/pmv-ads-2024-1-e3-proj-mov-t2-farmaonline/assets/89418479/d3974776-241a-4235-bac2-cf802ec089a4" height="45px" width="45px"/>|<div align="center"><img alt="Figma" src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/figma/figma-original.svg" height="40px" width="50px"/>|<div align="center"><img alt="Lucidchart" src="https://github.com/renanstankev/Farmacia-Online/assets/89418479/a8a30d15-fb8d-4c54-b89b-f9925251852b" height="40px" width="40px"/>|
 
-O editor de código foi escolhido porque ele possui uma integração com o
-sistema de versão. As ferramentas de comunicação utilizadas possuem
-integração semelhante e por isso foram selecionadas. Por fim, para criar
-diagramas utilizamos essa ferramenta por melhor captar as
-necessidades da nossa solução.
-
-Liste quais ferramentas foram empregadas no desenvolvimento do projeto, justificando a escolha delas, sempre que possível.
- 
-> **Possíveis Ferramentas que auxiliarão no gerenciamento**: 
-> - [Slack](https://slack.com/)
-> - [Github](https://github.com/)
+- VSCode foi escolhido por sua simplicidade e facilidade de uso. 
+- VisualStudio é a IDE mais recomendada para trabalhar com a estrutura de backend escolhida pela equipe. 
+- Discord é um software leve e prático para a realização de reuniões. 
+- Figma é amplamente utilizado no mercado como ferramenta de design de telas por sua ampla variedade de ferramentas. 
+- Lucidchart é uma aplicação de diagramação intuitiva e que permite que a equipe trabalhe simultaneamente em um mesmo arquivo. 
