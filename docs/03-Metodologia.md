@@ -63,5 +63,6 @@ As ferramentas empregadas no projeto são:
 - VSCode foi escolhido por sua simplicidade e facilidade de uso. 
 - VisualStudio é a IDE mais recomendada para trabalhar com a estrutura de backend escolhida pela equipe. 
 - Discord é um software leve e prático para a realização de reuniões. 
+- WhatsApp é o meio mais popular para comunicações de forma rápida fora de reuniões.
 - Figma é amplamente utilizado no mercado como ferramenta de design de telas por sua ampla variedade de ferramentas. 
 - Lucidchart é uma aplicação de diagramação intuitiva e que permite que a equipe trabalhe simultaneamente em um mesmo arquivo. 
