@@ -14,6 +14,7 @@ Descrever resumidamente, em um ou dois parágrafos, o projeto que está sendo de
 * Shigery França Dutra Sasaki
 * Ana Clara Rozinholi
 * Renan Stankevicius
+* Raul Janon Teixeira Leite
 ## Orientador
 
 * Udo Fritzke Junior
