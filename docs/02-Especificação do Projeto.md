@@ -79,7 +79,7 @@ As tabelas que se seguem apresentam os requisitos funcionais e não funcionais q
 |RF-006| Permitir que exista um usuário adiministrador | ALTA |
 |RF-007| Permitir que exista uma forma de conferir a etapa do processamento do pedido| ALTA |
 |RF-008| Permitir que exista uma barra de favoritos| BAIXA |
-|RF-008| O sistema deve ter um sistema de feedback e avaliação de produtos para auxiliar os clientes na tomada de decisão | Média |
+|RF-008| O sistema deve incorporar uma funcionalidade de feedback e avaliação de produtos | Média |
 |RF-009| O sistema deve permitir que o usuario recupere sua senha | Média |
 
 
