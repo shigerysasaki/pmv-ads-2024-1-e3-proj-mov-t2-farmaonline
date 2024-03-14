@@ -67,16 +67,17 @@ As tabelas que se seguem apresentam os requisitos funcionais e não funcionais q
 
 |ID    | Descrição do Requisito  | Prioridade |
 |------|-----------------------------------------|----|
-|RF-001| Permitir que o usuário crie uma conta | ALTA | 
-|RF-002| Permitir que o usuário consiga efetivar compras  | ALTA |
-|RF-003| Permitir que o usuário consiga cadastrar seu endereço | Media |
-|RF-004| Permitir que o usuário pesquise produtos | ALTA |
-|RF-005| Permitir que o usuário tenha um carrinho | ALTA |
-|RF-006| Permitir que exista um usuário adiministrador | ALTA |
-|RF-007| Permitir que exista uma forma de conferir a etapa do processamento do pedido| ALTA |
-|RF-008| Permitir que exista uma barra de favoritos| BAIXA |
-|RF-008| O sistema deve incorporar uma funcionalidade de feedback e avaliação de produtos | Média |
-|RF-009| O sistema deve permitir que o usuario recupere sua senha | Média |
+|RF-001| Permitir que o usuário crie uma conta | ALTA |
+|RF-002| Permitir que o usuário crie uma conta | ALTA |
+|RF-003| Permitir que o usuário consiga efetivar compras  | ALTA |
+|RF-004| Permitir que o usuário consiga cadastrar seu endereço | Media |
+|RF-005| Permitir que o usuário pesquise produtos | ALTA |
+|RF-006| Permitir que o usuário tenha um carrinho | ALTA |
+|RF-007| Permitir que exista um usuário adiministrador | ALTA |
+|RF-008| Permitir que exista uma forma de conferir a etapa do processamento do pedido| ALTA |
+|RF-009| Permitir que exista uma barra de favoritos| BAIXA |
+|RF-0010| O sistema deve incorporar uma funcionalidade de feedback e avaliação de produtos | Média |
+|RF-011| O sistema deve permitir que o usuario recupere sua senha | Média |
 
 
 
