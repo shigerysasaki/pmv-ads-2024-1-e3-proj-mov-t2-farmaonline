@@ -68,7 +68,7 @@ As tabelas que se seguem apresentam os requisitos funcionais e não funcionais q
 |ID    | Descrição do Requisito  | Prioridade |
 |------|-----------------------------------------|----|
 |RF-001| Permitir que o usuário crie uma conta | ALTA |
-|RF-002| Permitir que o usuário crie uma conta | ALTA |
+|RF-002| O sistema deve conter autenticação de usuários | ALTA |
 |RF-003| Permitir que o usuário consiga efetivar compras  | ALTA |
 |RF-004| Permitir que o usuário consiga cadastrar seu endereço | Media |
 |RF-005| Permitir que o usuário pesquise produtos | ALTA |
