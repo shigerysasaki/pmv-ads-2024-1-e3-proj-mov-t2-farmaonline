@@ -136,6 +136,7 @@ Devido o quadro ser muito grande o Grafico de Gantt está na Ferramenta Miro con
 
 ## Gestão de Orçamento
 
+![image](https://github.com/ICEI-PUC-Minas-PMV-ADS/pmv-ads-2024-1-e3-proj-mov-t2-farmaonline/assets/126729120/1bdd04f9-7066-4a28-a510-6a20b5d9a410)
 
-![image](https://github.com/shigerysasaki/pmv-ads-2024-1-e3-proj-mov-t2-farmaonline/assets/126729120/92d1a80f-095f-44cf-b46a-9120c83ff6a3)
+
 
