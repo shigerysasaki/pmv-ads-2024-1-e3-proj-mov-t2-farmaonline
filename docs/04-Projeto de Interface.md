@@ -13,4 +13,4 @@
 
 <br>
 
-<img width="1174" alt="wireframes" src="https://github.com/ICEI-PUC-Minas-PMV-ADS/pmv-ads-2024-1-e3-proj-mov-t2-farmaonline/assets/89418479/18654f5a-d796-4c29-a9b2-90695d1d25e8">
+<img width="1174" alt="wireframes" src="https://github.com/ICEI-PUC-Minas-PMV-ADS/pmv-ads-2024-1-e3-proj-mov-t2-farmaonline/assets/89418479/102633e9-b965-4397-a824-8fde43b8e1ad">
