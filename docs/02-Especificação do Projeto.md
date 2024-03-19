@@ -111,8 +111,7 @@ O projeto está restrito pelos itens apresentados na tabela a seguir.
 
 A matriz de rastreabilidade é uma ferramenta usada para facilitar a visualização dos relacionamento entre requisitos e outros artefatos ou objetos, permitindo a rastreabilidade entre os requisitos e os objetivos de negócio. 
 
-![image](https://github.com/shigerysasaki/pmv-ads-2024-1-e3-proj-mov-t2-farmaonline/assets/126729120/5386cec7-9328-43c2-95b8-bc6b42521139)
-
+![image](https://github.com/shigerysasaki/pmv-ads-2024-1-e3-proj-mov-t2-farmaonline/assets/126729120/1f414b95-01eb-4168-8b6d-0d605de34efb)
 
 
 # Gerenciamento de Projeto
