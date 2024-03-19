@@ -3,7 +3,8 @@
 
 ## Diagrama de Fluxo
 
-![Fluxograma Farma](https://github.com/shigerysasaki/pmv-ads-2024-1-e3-proj-mov-t2-farmaonline/assets/126729120/38a8fc09-45d0-42b6-937e-537cbb50eb6a)
+![Fluxograma Farma (1)](https://github.com/shigerysasaki/pmv-ads-2024-1-e3-proj-mov-t2-farmaonline/assets/126729120/c441ee22-1bcd-40db-a598-aebd97366846)
+
 
 <br>
 <br>
