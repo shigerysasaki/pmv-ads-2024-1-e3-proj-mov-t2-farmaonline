@@ -30,9 +30,19 @@ Entregar um arquivo banco.sql contendo os scripts de criação das tabelas do ba
 
 ## Tecnologias Utilizadas
 
-Descreva aqui qual(is) tecnologias você vai usar para resolver o seu problema, ou seja, implementar a sua solução. Liste todas as tecnologias envolvidas, linguagens a serem utilizadas, serviços web, frameworks, bibliotecas, IDEs de desenvolvimento, e ferramentas.
+* IDEs de desenvolvimento: Visual Studio Code, node.JS, Visual Studio 2022 e React Native.
+* Banco de dados: ???.
+* Ferramenta de Diagramação: Lucidchart.
+* Ferramenta de versionamento: Git.
+* Ferramenta de Gestão de Projeto: Github Projects.
+* Plataforma para hospedagem do Site: ???.
 
-Apresente também uma figura explicando como as tecnologias estão relacionadas ou como uma interação do usuário com o sistema vai ser conduzida, por onde ela passa até retornar uma resposta ao usuário.
+[Imagen]
+
+* 1. O usuário abre o aplicativo em seu dispositivo movel
+* 2. O aplicativo, exibe a interface do usuário, permitindo que ele navegue pelos elementos da interface, como botões, menus e formulários.
+* 3. Quando o usuário realiza uma ação, como preencher um formulário e enviar dados, o aplicativo envia uma solicitação para o backend, onde o node.js processa os dados e realiza operações no banco de dados SQL, como armazenar informações do usuário ou recuperar dados relevantes.
+* 4. Após o processamento no backend, o frontend recebe uma resposta do servidor. Por exemplo, se o usuário preencher um formulário de login corretamente, o backend pode retornar uma resposta confirmando o login bem-sucedido. Essa resposta é então exibida ao usuário na interface do aplicativo, redirecionando-o para a página inicial do aplicativo.
 
 ## Hospedagem
 
