@@ -1,4 +1,5 @@
-# Farma Online
+
+![LogoPucFarma](https://github.com/ICEI-PUC-Minas-PMV-ADS/pmv-ads-2024-1-e3-proj-mov-t2-farmaonline/assets/128405733/382dddff-d971-438d-a4fd-05d7011252ec)
 
 `CURSO`
 
