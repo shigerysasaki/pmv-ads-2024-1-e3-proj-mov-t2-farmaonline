@@ -37,7 +37,9 @@ Entregar um arquivo banco.sql contendo os scripts de criação das tabelas do ba
 * Ferramenta de Gestão de Projeto: Github Projects.
 * Plataforma para hospedagem do Site: ???.
 
-[Imagen]
+
+![Banco de dados](https://github.com/MatheusPucGit/pmv-ads-2024-1-e3-proj-mov-t2-farmaonline/assets/128756585/c49e73fd-e6db-47c7-a2b0-f501a9b32a68)
+
 
 * 1. O usuário abre o aplicativo em seu dispositivo movel
 * 2. O aplicativo, exibe a interface do usuário, permitindo que ele navegue pelos elementos da interface, como botões, menus e formulários.
