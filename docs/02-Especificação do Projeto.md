@@ -122,10 +122,10 @@ De acordo com o PMBoK v6 as dez áreas que constituem os pilares para gerenciar 
 
 
 
-![image](https://github.com/shigerysasaki/pmv-ads-2024-1-e3-proj-mov-t2-farmaonline/assets/126729120/7ad1a58c-1681-4470-8181-036d673ab9aa) 
+![image](https://github.com/shigerysasaki/pmv-ads-2024-1-e3-proj-mov-t2-farmaonline/assets/126729120/7ad1a58c-1681-4470-8181-036d673ab9aa)  ![image](https://github.com/shigerysasaki/pmv-ads-2024-1-e3-proj-mov-t2-farmaonline/assets/126729120/7f72e6cb-1a9d-47dc-bf50-8ca8bdc55bf2)
 
-![image](https://github.com/shigerysasaki/pmv-ads-2024-1-e3-proj-mov-t2-farmaonline/assets/126729120/7f72e6cb-1a9d-47dc-bf50-8ca8bdc55bf2)
 
+![image](https://github.com/shigerysasaki/pmv-ads-2024-1-e3-proj-mov-t2-farmaonline/assets/126729120/820b36c4-6567-4886-9983-08221f9da36e)
 
 
 
