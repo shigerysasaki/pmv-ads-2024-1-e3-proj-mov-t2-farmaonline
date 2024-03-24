@@ -121,11 +121,12 @@ De acordo com o PMBoK v6 as dez áreas que constituem os pilares para gerenciar 
 ## Gerenciamento de Tempo
 
 
-Devido o quadro ser muito grande o Grafico de Gantt está na Ferramenta Miro conforme o link: https://miro.com/welcomeonboard/S2NaaUJIQlJUUjJJa1BMc2laRDFxTlVhbUhXUGtJZkZLczlyVXlycmtoOXplZWNxYlVuZUlQaXVnQnVyT1h1TnwzNDU4NzY0NTgxNzA2Mjk0OTQ4fDI=?share_link_id=986796389741
 
-[Gráfico de Gantt.pdf](https://github.com/shigerysasaki/pmv-ads-2024-1-e3-proj-mov-t2-farmaonline/files/14544293/Grafico.de.Gantt.pdf)
+![image](https://github.com/shigerysasaki/pmv-ads-2024-1-e3-proj-mov-t2-farmaonline/assets/126729120/7ad1a58c-1681-4470-8181-036d673ab9aa) 
 
-![Gráfico de Gantt](https://github.com/shigerysasaki/pmv-ads-2024-1-e3-proj-mov-t2-farmaonline/assets/126729120/e0a9920e-fd7a-40a3-8267-33c0f415c7dd)
+![image](https://github.com/shigerysasaki/pmv-ads-2024-1-e3-proj-mov-t2-farmaonline/assets/126729120/7f72e6cb-1a9d-47dc-bf50-8ca8bdc55bf2)
+
+
 
 
 ## Gerenciamento de Equipe
