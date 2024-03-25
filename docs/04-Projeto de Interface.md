@@ -13,4 +13,18 @@
 
 <br>
 
-<img width="1174" alt="wireframes" src="https://github.com/ICEI-PUC-Minas-PMV-ADS/pmv-ads-2024-1-e3-proj-mov-t2-farmaonline/assets/89418479/102633e9-b965-4397-a824-8fde43b8e1ad">
+- ### Interfaces de Usuário
+
+<br>
+
+> <img width="1174" alt="wireframes-user" src="https://github.com/ICEI-PUC-Minas-PMV-ADS/pmv-ads-2024-1-e3-proj-mov-t2-farmaonline/assets/89418479/9df4f6bd-039d-4d11-93bc-ae9c2d6b0710">
+
+<br>
+<br>
+<br>
+
+- ### Interfaces de Administrador
+
+<br>
+ 
+> <img width="1172" alt="wireframes-adm" src="https://github.com/ICEI-PUC-Minas-PMV-ADS/pmv-ads-2024-1-e3-proj-mov-t2-farmaonline/assets/89418479/cdda6d68-0da0-48a0-99db-911134ccc949">
