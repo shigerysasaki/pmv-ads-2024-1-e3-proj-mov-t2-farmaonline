@@ -31,11 +31,11 @@ Entregar um arquivo banco.sql contendo os scripts de criação das tabelas do ba
 ## Tecnologias Utilizadas
 
 * IDEs de desenvolvimento: Visual Studio Code, node.JS, Visual Studio 2022 e React Native.
-* Banco de dados: ???.
+* Banco de dados: Não definido.
 * Ferramenta de Diagramação: Lucidchart.
 * Ferramenta de versionamento: Git.
 * Ferramenta de Gestão de Projeto: Github Projects.
-* Plataforma para hospedagem do Site: ???.
+* Plataforma para hospedagem do Site: Não definido.
 
 
 ![Banco de dados](https://github.com/MatheusPucGit/pmv-ads-2024-1-e3-proj-mov-t2-farmaonline/assets/128756585/c49e73fd-e6db-47c7-a2b0-f501a9b32a68)
