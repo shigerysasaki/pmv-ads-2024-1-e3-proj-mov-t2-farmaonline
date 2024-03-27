@@ -16,6 +16,7 @@ Descrever resumidamente, em um ou dois parágrafos, o projeto que está sendo de
 * Ana Clara Rozinholi
 * Renan Stankevicius
 * Raul Janon Teixeira Leite
+* Matheus Soares da Silva
 ## Orientador
 
 * Udo Fritzke Junior
