@@ -56,13 +56,15 @@ A ferramenta escolhida para controle das sprints é o Kanban do próprio GitHub.
 
 As ferramentas empregadas no projeto são:
 
-|VSCode|VisualStudio|Discord|WhatsApp|Figma|Lucidchart|
-|-|-|-|-|-|-|
-|<div align="center"><img alt="VsCode" src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/vscode/vscode-original.svg" height="40px" width="50px"/>|<div align="center"><img alt="VisualStudio" src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/visualstudio/visualstudio-original.svg" height="40px" width="50px"/>|<div align="center"><img alt="Discord" src="https://github.com/ICEI-PUC-Minas-PMV-ADS/pmv-ads-2024-1-e3-proj-mov-t2-farmaonline/assets/89418479/6d73575a-22f2-45e6-a885-f1ca615f99bf" height="45px" width="45px"/>|<div align="center"><img alt="WhatsApp" src="https://github.com/ICEI-PUC-Minas-PMV-ADS/pmv-ads-2024-1-e3-proj-mov-t2-farmaonline/assets/89418479/d3974776-241a-4235-bac2-cf802ec089a4" height="45px" width="45px"/>|<div align="center"><img alt="Figma" src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/figma/figma-original.svg" height="40px" width="50px"/>|<div align="center"><img alt="Lucidchart" src="https://github.com/renanstankev/Farmacia-Online/assets/89418479/a8a30d15-fb8d-4c54-b89b-f9925251852b" height="40px" width="40px"/>|
+|VSCode|VisualStudio|Discord|WhatsApp|Figma|Lucidchart|Draw.io|Mermaid|
+|-|-|-|-|-|-|-|-|
+|<div align="center"><img alt="VsCode" src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/vscode/vscode-original.svg" height="40px" width="50px"/>|<div align="center"><img alt="VisualStudio" src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/visualstudio/visualstudio-original.svg" height="40px" width="50px"/>|<div align="center"><img alt="Discord" src="https://github.com/ICEI-PUC-Minas-PMV-ADS/pmv-ads-2024-1-e3-proj-mov-t2-farmaonline/assets/89418479/6d73575a-22f2-45e6-a885-f1ca615f99bf" height="45px" width="45px"/>|<div align="center"><img alt="WhatsApp" src="https://github.com/ICEI-PUC-Minas-PMV-ADS/pmv-ads-2024-1-e3-proj-mov-t2-farmaonline/assets/89418479/d3974776-241a-4235-bac2-cf802ec089a4" height="45px" width="45px"/>|<div align="center"><img alt="Figma" src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/figma/figma-original.svg" height="40px" width="50px"/>|<div align="center"><img alt="Lucidchart" src="https://github.com/renanstankev/Farmacia-Online/assets/89418479/a8a30d15-fb8d-4c54-b89b-f9925251852b" height="40px" width="40px"/>|<div align="center"><img alt="Draw.io" src="https://github.com/ICEI-PUC-Minas-PMV-ADS/pmv-ads-2024-1-e3-proj-mov-t2-farmaonline/assets/89418479/d32b3068-33e9-4d28-aa6c-33b2fa06115f" height="40px" width="40px"/>|<div align="center"><img alt="Mermaid" src="https://github.com/ICEI-PUC-Minas-PMV-ADS/pmv-ads-2024-1-e3-proj-mov-t2-farmaonline/assets/89418479/641d1c1b-cd45-443f-9f21-3515664be329" height="40px" width="40px"/>|
 
-- VSCode foi escolhido por sua simplicidade e facilidade de uso. 
-- VisualStudio é a IDE mais recomendada para trabalhar com a estrutura de backend escolhida pela equipe. 
-- Discord é um software leve e prático para a realização de reuniões. 
-- WhatsApp é o meio mais popular para comunicações de forma rápida fora de reuniões.
-- Figma é amplamente utilizado no mercado como ferramenta de design de telas por sua ampla variedade de ferramentas. 
-- Lucidchart é uma aplicação de diagramação intuitiva e que permite que a equipe trabalhe simultaneamente em um mesmo arquivo. 
+- `VSCode`: foi escolhido por sua simplicidade e facilidade de uso. 
+- `VisualStudio`: é a IDE mais recomendada para trabalhar com a estrutura de backend escolhida pela equipe. 
+- `Discord`: é um software leve e prático para a realização de reuniões. 
+- `WhatsApp`: é o meio mais popular para comunicações de forma rápida fora de reuniões.
+- `Figma`: é amplamente utilizado no mercado como ferramenta de design de telas por sua ampla variedade de ferramentas. 
+- `Lucidchart`: é uma aplicação de diagramação intuitiva e que permite que a equipe trabalhe simultaneamente em um mesmo arquivo. 
+- `Draw.io`: foi a aplicação de diagramação escolhida como alternativa ao Lucidchart para criação do Modelo Relacional em razão da familiaridade dos membros da equipe. 
+- `Mermaid`: foi a aplicação de diagramação escolhida para criação do Diagrama de Classes devido a sua praticidade e estética para este fim. 
