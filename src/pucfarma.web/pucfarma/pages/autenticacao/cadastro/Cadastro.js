@@ -1,12 +1,15 @@
 import React, { useState } from 'react';
-import { View, Button, Image, StyleSheet, Text } from 'react-native';
+import { View, Button, Image, StyleSheet, Text, Alert } from 'react-native';
 import { TextInput } from 'react-native-paper';
+import { useNavigation } from '@react-navigation/native';
 
 export default function Cadastro() {
+  const navigation = useNavigation();
   const [nome, setNome] = useState('');
   const [email, setEmail] = useState('');
   const [telefone, setTelefone] = useState('');
   const [senha, setSenha] = useState('');
+  const [confirmarSenha, setConfirmarSenha] = useState('');
 
   const handleNomeChange = (novoNome) => {
     setNome(novoNome);
@@ -24,44 +27,37 @@ export default function Cadastro() {
     setSenha(novaSenha);
   };
 
+  const handleConfirmarSenhaChange = (novaConfirmacaoSenha) => {
+    setConfirmarSenha(novaConfirmacaoSenha);
+  };
+
+  const isPasswordValid = (password) => {
+    return password.length >= 8 && password.length <= 16; // Mínimo de 8 e máximo de 16 caracteres
+  };
+
   const handleCadastro = async () => {
-    console.log('Nome:', nome);
-    console.log('Email:', email);
-    console.log('Telefone:', telefone);
-    console.log('Senha:', senha);
-  
+    if (senha !== confirmarSenha) {
+      Alert.alert('Atenção', 'As senhas digitadas não coincidem.');
+      return;
+    }
+
+    if (!isPasswordValid(senha)) {
+      Alert.alert('Atenção', 'A senha deve ter entre 8 e 16 caracteres.');
+      return;
+    }
+
     try {
-      const response = await fetch("http://10.0.2.2:5035/api/Cadastro", {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          nomeCompleto: nome,
-          email: email,
-          telefone: telefone,
-          senha: senha,
-          enderecoEntrega: {
-            cep: "",
-            estado: "",
-            cidade: "",
-            bairro: "",
-            rua: "",
-            numero: "",
-            complemento: ""
-          }
-        })
-      });
-  
-      if (!response.ok) {
-        throw new Error('Erro na requisição: ' + response.status);
-      }
-  
-      const data = await response.json();
-      console.log(data);
+      // Simulando uma requisição de cadastro
+      // Substitua isso com a sua lógica de cadastro real
+      await new Promise(resolve => setTimeout(resolve, 1000)); // Simula uma requisição de 1 segundo
+
+      // Após o cadastro bem-sucedido, navega para a tela de login
+      navigation.navigate('Login');
+
+      Alert.alert('Sucesso', 'Cadastro realizado com sucesso!');
     } catch (error) {
       console.error('Erro:', error);
-      console.log('Erro', 'Não foi possível cadastrar o usuário');
+      Alert.alert('Atenção', 'Não foi possível cadastrar o usuário');
     }
   };
 
@@ -76,7 +72,6 @@ export default function Cadastro() {
         value={nome}
         onChangeText={handleNomeChange}
         left={<TextInput.Icon icon="account" color="#74B0FF"> </TextInput.Icon>}
-
       />
       <TextInput
         style={styles.input}
@@ -105,6 +100,15 @@ export default function Cadastro() {
         secureTextEntry
         left={<TextInput.Icon icon="lock-outline" color="#74B0FF"> </TextInput.Icon>}
       />
+      <TextInput
+        style={styles.input}
+        placeholder="Confirmar Senha"
+        placeholderTextColor="#999"
+        value={confirmarSenha}
+        onChangeText={handleConfirmarSenhaChange}
+        secureTextEntry
+        left={<TextInput.Icon icon="lock-outline" color="#74B0FF"> </TextInput.Icon>}
+      />
 
       <View style={styles.buttonContainer}>
         <Button
@@ -117,8 +121,6 @@ export default function Cadastro() {
       <View style={{ marginTop: 3 }}>
         <Text>Já tem uma conta? Clique aqui.</Text>
       </View>
-
-
     </View>
   );
 }
@@ -157,5 +159,4 @@ const styles = StyleSheet.create({
     marginTop: 20,
     marginBottom: 20,
   }
-
 });
