@@ -60,6 +60,7 @@ namespace pucfarma.api.Controllers
                 return BadRequest(new { erro = "O e-mail fornecido já está em uso." });
             }
 
+            usuarioModel.senha = BCrypt.Net.BCrypt.HashPassword(usuarioModel.senha);
             _context.Entry(usuarioModel).State = EntityState.Modified;
 
             try
@@ -99,6 +100,11 @@ namespace pucfarma.api.Controllers
 
             if (ModelState.IsValid)
             {
+                int maiorId = await _context.Usuarios.MaxAsync(u => (int?)u.usuarioId) ?? 0;
+                usuarioModel.usuarioId = maiorId + 1;
+
+
+
                 usuarioModel.senha = BCrypt.Net.BCrypt.HashPassword(usuarioModel.senha);
                 _context.Usuarios.Add(usuarioModel);
                 await _context.SaveChangesAsync();

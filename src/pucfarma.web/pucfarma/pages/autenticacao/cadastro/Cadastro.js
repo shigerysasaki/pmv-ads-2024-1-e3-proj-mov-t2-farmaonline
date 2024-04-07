@@ -5,9 +5,8 @@ import { TextInput } from 'react-native-paper';
 export default function Cadastro() {
   const [nome, setNome] = useState('');
   const [email, setEmail] = useState('');
-  const [celular, setCelular] = useState('');
+  const [telefone, setTelefone] = useState('');
   const [senha, setSenha] = useState('');
-  const [confirmarSenha, setConfirmarSenha] = useState('');
 
   const handleNomeChange = (novoNome) => {
     setNome(novoNome);
@@ -17,51 +16,53 @@ export default function Cadastro() {
     setEmail(novoEmail);
   };
 
-  const handleCelularChange = (novoCelular) => {
-    setCelular(novoCelular);
+  const handleTelefoneChange = (novoTelefone) => {
+    setTelefone(novoTelefone);
   };
 
   const handleSenhaChange = (novaSenha) => {
     setSenha(novaSenha);
   };
 
-  const handleConfirmarSenhaChange = (novaSenha) => {
-    setConfirmarSenha(novaSenha);
-  };
-
-  const handleCadastro = () => {
+  const handleCadastro = async () => {
     console.log('Nome:', nome);
     console.log('Email:', email);
-    console.log('Celular:', celular);
+    console.log('Telefone:', telefone);
     console.log('Senha:', senha);
-    console.log('Confirmar Senha:', confirmarSenha);
-
-    fetch("https://192.168.18.17:8081/api/Cadastro", {
-      method: 'POST',
-      headers: {
-        Accept: 'application/json',
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
-        name: nome,
-        email: email,
-        telefone: celular,
-        senha: senha
-      })
-    })
-      .then((res) => {
-        if (!res.ok) {
-          throw new Error('Erro na requisição: ' + res.status);
-        }
-        return res.json();
-      })
-      .then((data) => {
-        console.log(data);
-      })
-      .catch((error) => {
-        console.error('Erro:', error);
-        console.log('Erro', 'Não foi possível cadastrar o usuário');
+  
+    try {
+      const response = await fetch("http://10.0.2.2:5035/api/Cadastro", {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          nomeCompleto: nome,
+          email: email,
+          telefone: telefone,
+          senha: senha,
+          enderecoEntrega: {
+            cep: "",
+            estado: "",
+            cidade: "",
+            bairro: "",
+            rua: "",
+            numero: "",
+            complemento: ""
+          }
+        })
       });
+  
+      if (!response.ok) {
+        throw new Error('Erro na requisição: ' + response.status);
+      }
+  
+      const data = await response.json();
+      console.log(data);
+    } catch (error) {
+      console.error('Erro:', error);
+      console.log('Erro', 'Não foi possível cadastrar o usuário');
+    }
   };
 
   return (
@@ -88,10 +89,10 @@ export default function Cadastro() {
       />
       <TextInput
         style={styles.input}
-        placeholder="Celular"
+        placeholder="Telefone"
         placeholderTextColor="#999"
-        value={celular}
-        onChangeText={handleCelularChange}
+        value={telefone}
+        onChangeText={handleTelefoneChange}
         keyboardType="phone-pad"
         left={<TextInput.Icon icon="cellphone" color="#74B0FF"> </TextInput.Icon>}
       />
@@ -104,16 +105,6 @@ export default function Cadastro() {
         secureTextEntry
         left={<TextInput.Icon icon="lock-outline" color="#74B0FF"> </TextInput.Icon>}
       />
-      <TextInput
-        style={styles.input}
-        placeholder="Confirmar Senha"
-        placeholderTextColor="#999"
-        value={confirmarSenha}
-        onChangeText={handleConfirmarSenhaChange}
-        secureTextEntry
-        left={<TextInput.Icon icon="lock-outline" color="#74B0FF"> </TextInput.Icon>}
-      />
-
 
       <View style={styles.buttonContainer}>
         <Button
