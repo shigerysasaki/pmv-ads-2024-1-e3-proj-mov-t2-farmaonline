@@ -47,17 +47,37 @@ export default function Cadastro() {
     }
 
     try {
-      // Simulando uma requisição de cadastro
-      // Substitua isso com a sua lógica de cadastro real
-      await new Promise(resolve => setTimeout(resolve, 1000)); // Simula uma requisição de 1 segundo
+      const response = await fetch("http://10.0.2.2:5035/api/Cadastro", {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          nomeCompleto: nome,
+          email: email,
+          telefone: telefone,
+          senha: senha,
+          enderecoEntrega: {
+            cep: "",
+            estado: "",
+            cidade: "",
+            bairro: "",
+            rua: "",
+            numero: "",
+            complemento: ""
+          }
+        })
+      });
 
-      // Após o cadastro bem-sucedido, navega para a tela de login
-      navigation.navigate('Login');
+      if (!response.ok) {
+        throw new Error('Erro na requisição: ' + response.status);
+      }
 
-      Alert.alert('Sucesso', 'Cadastro realizado com sucesso!');
+      const data = await response.json();
+      console.log(data);
     } catch (error) {
       console.error('Erro:', error);
-      Alert.alert('Atenção', 'Não foi possível cadastrar o usuário');
+      console.log('Erro', 'Não foi possível cadastrar o usuário');
     }
   };
 
