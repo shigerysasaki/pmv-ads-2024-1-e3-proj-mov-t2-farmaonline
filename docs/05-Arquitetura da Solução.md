@@ -12,7 +12,7 @@
 
 <br>
 
-![diagrama-er-farmacia drawio](https://github.com/ICEI-PUC-Minas-PMV-ADS/pmv-ads-2024-1-e3-proj-mov-t2-farmaonline/assets/89418479/2f31d6de-a143-462e-8764-c9d0811011de)
+![diagrama-er-farmacia](https://github.com/ICEI-PUC-Minas-PMV-ADS/pmv-ads-2024-1-e3-proj-mov-t2-farmaonline/assets/89418479/b2798e8c-3772-4c38-89d9-187d24e22878)
 
 <br>
 
@@ -20,7 +20,7 @@
 
 <br>
 
-![esquema-relacional-farmacia (1)](https://github.com/ICEI-PUC-Minas-PMV-ADS/pmv-ads-2024-1-e3-proj-mov-t2-farmaonline/assets/89418479/204b99d0-d604-40e8-9bc7-426a5355b093)
+![base-de-dados-farmacia](https://github.com/ICEI-PUC-Minas-PMV-ADS/pmv-ads-2024-1-e3-proj-mov-t2-farmaonline/assets/89418479/6f8b00d5-b598-40ba-a0c8-0a68f29a6645)
 
 <br>
 
