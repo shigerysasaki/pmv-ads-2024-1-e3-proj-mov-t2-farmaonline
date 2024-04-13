@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using pucfarma.api.Enum;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace pucfarma.api.Models
@@ -13,7 +14,7 @@ namespace pucfarma.api.Models
         [Display(Name = "Nome completo")]
         public string nomeCompleto { get; set; }
 
-        [MaxLength(20)]
+        [MaxLength(40)]
         [Display(Name = "E-mail")]
         public string email { get; set; }
 
@@ -26,6 +27,13 @@ namespace pucfarma.api.Models
         public string senha { get; set; }
 
         [Display(Name = "Endereço")]
-        public Endereco enderecoEntrega { get; set; }
+        public Endereco? enderecoEntrega { get; set; }
+
+        [Display(Name = "Tipo de usuário")]
+        public TipoUsuario tipoUsuario { get; set; }
+
+
+        public ICollection<PedidoModel>? usuarioPedido { get; set; }
+        public ICollection<AvaliacaoModel>? usuarioAvaliacao { get; set; }
     }
 }
