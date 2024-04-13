@@ -1,11 +1,14 @@
 # Plano de Testes de Software
 
-<span style="color:red">Pré-requisitos: <a href="2-Especificação do Projeto.md"> Especificação do Projeto</a></span>, <a href="3-Projeto de Interface.md"> Projeto de Interface</a>
+| **Caso de Teste** 	| **Caso de Teste 01 – Cadastrar perfil** 	|
+|:---:	|:---:	|
+|	Requisito Associado 	| RF-001 - Permitir que o usuário crie uma conta.|
+| Objetivo do Teste 	| Verificar se o usuário consegue se cadastrar na aplicação. |
+| Passos 	|<br>1- Acessar a página de cadastro<br><br> 2-  Preencher os campos obrigatórios (Nome completo, e-mail, celular, senha e confirmar a senha</br><br>3- Clicar no botão "Criar conta"<br><br>
+|Critério de Êxito | O cadastro foi realizado. |
+|   |   |
 
-Apresente os cenários de testes utilizados na realização dos testes da sua aplicação. Escolha cenários de testes que demonstrem os requisitos sendo satisfeitos.
 
-Enumere quais cenários de testes foram selecionados para teste. Neste tópico o grupo deve detalhar quais funcionalidades avaliadas, o grupo de usuários que foi escolhido para participar do teste e as ferramentas utilizadas.
- 
 ## Ferramentas de Testes (Opcional)
 
 Comente sobre as ferramentas de testes utilizadas.

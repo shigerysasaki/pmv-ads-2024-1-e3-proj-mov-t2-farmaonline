@@ -10,7 +10,8 @@ CREATE TABLE Usuario (
     bairro VARCHAR(30) NOT NULL,
     rua VARCHAR(30) NOT NULL,
     numero VARCHAR(10) NOT NULL,
-    complemento VARCHAR(20) NOT NULL
+    complemento VARCHAR(20) NOT NULL,
+    tipoUsuario ENUM NOT NULL
 );
 
 

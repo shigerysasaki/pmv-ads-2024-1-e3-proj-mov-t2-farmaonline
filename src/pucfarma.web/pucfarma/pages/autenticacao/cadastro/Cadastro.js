@@ -1,11 +1,13 @@
 import React, { useState } from 'react';
-import { View, Button, Image, StyleSheet, Text } from 'react-native';
+import { View, Button, Image, StyleSheet, Text, Alert } from 'react-native';
 import { TextInput } from 'react-native-paper';
+import { useNavigation } from '@react-navigation/native';
 
 export default function Cadastro() {
+  const navigation = useNavigation();
   const [nome, setNome] = useState('');
   const [email, setEmail] = useState('');
-  const [celular, setCelular] = useState('');
+  const [telefone, setTelefone] = useState('');
   const [senha, setSenha] = useState('');
   const [confirmarSenha, setConfirmarSenha] = useState('');
 
@@ -17,51 +19,66 @@ export default function Cadastro() {
     setEmail(novoEmail);
   };
 
-  const handleCelularChange = (novoCelular) => {
-    setCelular(novoCelular);
+  const handleTelefoneChange = (novoTelefone) => {
+    setTelefone(novoTelefone);
   };
 
   const handleSenhaChange = (novaSenha) => {
     setSenha(novaSenha);
   };
 
-  const handleConfirmarSenhaChange = (novaSenha) => {
-    setConfirmarSenha(novaSenha);
+  const handleConfirmarSenhaChange = (novaConfirmacaoSenha) => {
+    setConfirmarSenha(novaConfirmacaoSenha);
   };
 
-  const handleCadastro = () => {
-    console.log('Nome:', nome);
-    console.log('Email:', email);
-    console.log('Celular:', celular);
-    console.log('Senha:', senha);
-    console.log('Confirmar Senha:', confirmarSenha);
+  const isPasswordValid = (password) => {
+    return password.length >= 8 && password.length <= 16; // Mínimo de 8 e máximo de 16 caracteres
+  };
 
-    fetch("https://192.168.18.17:8081/api/Cadastro", {
-      method: 'POST',
-      headers: {
-        Accept: 'application/json',
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
-        name: nome,
-        email: email,
-        telefone: celular,
-        senha: senha
-      })
-    })
-      .then((res) => {
-        if (!res.ok) {
-          throw new Error('Erro na requisição: ' + res.status);
-        }
-        return res.json();
-      })
-      .then((data) => {
-        console.log(data);
-      })
-      .catch((error) => {
-        console.error('Erro:', error);
-        console.log('Erro', 'Não foi possível cadastrar o usuário');
+  const handleCadastro = async () => {
+    if (senha !== confirmarSenha) {
+      Alert.alert('Atenção', 'As senhas digitadas não coincidem.');
+      return;
+    }
+
+    if (!isPasswordValid(senha)) {
+      Alert.alert('Atenção', 'A senha deve ter entre 8 e 16 caracteres.');
+      return;
+    }
+
+    try {
+      const response = await fetch("http://10.0.2.2:5035/api/Cadastro", {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          nomeCompleto: nome,
+          email: email,
+          telefone: telefone,
+          senha: senha,
+          enderecoEntrega: {
+            cep: "",
+            estado: "",
+            cidade: "",
+            bairro: "",
+            rua: "",
+            numero: "",
+            complemento: ""
+          }
+        })
       });
+
+      if (!response.ok) {
+        throw new Error('Erro na requisição: ' + response.status);
+      }
+
+      const data = await response.json();
+      console.log(data);
+    } catch (error) {
+      console.error('Erro:', error);
+      console.log('Erro', 'Não foi possível cadastrar o usuário');
+    }
   };
 
   return (
@@ -75,7 +92,6 @@ export default function Cadastro() {
         value={nome}
         onChangeText={handleNomeChange}
         left={<TextInput.Icon icon="account" color="#74B0FF"> </TextInput.Icon>}
-
       />
       <TextInput
         style={styles.input}
@@ -88,10 +104,10 @@ export default function Cadastro() {
       />
       <TextInput
         style={styles.input}
-        placeholder="Celular"
+        placeholder="Telefone"
         placeholderTextColor="#999"
-        value={celular}
-        onChangeText={handleCelularChange}
+        value={telefone}
+        onChangeText={handleTelefoneChange}
         keyboardType="phone-pad"
         left={<TextInput.Icon icon="cellphone" color="#74B0FF"> </TextInput.Icon>}
       />
@@ -114,7 +130,6 @@ export default function Cadastro() {
         left={<TextInput.Icon icon="lock-outline" color="#74B0FF"> </TextInput.Icon>}
       />
 
-
       <View style={styles.buttonContainer}>
         <Button
           title="Criar conta"
@@ -126,8 +141,6 @@ export default function Cadastro() {
       <View style={{ marginTop: 3 }}>
         <Text>Já tem uma conta? Clique aqui.</Text>
       </View>
-
-
     </View>
   );
 }
@@ -166,5 +179,4 @@ const styles = StyleSheet.create({
     marginTop: 20,
     marginBottom: 20,
   }
-
 });
