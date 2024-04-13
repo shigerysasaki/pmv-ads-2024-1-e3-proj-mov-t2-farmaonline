@@ -28,6 +28,7 @@ namespace pucfarma.api.Models
         public string comentario { get; set; }
 
         [Display(Name = "Data da avaliação")]
+        [DataType(DataType.Date)]
         public DateTime dataAvaliacao { get; set; }
     }
 }

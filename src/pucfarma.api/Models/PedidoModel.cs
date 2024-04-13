@@ -15,10 +15,13 @@ namespace pucfarma.api.Models
         [Display(Name = "Usuário")]
         public UsuarioModel? usuario { get; set; }
 
+
         [Display(Name = "Data do Pedido")]
+        [DataType(DataType.Date)]
         public DateTime dataPedido { get; set; }
 
         [Display(Name = "Previsão de Entrega")]
+        [DataType(DataType.Date)]
         public DateTime previsaoEntrega { get; set; }
 
         [Display(Name = "Método de Pagamento")]
