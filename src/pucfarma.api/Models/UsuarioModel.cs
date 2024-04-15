@@ -13,7 +13,7 @@ namespace pucfarma.api.Models
         [Display(Name = "Nome completo")]
         public string nomeCompleto { get; set; }
 
-        [MaxLength(20)]
+        [MaxLength(50)]
         [Display(Name = "E-mail")]
         public string email { get; set; }
 

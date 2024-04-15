@@ -4,6 +4,7 @@ import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from "@react-navigation/stack";
 import Cadastro from './pages/autenticacao/cadastro/Cadastro';
 import Login from './pages/autenticacao/cadastro/Login';
+import EditarProduto from './pages/adm/EditarProduto';
 
 
 const Stack = createStackNavigator();
@@ -14,6 +15,7 @@ export default function App() {
       <Stack.Navigator>
         <Stack.Screen name="Login" component={Login} />
         <Stack.Screen name="Cadastro" component={Cadastro} />
+         <Stack.Screen name="EditarProduto" component={EditarProduto} />
         
         
       </Stack.Navigator>
