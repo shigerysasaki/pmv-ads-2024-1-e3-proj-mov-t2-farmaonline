@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 using pucfarma.api.Data;
@@ -11,13 +12,15 @@ using pucfarma.api.Data;
 namespace pucfarma.api.Migrations
 {
     [DbContext(typeof(PucFarmaDbContext))]
-    partial class PucFarmaDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240411202417_M002")]
+    partial class M002
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "8.0.4")
+                .HasAnnotation("ProductVersion", "8.0.3")
                 .HasAnnotation("Relational:MaxIdentifierLength", 63);
 
             NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
@@ -179,6 +182,7 @@ namespace pucfarma.api.Migrations
                         .HasColumnType("character varying(40)");
 
                     b.Property<string>("nomeCompleto")
+                        .IsRequired()
                         .HasMaxLength(50)
                         .HasColumnType("character varying(50)");
 
@@ -188,6 +192,7 @@ namespace pucfarma.api.Migrations
                         .HasColumnType("character varying(100)");
 
                     b.Property<string>("telefone")
+                        .IsRequired()
                         .HasMaxLength(50)
                         .HasColumnType("character varying(50)");
 

@@ -69,7 +69,7 @@ namespace pucfarma.api.Controllers
             }
             catch (DbUpdateConcurrencyException)
             {
-                if (!UsuarioModelExists(id))
+                if (!UsuarioExists(id))
                 {
                     return NotFound();
                 }
@@ -134,7 +134,7 @@ namespace pucfarma.api.Controllers
             return NoContent();
         }
 
-        private bool UsuarioModelExists(int id)
+        private bool UsuarioExists(int id)
         {
             return _context.Usuarios.Any(e => e.usuarioId == id);
         }
