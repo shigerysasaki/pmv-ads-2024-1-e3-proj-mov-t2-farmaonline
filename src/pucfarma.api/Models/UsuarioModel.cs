@@ -12,7 +12,7 @@ namespace pucfarma.api.Models
 
         [MaxLength(50)]
         [Display(Name = "Nome completo")]
-        public string nomeCompleto { get; set; }
+        public string? nomeCompleto { get; set; }
 
         [MaxLength(40)]
         [Display(Name = "E-mail")]
@@ -20,7 +20,7 @@ namespace pucfarma.api.Models
 
         [MaxLength(50)]
         [Display(Name = "Telefone")]
-        public string telefone { get; set; }
+        public string? telefone { get; set; }
 
         [MaxLength(100)]
         [Display(Name = "Senha")]

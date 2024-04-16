@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 using pucfarma.api.Data;
@@ -11,9 +12,11 @@ using pucfarma.api.Data;
 namespace pucfarma.api.Migrations
 {
     [DbContext(typeof(PucFarmaDbContext))]
-    partial class PucFarmaDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240416002357_M003")]
+    partial class M003
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

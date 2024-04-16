@@ -26,7 +26,7 @@ namespace pucfarma.api.Controllers
         [HttpPost("Login")]
         public async Task<IActionResult> Login([FromBody] UsuarioModel usuarioLogin)
         {
-            if (usuarioLogin == null || string.IsNullOrWhiteSpace(usuarioLogin.email) || string.IsNullOrWhiteSpace(usuarioLogin.senha))
+            if (string.IsNullOrWhiteSpace(usuarioLogin.email) || string.IsNullOrWhiteSpace(usuarioLogin.senha))
             {
                 return BadRequest(new { message = "E-mail e senha são obrigatórios para o login." });
             }
@@ -35,25 +35,25 @@ namespace pucfarma.api.Controllers
                 .Where(u => u.email == usuarioLogin.email)
                 .FirstOrDefaultAsync();
 
-            if (dados == null || dados.senha != usuarioLogin.senha)
+            bool senhaOK = BCrypt.Net.BCrypt.Verify(usuarioLogin.senha, dados.senha);
+
+            if (senhaOK)
             {
-                return Unauthorized(new { message = "Credenciais inválidas." });
+                var claims = new List<Claim>
+                {
+                    new Claim(ClaimTypes.NameIdentifier, dados.usuarioId.ToString()),
+                    new Claim(ClaimTypes.Name, dados.nomeCompleto),
+                    new Claim(ClaimTypes.Email, dados.email),
+                };
+
+                var userIdentity = new ClaimsIdentity(claims, "login");
+                var principal = new ClaimsPrincipal(userIdentity);
+
+                await HttpContext.SignInAsync(principal);
+
+                return Ok(new { message = "Login bem-sucedido." });
             }
-
-            var claims = new List<Claim>
-    {
-        new Claim(ClaimTypes.NameIdentifier, dados.usuarioId.ToString()),
-        new Claim(ClaimTypes.Name, dados.nomeCompleto),
-        new Claim(ClaimTypes.Email, dados.email),
-    };
-
-            var userIdentity = new ClaimsIdentity(claims, "login");
-
-            var principal = new ClaimsPrincipal(userIdentity);
-
-            await HttpContext.SignInAsync(principal);
-
-            return Ok(new { message = "Login bem-sucedido." });
+            return BadRequest(new { message = "Credenciais inválidas." });
         }
 
 
