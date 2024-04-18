@@ -17,22 +17,29 @@ namespace pucfarma.api.Models
 
         [MaxLength(50)]
         [Display(Name = "Nome do Produto")]
-        public string nomeProduto { get; set; }
+        public string? nomeProduto { get; set; }
+
+        [MaxLength(30)]
+        [Display(Name = "Fabricante")]
+        public string? fabricante { get; set; }
+
+        [Display(Name = "Foto do Produto")]
+        public string? fotoProduto { get; set; }
 
         [Display(Name = "Preço")]
         public decimal preco { get; set; }
 
         [Display(Name = "Descrição do Produto")]
-        public string descricao { get; set; }
+        public string? descricao { get; set; }
 
         [Display(Name = "Quantidade em Estoque")]
-        public int estoqueDisponivel { get; set; }
+        public int? estoqueDisponivel { get; set; }
 
         [Display(Name = "Categoria do Produto")]
-        public CategoriaProduto categoria { get; set; }
+        public CategoriaProduto? categoria { get; set; }
 
         [Display(Name = "Desconto")]
-        public int porcentagemDesconto { get; set; }
+        public int? porcentagemDesconto { get; set; }
 
 
         public ICollection<PedidoProdutoModel>? produtoPedido { get; set; }
