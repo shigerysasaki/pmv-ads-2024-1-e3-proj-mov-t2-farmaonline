@@ -10,13 +10,13 @@ namespace pucfarma.api.Models
         public string nomeFarmacia { get; set; }
 
         [Display(Name = "Telefone")]
-        public string telefone { get; set; }
+        public string? telefone { get; set; }
 
         [Display(Name = "Horário de funcionamento")]
-        public string horarioFuncionamento { get; set; }
+        public string? horarioFuncionamento { get; set; }
 
         [Display(Name = "Endereço")]
-        public Endereco enderecoFarmacia { get; set; }
+        public Endereco? enderecoFarmacia { get; set; }
 
 
         public ICollection<ProdutoModel>? farmaciaProduto { get; set; }

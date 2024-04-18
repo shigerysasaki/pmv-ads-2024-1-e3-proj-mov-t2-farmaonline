@@ -21,14 +21,14 @@ namespace pucfarma.api.Models
         public ProdutoModel? produto { get; set; }
 
         [Display(Name = "Nota")]
-        public int nota { get; set; }
+        public int? nota { get; set; }
 
         [MaxLength(200)]
         [Display(Name = "Comentário")]
-        public string comentario { get; set; }
+        public string? comentario { get; set; }
 
         [Display(Name = "Data da avaliação")]
         [DataType(DataType.Date)]
-        public DateTime dataAvaliacao { get; set; }
+        public DateTime? dataAvaliacao { get; set; }
     }
 }
