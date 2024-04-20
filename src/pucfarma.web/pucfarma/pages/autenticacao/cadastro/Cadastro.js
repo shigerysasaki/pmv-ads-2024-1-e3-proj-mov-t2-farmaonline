@@ -137,10 +137,6 @@ export default function Cadastro() {
           color={'#74B0FF'}
         />
       </View>
-
-      <View style={{ marginTop: 3 }}>
-        <Text>Já tem uma conta? Clique aqui.</Text>
-      </View>
     </View>
   );
 }
