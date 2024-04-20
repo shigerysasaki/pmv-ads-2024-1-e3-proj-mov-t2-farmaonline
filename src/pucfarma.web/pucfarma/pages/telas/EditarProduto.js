@@ -50,6 +50,13 @@ export default function UploadScreen() {
     }
 
     const handleSaveChanges = async () => {
+        console.log(fabricante);
+        console.log(productName);
+        console.log(precoNormal);
+        console.log(descricao);
+        console.log(quantidadeEstoque);
+        console.log(tipoOferta);
+        console.log(categoria);
         try {
             const response = await fetch("http://10.0.2.2:5035/api/Produto", {
                 method: 'POST',
@@ -57,16 +64,19 @@ export default function UploadScreen() {
                     'Content-Type': 'application/json',
                 },
                 body: JSON.stringify({
-                    nomeFarmacia: "",
+                    fabricante: fabricante,
                     nomeProduto: productName,
+                    nomeFarmacia: "Araujo",
                     preco: precoNormal,
                     descricao: descricao,
                     estoqueDisponivel: quantidadeEstoque,
                     categoria: categoria,
                     porcentagemDesconto: tipoOferta
+            
                 })
             });
-
+            
+            console.log(response);
             if (!response.ok) {
                 throw new Error('Erro na requisição: ' + response.status);
             }
@@ -75,9 +85,8 @@ export default function UploadScreen() {
             console.log(data);
         } catch (error) {
             console.error('Erro:', error);
-            console.log('Erro', 'Não foi possível cadastrar o usuário');
+            console.log('Erro', 'Não foi possível cadastrar o produto');
         }
-        Alert.alert("Salvar Alterações", "As alterações foram salvas com sucesso!");
     }
 
     return (
