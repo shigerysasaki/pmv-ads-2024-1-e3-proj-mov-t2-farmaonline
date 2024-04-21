@@ -147,11 +147,6 @@ export default function Cadastro() {
       <View style={{ marginTop: 3 }}>
         <Text>Já tem uma conta? Clique aqui.</Text>
       </View>
-
-      
-
-
-
     </View>
   );
 }

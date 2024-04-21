@@ -18,17 +18,17 @@ namespace pucfarma.api.Models
 
         [Display(Name = "Data do Pedido")]
         [DataType(DataType.Date)]
-        public DateTime dataPedido { get; set; }
+        public DateTime? dataPedido { get; set; }
 
         [Display(Name = "Previsão de Entrega")]
         [DataType(DataType.Date)]
-        public DateTime previsaoEntrega { get; set; }
+        public DateTime? previsaoEntrega { get; set; }
 
         [Display(Name = "Método de Pagamento")]
-        public MetodoPagamento metodoPagamento { get; set; }
+        public MetodoPagamento? metodoPagamento { get; set; }
 
         [Display(Name = "Status do Pedido")]
-        public StatusPedido status { get; set; }
+        public StatusPedido? status { get; set; }
 
 
         public ICollection<PedidoProdutoModel>? pedidoProduto { get; set; }
