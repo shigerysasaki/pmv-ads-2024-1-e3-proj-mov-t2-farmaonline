@@ -4,8 +4,8 @@ import axios from 'axios';
 
 const HomeScreen = ({ navigation }) => {
   const [pedidos, setPedidos] = useState({
-     pedidosNesseMes: 1,
-     totalPedidos: 1
+     pedidosNesseMes: 0,
+     totalPedidos: 0
   });
       
   // Função para lidar com o logout
