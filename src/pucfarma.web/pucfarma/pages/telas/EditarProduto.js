@@ -66,13 +66,13 @@ export default function UploadScreen() {
                 body: JSON.stringify({
                     fabricante: fabricante,
                     nomeProduto: productName,
-                    nomeFarmacia: "Araujo",
+                    nomeFarmacia: "araujo",
                     preco: precoNormal,
                     descricao: descricao,
                     estoqueDisponivel: quantidadeEstoque,
                     categoria: categoria,
-                    porcentagemDesconto: tipoOferta
-            
+                    porcentagemDesconto: tipoOferta,
+                    fotoProduto: "string"                    
                 })
             });
             
@@ -142,16 +142,10 @@ export default function UploadScreen() {
                         <View style={styles.titleContainer}>
                             <Text style={styles.title}>Preço normal</Text>
                         </View>
-                        <TextInputMask
+                        <TextInput
                             style={styles.smallInput}
-                            type={'money'}
-                            options={{
-                                precision: 2,
-                                separator: ',',
-                                delimiter: '.',
-                                unit: 'R$',
-                                suffixUnit: ''
-                            }}
+                            
+                           
                             onChangeText={text => setPrecoNormal(text)}
                             value={precoNormal}
                             keyboardType="numeric"
