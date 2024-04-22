@@ -6,6 +6,7 @@ import Cadastro from './pages/autenticacao/cadastro/Cadastro';
 import Login from './pages/autenticacao/cadastro/Login';
 import EditarProduto from './pages/telas/EditarProduto';
 import Mais from './pages/telas/mais';
+import Andamento from './pages/telas/andamento';
 
 const Stack = createStackNavigator();
 
@@ -20,7 +21,9 @@ export default function App() {
           headerTransparent: true,
           title: '',
         }} />
-
+        <Stack.Screen name="Pedidos em andamento" component={Andamento} options={{
+          headerShown: false,
+        }} />
       </Stack.Navigator>
     </NavigationContainer>
   );
