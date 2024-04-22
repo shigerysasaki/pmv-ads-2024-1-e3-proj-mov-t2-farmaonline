@@ -1,7 +1,6 @@
 import React from 'react';
 import { View, Image, Text, StyleSheet, TouchableOpacity, ScrollView } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
-import ParsedText from 'react-native-parsed-text';
 
 import Footer from '../template/footer';
 import Header2 from '../template/header2';

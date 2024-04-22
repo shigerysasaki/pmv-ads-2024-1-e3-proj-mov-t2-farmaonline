@@ -1,6 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import { View, StyleSheet, Image, Text, ScrollView, TouchableOpacity } from 'react-native';
 import axios from 'axios';
+import Footer from '../../template/footer';
+
+
 
 const HomeScreen = ({ navigation }) => {
   const [pedidos, setPedidos] = useState({
@@ -28,6 +31,7 @@ const HomeScreen = ({ navigation }) => {
 
   return (
     <View style={styles.container}>
+
       <View style={styles.logo}>
         <Image source={require('../../../assets/Logo1.png')} />
       </View>
@@ -81,9 +85,11 @@ const HomeScreen = ({ navigation }) => {
           <Text style={styles.buttonText}>Sair da Conta</Text>
         </View>
       </TouchableOpacity>
+      <Footer />
     </View>
   );
 };
+
 
 const styles = StyleSheet.create({
   container: {
@@ -94,7 +100,8 @@ const styles = StyleSheet.create({
     paddingTop: 50,
   },
   logo: {
-    marginBottom: 20,
+    flex:1,
+  
   },
   containerVendas: {
     flexDirection: 'row',
