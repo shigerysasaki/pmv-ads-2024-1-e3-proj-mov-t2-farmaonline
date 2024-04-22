@@ -75,15 +75,21 @@ export default function Cadastro() {
 
       const data = await response.json();
       console.log(data);
+      Alert.alert('Sucesso', 'Cadastro realizado com sucesso!');
+      navigation.navigate('Login');
     } catch (error) {
       console.error('Erro:', error);
-      console.log('Erro', 'Não foi possível cadastrar o usuário');
+      if (error.message.includes('409')) {
+        Alert.alert('Atenção', 'A conta com este e-mail já existe.');
+      } else {
+        Alert.alert('Atenção', 'Não foi possível cadastrar o usuário');
+      }
     }
   };
 
   return (
     <View style={styles.container}>
-      <Image source={require('../../../assets/Logo1.png')} style={styles.logo} />
+      <Image source={require('../../../assets/Logo1.png')} style={styles.sair} />
       <Text style={[styles.description, { color: '#74B0FF' }]}>Para criar sua conta, preencha todos os campos.</Text>
       <TextInput
         style={styles.input}
@@ -137,6 +143,10 @@ export default function Cadastro() {
           color={'#74B0FF'}
         />
       </View>
+
+      <View style={{ marginTop: 3 }}>
+        <Text>Já tem uma conta? Clique aqui.</Text>
+      </View>
     </View>
   );
 }
@@ -174,5 +184,9 @@ const styles = StyleSheet.create({
   buttonContainer: {
     marginTop: 20,
     marginBottom: 20,
+  },
+  sair: {
+    height: 100,
+  width:100,
   }
 });
