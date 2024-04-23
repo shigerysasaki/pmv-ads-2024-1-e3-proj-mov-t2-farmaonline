@@ -13,15 +13,14 @@ export default function App() {
   return (
     <NavigationContainer>
       <Stack.Navigator>
-      <Stack.Screen name="EditarProduto" component={EditarProduto} />
         <Stack.Screen name="Login" component={Login} />
         <Stack.Screen name="Cadastro" component={Cadastro} />
         <Stack.Screen name="Mais" component={Mais} options={{
           headerShown: false,
           headerTransparent: true,
           title: '',
-        }}/>
-        
+        }} />
+
       </Stack.Navigator>
     </NavigationContainer>
   );
