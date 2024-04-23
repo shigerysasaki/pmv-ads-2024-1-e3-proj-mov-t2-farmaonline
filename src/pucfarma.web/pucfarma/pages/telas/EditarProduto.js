@@ -14,7 +14,7 @@ export default function UploadScreen() {
     const [precoNormal, setPrecoNormal] = useState("");
     const [tipoOferta, setTipoOferta] = useState("");
     const [descricao, setDescricao] = useState("");
-    const [categoria, setCategoria] = useState("Medicamentos");
+    const [categoria, setCategoria] = useState(0);
     const [modalVisible, setModalVisible] = useState(false);
 
     useEffect(() => {
@@ -47,16 +47,10 @@ export default function UploadScreen() {
         setPrecoNormal("");
         setTipoOferta("");
         setDescricao("");
-        setCategoria("Medicamentos");
+        setCategoria(0);
     }
 
     const handleSaveChanges = async () => {
-        console.log(fabricante);
-        console.log(productName);
-        console.log(precoNormal);
-        console.log(descricao);
-        console.log(quantidadeEstoque);
-        console.log(tipoOferta);
         console.log(categoria);
         try {
             const response = await fetch("http://10.0.2.2:5035/api/Produto", {
@@ -67,16 +61,16 @@ export default function UploadScreen() {
                 body: JSON.stringify({
                     fabricante: fabricante,
                     nomeProduto: productName,
-                    nomeFarmacia: "Araujo",
+                    nomeFarmacia: "string",
                     preco: precoNormal,
                     descricao: descricao,
                     estoqueDisponivel: quantidadeEstoque,
                     categoria: categoria,
-                    porcentagemDesconto: tipoOferta
-            
+                    porcentagemDesconto: tipoOferta,
+                    fotoProduto: "string"
                 })
             });
-            
+
             console.log(response);
             if (!response.ok) {
                 throw new Error('Erro na requisição: ' + response.status);
@@ -84,9 +78,12 @@ export default function UploadScreen() {
 
             const data = await response.json();
             console.log(data);
+            // Exibir o alerta de sucesso
+            Alert.alert('Produto Cadastrado', 'O produto foi cadastrado com sucesso!');
         } catch (error) {
             console.error('Erro:', error);
-            console.log('Erro', 'Não foi possível cadastrar o produto');
+            // Exibir o alerta de erro
+            Alert.alert('Erro', 'Não foi possível cadastrar o produto. Por favor, tente novamente mais tarde.');
         }
     }
 
@@ -139,20 +136,14 @@ export default function UploadScreen() {
                     </View>
                 </View>
                 <View style={styles.inputRow}>
-                    <View style={[styles.inputContainer, { width: '40%',  marginLeft: 10 }]}>
+                    <View style={[styles.inputContainer, { width: '40%', marginLeft: 10 }]}>
                         <View style={styles.titleContainer}>
                             <Text style={styles.title}>Preço normal</Text>
                         </View>
-                        <TextInputMask
+                        <TextInput
                             style={styles.smallInput}
-                            type={'money'}
-                            options={{
-                                precision: 2,
-                                separator: ',',
-                                delimiter: '.',
-                                unit: 'R$',
-                                suffixUnit: ''
-                            }}
+
+                            
                             onChangeText={text => setPrecoNormal(text)}
                             value={precoNormal}
                             keyboardType="numeric"
@@ -170,28 +161,28 @@ export default function UploadScreen() {
                         />
                     </View>
                     {/* Dropdown de Categoria */}
-                    <View style={[styles.inputContainer, { width: '100%', marginRight:5 }]}>
+                    <View style={[styles.inputContainer, { width: '100%', marginRight: 5 }]}>
                         <View style={styles.titleContainer}>
                             <Text style={styles.title}>Categoria</Text>
                         </View>
                         <Picker
-                        
+
                             selectedValue={categoria}
                             style={styles.categoryInput}
-                            onValueChange={(itemValue, itemIndex) => setCategoria(itemValue)}
+                            onValueChange={(itemValue, itemIndex) => setCategoria(parseInt(itemValue))}
                         >
-                            <Picker.Item label="Medicamentos" value="1" />
-                            <Picker.Item label="Beleza" value="2" />
-                            <Picker.Item label="Maternidade" value="3" />
-                            <Picker.Item label="Suplementos" value="4" />
-                            <Picker.Item label="Higiene" value="5" />
-                            <Picker.Item label="Produtos Infantis" value="6" />
-                            <Picker.Item label="Dermocosméticos" value="7" />
+                            <Picker.Item label="Medicamentos" value="0" />
+                            <Picker.Item label="Beleza" value="1" />
+                            <Picker.Item label="Maternidade" value="2" />
+                            <Picker.Item label="Suplementos" value="3" />
+                            <Picker.Item label="Higiene" value="4" />
+                            <Picker.Item label="Produtos Infantis" value="5" />
+                            <Picker.Item label="Dermocosméticos" value="6" />
                         </Picker>
                     </View>
                 </View>
                 <View style={styles.inputRow}>
-                    <View style={[styles.inputContainer, { width: '40%',  }]}>
+                    <View style={[styles.inputContainer, { width: '40%', }]}>
                         <View style={styles.titleContainer}>
                             <Text style={styles.title}>Descrição</Text>
                         </View>
@@ -201,7 +192,6 @@ export default function UploadScreen() {
                             value={descricao}
                             multiline={true}
                             numberOfLines={10}
-                        
                         />
                     </View>
                 </View>
@@ -384,3 +374,4 @@ const styles = StyleSheet.create({
         alignItems: 'center',
     },
 });
+
