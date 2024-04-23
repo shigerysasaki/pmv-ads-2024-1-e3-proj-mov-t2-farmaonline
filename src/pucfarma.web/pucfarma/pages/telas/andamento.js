@@ -2,7 +2,7 @@ import React from 'react';
 import { View, Image, Text, StyleSheet, TouchableOpacity, ScrollView } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 
-import Footer from '../template/footer';
+import Footer from '../template/footeradm';
 import Header2 from '../template/header2';
 
 const Andamento = () => {
@@ -46,9 +46,9 @@ const styles = StyleSheet.create({
     height: '65%',
     flexDirection: 'row',
     flexWrap: 'wrap',
-    marginLeft: '5%',
-    marginRight: '5%',
-    marginBottom: '30%',
+    marginLeft: '1%',
+    marginRight: '1%',
+    marginBottom: '5%',
   },
   tab: {
     backgroundColor: 'white',

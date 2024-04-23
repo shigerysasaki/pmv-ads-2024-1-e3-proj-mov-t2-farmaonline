@@ -4,6 +4,7 @@ import * as ImagePicker from "expo-image-picker";
 import { TextInputMask } from 'react-native-masked-text';
 import { Ionicons } from '@expo/vector-icons';
 import { Picker } from '@react-native-picker/picker';
+import Footer from '../template/footeradm';
 
 export default function UploadScreen() {
     const [avatar, setAvatar] = useState(null);
@@ -214,7 +215,9 @@ export default function UploadScreen() {
                     <Text style={styles.saveButtonText}>Salvar alterações</Text>
                 </TouchableOpacity>
             </View>
+            <Footer></Footer>
         </View>
+        
     );
 }
 
