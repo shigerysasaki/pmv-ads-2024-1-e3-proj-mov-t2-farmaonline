@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { View, StyleSheet, Image, Text, ScrollView, TouchableOpacity } from 'react-native';
 import axios from 'axios';
-import Footer from '../../template/footer';
+import Footer from '../../template/footeradm';
 
 
 

@@ -16,34 +16,34 @@ const Footeradm = () => {
   return (
     <View style={styles.footer}>
       <TouchableOpacity
-        style={[styles.tab, activeTab === 'Dados' && styles.active]}
-        onPress={() => handleTabPress('Dados')}>
-        {activeTab === 'Dados' ? (
+        style={[styles.tab, activeTab === 'Home' && styles.active]}
+        onPress={() => handleTabPress('Home')}>
+        {activeTab === 'Home' ? (
           <Image source={require('../../assets/analise.png')} style={styles.icon} />
         ) : (
           <Image source={require('../../assets/analiseactive.png')} style={styles.icon} />
         )}
-        <Text style={[styles.tabLabel, activeTab === 'Dados' && styles.activeTabLabel]}>Dados</Text>
+        <Text style={[styles.tabLabel, activeTab === 'Home' && styles.activeTabLabel]}>Dados</Text>
       </TouchableOpacity>
       <TouchableOpacity
-        style={[styles.tab, activeTab === 'Produtos' && styles.active]}
-        onPress={() => handleTabPress('Produtos')}>
-        {activeTab === 'Produtos' ? (
+        style={[styles.tab, activeTab === 'EditarProduto' && styles.active]}
+        onPress={() => handleTabPress('EditarProduto')}>
+        {activeTab === 'EditarProduto' ? (
           <Image source={require('../../assets/camadaactive.png')} style={styles.icon} />
         ) : (
           <Image source={require('../../assets/camada.png')} style={styles.icon} />
         )}
-        <Text style={[styles.tabLabel, activeTab === 'Produtos' && styles.activeTabLabel]}>Produtos</Text>
+        <Text style={[styles.tabLabel, activeTab === 'EditarProduto' && styles.activeTabLabel]}>Produtos</Text>
       </TouchableOpacity>
       <TouchableOpacity
-        style={[styles.tab, activeTab === 'Pedidos' && styles.active]}
-        onPress={() => handleTabPress('Pedidos')}>
-        {activeTab === 'Pedidos' ? (
+        style={[styles.tab, activeTab === 'andamento' && styles.active]}
+        onPress={() => handleTabPress('andamento')}>
+        {activeTab === 'andamento' ? (
           <Image source={require('../../assets/caixaactive.png')} style={styles.icon} />
         ) : (
           <Image source={require('../../assets/caixa.png')} style={styles.icon} />
         )}
-        <Text style={[styles.tabLabel, activeTab === 'Pedidos' && styles.activeTabLabel]}>Pedidos</Text>
+        <Text style={[styles.tabLabel, activeTab === 'andamento' && styles.activeTabLabel]}>Pedidos</Text>
       </TouchableOpacity>
       <TouchableOpacity
         style={[styles.tab, activeTab === 'Historico' && styles.active]}
