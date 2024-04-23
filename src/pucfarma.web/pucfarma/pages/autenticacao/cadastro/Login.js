@@ -137,7 +137,7 @@ export default function Login() {
 
         <Text style={styles.textoConta}>Ainda não possui conta?</Text>
 
-        <TouchableOpacity style={styles.btnSubmit} onPress={() => navigation.navigate('EditarProduto')}>
+        <TouchableOpacity style={styles.btnSubmit} onPress={() => navigation.navigate('Mais')}>
           <Text style={styles.submitText}>Criar Conta</Text>
         </TouchableOpacity>
 
