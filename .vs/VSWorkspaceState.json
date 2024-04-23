@@ -1,9 +1,7 @@
 {
   "ExpandedNodes": [
-    "",
-    "\\src",
-    "\\src\\pucfarma.api"
+    ""
   ],
-  "SelectedNode": "\\src\\pucfarma.api\\docker-compose.yml",
+  "SelectedNode": "\\pucfarma.api.sln",
   "PreviewInSolutionExplorer": false
 }

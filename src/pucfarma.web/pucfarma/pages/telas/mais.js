@@ -4,6 +4,7 @@ import Icon from 'react-native-vector-icons/FontAwesome';
 import { useNavigation } from '@react-navigation/native';
 
 import Footer from '../template/footer';
+import Footeradm from '../template/footeradm';
 import Header2 from '../template/header2';
 
 const Mais = () => {
@@ -15,7 +16,7 @@ const Mais = () => {
       <Header2/>
 
       <View style={styles.tabsContainer}>
-        <TouchableOpacity style={styles.tab}onPress={() => handleTabPress('Login')}>
+        <TouchableOpacity style={styles.tab}onPress={() => handleTabPress('DetalhesConta')}>
           <Image source={require('../../assets/perfil-de-usuario.png')} style={styles.tabIcon} />
           <Text style={styles.tabText}>Detalhes da conta</Text>
         </TouchableOpacity>
@@ -45,7 +46,7 @@ const Mais = () => {
         </TouchableOpacity>
       </View>
 
-      <Footer />
+      <Footeradm />
     </View>
   );
 };
