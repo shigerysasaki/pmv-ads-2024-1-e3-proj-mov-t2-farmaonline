@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react';
 import { View, StyleSheet, Image, Text, ScrollView, TouchableOpacity } from 'react-native';
-import axios from 'axios';
 import Footer from '../../template/footeradm';
 
 
@@ -17,17 +16,24 @@ const HomeScreen = ({ navigation }) => {
   };
 
   useEffect(() => {
-    const fetchVendas = async () => {
+    const fetchPedidos = async () => {
       try {
-        const response = await axios.get('http://10.0.2.2:5035/api/Pedido/Total'); // Substitua '/api/Vendas' pela rota correta do seu back-end
-        setVendas(response.data);
+        const response = await fetch('http://10.0.2.2:5035/api/Pedido/Total');
+        if (response.ok) {
+          const data = await response.json();
+          setPedidos({ totalPedidos: data });
+        } else {
+          console.error('Erro ao buscar dados de pedidos:', response.statusText);
+        }
       } catch (error) {
-        console.error('Erro ao buscar dados de vendas:', error);
+        console.error('Erro ao buscar dados de pedidos:', error);
       }
     };
 
-    fetchVendas();
+    fetchPedidos();
   }, []);
+
+  // Atenção! Essa parte faz arequisição GET na API e buscao total de pedidos /\
 
   return (
     <View style={styles.container}>
@@ -50,42 +56,44 @@ const HomeScreen = ({ navigation }) => {
         </View>
       </View>
 
-      <ScrollView horizontal style={styles.scrollView}>
-        <View style={styles.containerPagamento}>
-          <View style={styles.boxPagamento}>
-            <View style={styles.imagemPagamento}>
-              <View style={styles.icon}>
-                <Image source={require('../../../assets/pix.png')} />
-              </View>
-              <Text style={styles.pixImagem}>PIX</Text>
-            </View>    
-            <Text style={styles.textoPadraoBoxPagamento}>Vendas nesse mês:</Text>
-            <Text style={styles.textoPadraoBoxPagamento}>Total de vendas:</Text>
-            <Text style={styles.textoPadraoBoxPagamento}>Vendas nesse mês:</Text>
-            <Text style={styles.textoPadraoBoxPagamento}>Total de vendas:</Text>
+      <View style={styles.ContainerScrollView}>
+        <ScrollView showsHorizontalScrollIndicator={false} horizontal style={styles.scrollView}>
+          <View style={styles.containerPagamento}>
+            <View style={styles.boxPagamento}>
+              <View style={styles.imagemPagamento}>
+                <View style={styles.icon}>
+                  <Image source={require('../../../assets/pix.png')} />
+                </View>
+                <Text style={styles.pixImagem}>PIX</Text>
+              </View>    
+              <Text style={styles.textoPadraoBoxPagamento}>Quantidade de vendas (mês):</Text>
+              <Text style={styles.textoPadraoBoxPagamento}>Qauntidade total de vendas:</Text>
+              <Text style={styles.textoPadraoBoxPagamento}>Vendas nesse mês:</Text>
+              <Text style={styles.textoPadraoBoxPagamento}>Total de vendas:</Text>
+            </View>
+            <View style={styles.boxPagamento}>
+              <View style={styles.imagemPagamento}>
+                <View style={styles.icon}>
+                  <Image source={require('../../../assets/cartao.png')} />
+                </View>
+                <Text style={styles.pixImagem}>Cartão de Crédito</Text>
+              </View>  
+              <Text style={styles.textoPadraoBoxPagamento}>Quantidade de vendas (mês):</Text>
+              <Text style={styles.textoPadraoBoxPagamento}>Qauntidade total de vendas:</Text>
+              <Text style={styles.textoPadraoBoxPagamento}>Vendas nesse mês:</Text>
+              <Text style={styles.textoPadraoBoxPagamento}>Total de vendas:</Text>
+            </View>
           </View>
-          <View style={styles.boxPagamento}>
-            <View style={styles.imagemPagamento}>
-              <View style={styles.icon}>
-                <Image source={require('../../../assets/cartao.png')} />
-              </View>
-              <Text style={styles.pixImagem}>Cartão de Crédito</Text>
-            </View>  
-            <Text style={styles.textoPadraoBoxPagamento}>Vendas nesse mês:</Text>
-            <Text style={styles.textoPadraoBoxPagamento}>Total de vendas:</Text>
-            <Text style={styles.textoPadraoBoxPagamento}>Vendas nesse mês:</Text>
-            <Text style={styles.textoPadraoBoxPagamento}>Total de vendas:</Text>
-          </View>
-        </View>
-      </ScrollView>
-
+        </ScrollView>
+      </View>
       <TouchableOpacity style={styles.botaoSair} onPress={handleLogout}>
         <View style={styles.botaoSairConteudo}>
           <Image source={require('../../../assets/leave.png')} style={styles.buttonSair}/>
           <Text style={styles.buttonText}>Sair da Conta</Text>
         </View>
       </TouchableOpacity>
-      <Footer />
+      <Footer/>
+      
     </View>
   );
 };
@@ -97,10 +105,11 @@ const styles = StyleSheet.create({
     backgroundColor: '#F4F4F4',
     justifyContent: 'flex-start',
     alignItems: 'center',
-    paddingTop: 50,
+    paddingTop: 20
+    ,
   },
   logo: {
-    flex:1,
+    marginBottom:20,
   
   },
   containerVendas: {
@@ -116,6 +125,16 @@ const styles = StyleSheet.create({
     padding: 2,
     height: 120,
   },
+
+
+  ContainerScrollView:{
+    height:260
+  },
+  
+  scrollView: {
+    flex: 1,
+  },
+
   tituloVendas: {
     textAlign: 'center',
     textAlignVertical: 'center',
@@ -134,7 +153,6 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     backgroundColor: '#F4F4F4',
     width: '100%',
-    height: 100,
   },
   boxPagamento: {
     flex: 1,
@@ -159,13 +177,11 @@ const styles = StyleSheet.create({
   textoPadraoBoxPagamento: {
     backgroundColor: '#FFFFFF',
     justifyContent: 'center',
-    marginLeft: 50,
+    marginLeft: 45,
     fontSize: 15,
+    
   },
-  scrollView: {
-    height: 10,
-    width: 400,
-  },
+
   icon: {
     width: 50,
     height: 50,

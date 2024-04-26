@@ -8,6 +8,7 @@ import Home from './pages/autenticacao/cadastro/Home';
 import EditarProduto from './pages/telas/EditarProduto';
 import Mais from './pages/telas/Mais';
 import Andamento from './pages/telas/andamento';
+import Historico from './pages/telas/Historico'
 
 
 const Stack = createStackNavigator();
@@ -20,6 +21,7 @@ export default function App() {
         <Stack.Screen name="Cadastro" component={Cadastro} />
         <Stack.Screen name="Home" component={Home} />
         <Stack.Screen name="EditarProduto" component={EditarProduto} />
+        <Stack.Screen name="Historico" component={Historico} />
         <Stack.Screen name="Mais" component={Mais} options={{
           headerShown: false,
           headerTransparent: true,
