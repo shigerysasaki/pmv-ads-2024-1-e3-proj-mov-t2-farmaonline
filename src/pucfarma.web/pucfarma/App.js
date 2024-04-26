@@ -6,6 +6,7 @@ import Cadastro from './pages/autenticacao/cadastro/Cadastro';
 import Login from './pages/autenticacao/cadastro/Login';
 import EditarProduto from './pages/telas/EditarProduto';
 import Mais from './pages/telas/mais';
+import Produtos from './pages/produtos/Produtos';
 
 const Stack = createStackNavigator();
 
@@ -13,14 +14,16 @@ export default function App() {
   return (
     <NavigationContainer>
       <Stack.Navigator>
+      <Stack.Screen name="Produtos" component={Produtos} />
+      <Stack.Screen name="EditarProduto" component={EditarProduto} />
         <Stack.Screen name="Login" component={Login} />
         <Stack.Screen name="Cadastro" component={Cadastro} />
         <Stack.Screen name="Mais" component={Mais} options={{
           headerShown: false,
           headerTransparent: true,
           title: '',
-        }} />
-
+        }}/>
+        
       </Stack.Navigator>
     </NavigationContainer>
   );

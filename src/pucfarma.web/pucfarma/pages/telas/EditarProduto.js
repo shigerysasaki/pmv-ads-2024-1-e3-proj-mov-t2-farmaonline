@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from "react";
-import { View, TouchableOpacity, Text, StyleSheet, Image, TextInput, Alert, Modal } from "react-native";
+import { View, TouchableOpacity, Text, StyleSheet, Image, TextInput, Alert, Modal, Button } from "react-native";
 import * as ImagePicker from "expo-image-picker";
-import { TextInputMask } from 'react-native-masked-text';
 import { Ionicons } from '@expo/vector-icons';
 import { Picker } from '@react-native-picker/picker';
+import { useNavigation, useRoute } from '@react-navigation/native';
 
 export default function UploadScreen() {
     const [avatar, setAvatar] = useState(null);
@@ -15,6 +15,8 @@ export default function UploadScreen() {
     const [descricao, setDescricao] = useState("");
     const [categoria, setCategoria] = useState(0);
     const [modalVisible, setModalVisible] = useState(false);
+
+    const navigation = useNavigation(); // Navegação
 
     useEffect(() => {
         (async () => {
@@ -79,6 +81,7 @@ export default function UploadScreen() {
             console.log(data);
             // Exibir o alerta de sucesso
             Alert.alert('Produto Cadastrado', 'O produto foi cadastrado com sucesso!');
+            navigation.navigate('Produtos'); // Redirecionamento para a tela de Produtos
         } catch (error) {
             console.error('Erro:', error);
             // Exibir o alerta de erro
@@ -141,8 +144,6 @@ export default function UploadScreen() {
                         </View>
                         <TextInput
                             style={styles.smallInput}
-
-                            
                             onChangeText={text => setPrecoNormal(text)}
                             value={precoNormal}
                             keyboardType="numeric"
@@ -160,23 +161,22 @@ export default function UploadScreen() {
                         />
                     </View>
                     {/* Dropdown de Categoria */}
-                    <View style={[styles.inputContainer, { width: '100%', marginRight: 5 }]}>
+                    <View style={[styles.inputContainer]}>
                         <View style={styles.titleContainer}>
                             <Text style={styles.title}>Categoria</Text>
                         </View>
                         <Picker
-
                             selectedValue={categoria}
                             style={styles.categoryInput}
-                            onValueChange={(itemValue, itemIndex) => setCategoria(parseInt(itemValue))}
+                            onValueChange={(itemValue, itemIndex) => setCategoria(itemValue)}
                         >
-                            <Picker.Item label="Medicamentos" value="0" />
-                            <Picker.Item label="Beleza" value="1" />
-                            <Picker.Item label="Maternidade" value="2" />
-                            <Picker.Item label="Suplementos" value="3" />
-                            <Picker.Item label="Higiene" value="4" />
-                            <Picker.Item label="Produtos Infantis" value="5" />
-                            <Picker.Item label="Dermocosméticos" value="6" />
+                            <Picker.Item label="Medicamentos" value={0} />
+                            <Picker.Item label="Beleza" value={1} />
+                            <Picker.Item label="Maternidade" value={2} />
+                            <Picker.Item label="Suplementos" value={3} />
+                            <Picker.Item label="Higiene" value={4} />
+                            <Picker.Item label="Produtos Infantis" value={5} />
+                            <Picker.Item label="Dermocosméticos" value={6} />
                         </Picker>
                     </View>
                 </View>
@@ -220,7 +220,7 @@ const styles = StyleSheet.create({
         backgroundColor: '#fff',
         padding: 20,
         borderRadius: 10,
-        width: '100%', // Utilizando largura total
+        width: '98%', // Utilizando largura total
         marginBottom: 10
     },
     contentContainer: {
@@ -265,7 +265,7 @@ const styles = StyleSheet.create({
     uploadButton: {
         alignItems: "center",
         justifyContent: "center",
-        backgroundColor: "#007bff", // Azul
+        backgroundColor: "#74B0FF", // Azul
         width: 135,
         height: 35,
         borderRadius: 5,
@@ -301,12 +301,11 @@ const styles = StyleSheet.create({
         backgroundColor: 'rgba(137, 137, 137, 0.1)'
     },
     categoryInput: {
-        flex: 1, // Usando flexível para ocupar todo o espaço disponível
-        height: 5,
+        width: 150,
+        marginLeft: -20,
+        height: 35,
         borderColor: "#000000",
         borderRadius: 5,
-        paddingHorizontal: 10,
-        marginBottom: 12,
         backgroundColor: 'rgba(137, 137, 137, 0.1)',
     },
     clearButton: {
@@ -371,4 +370,3 @@ const styles = StyleSheet.create({
         alignItems: 'center',
     },
 });
-
