@@ -42,12 +42,76 @@ namespace pucfarma.api.Controllers
             return pedidoModel;
         }
 
-        // GET: api/Pedido/Total
-        [HttpGet("Total")]
-        public async Task<ActionResult<int>> GetTotalPedidos()
+        // GET: api/Pedido/Vendas/Mes
+        [HttpGet("Vendas/Mes")]
+        public async Task<ActionResult<int>> GetVendasMes()
+        {
+            var mesAtual = DateTime.Now.Month;
+            var anoAtual = DateTime.Now.Year;
+
+            var pedidosMes = await _context.Pedidos
+                .Where(p => p.dataPedido != null && p.dataPedido.Value.Month == mesAtual && p.dataPedido.Value.Year == anoAtual)
+                .ToListAsync();
+
+            return pedidosMes.Count();
+        }
+
+
+        // GET: api/Pedido/Vendas/Total
+        [HttpGet("Vendas/Total")]
+        public async Task<ActionResult<int>> GetVendasTotal()
         {
             var totalPedidos = await _context.Pedidos.CountAsync();
             return totalPedidos;
+        }
+
+        // GET: api/Pedido/Valor/Mensal
+        [HttpGet("Valor/Mensal")]
+        public async Task<ActionResult<decimal>> GetValorMensal()
+        {
+            var mesAtual = DateTime.Now.Month;
+            var anoAtual = DateTime.Now.Year;
+
+            var pedidos = await _context.Pedidos
+                .Include(p => p.pedidoProduto)
+                .ThenInclude(pp => pp.produto)
+                .Where(p => p.dataPedido != null && p.dataPedido.Value.Month == mesAtual && p.dataPedido.Value.Year == anoAtual)
+                .ToListAsync();
+
+            decimal valorTotal = 0;
+
+            foreach (var pedido in pedidos)
+            {
+                foreach (var pedidoProduto in pedido.pedidoProduto)
+                {
+                    valorTotal += pedidoProduto.produto.preco * pedidoProduto.quantidade;
+                }
+            }
+
+            return valorTotal;
+        }
+
+
+        // GET: api/Pedido/Valor/Total
+        [HttpGet("Valor/Total")]
+        public async Task<ActionResult<decimal>> GetValorTotal()
+        {
+            var pedidos = await _context.Pedidos
+                .Include(p => p.pedidoProduto)
+                .ThenInclude(pp => pp.produto)
+                .ToListAsync();
+
+            decimal valorTotal = 0;
+
+            foreach (var pedido in pedidos)
+            {
+                foreach (var pedidoProduto in pedido.pedidoProduto)
+                {
+                    valorTotal += pedidoProduto.produto.preco * pedidoProduto.quantidade;
+                }
+            }
+
+            return valorTotal;
         }
 
 
@@ -112,5 +176,32 @@ namespace pucfarma.api.Controllers
         {
             return _context.Pedidos.Any(e => e.pedidoId == id);
         }
+
+        // GET: api/Pedido/Vendas/Mes/Pix
+        [HttpGet("Vendas/Mes/Pix")]
+        public async Task<ActionResult<int>> GetVendasMesPix()
+        {
+            var mesAtual = DateTime.Now.Month;
+            var anoAtual = DateTime.Now.Year;
+
+            var pedidosMes = await _context.Pedidos
+                .Where(p => p.dataPedido != null && p.dataPedido.Value.Month == mesAtual && p.dataPedido.Value.Year == anoAtual && p.metodoPagamento == Enum.MetodoPagamento.Pix)
+                .ToListAsync();
+
+            return pedidosMes.Count();
+        }
+
+        // GET: api/Pedido/Vendas/Total/Pix
+        [HttpGet("Vendas/Total/Pix")]
+        public async Task<ActionResult<int>> GetVendasTotalPix()
+        {
+            var totalPedidos = await _context.Pedidos
+                .Where(p => p.metodoPagamento == Enum.MetodoPagamento.Pix)
+                .ToListAsync();
+
+            return totalPedidos.Count;
+        }
+
+
     }
 }
