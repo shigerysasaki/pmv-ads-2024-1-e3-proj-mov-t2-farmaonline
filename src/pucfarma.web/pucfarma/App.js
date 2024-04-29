@@ -6,7 +6,7 @@ import Cadastro from './pages/autenticacao/cadastro/Cadastro';
 import Login from './pages/autenticacao/cadastro/Login';
 import Home from './pages/autenticacao/cadastro/Home';
 import EditarProduto from './pages/telas/EditarProduto';
-import Mais from './pages/telas/Mais';
+import Mais from './pages/telas/mais';
 import Andamento from './pages/telas/andamento';
 import Historico from './pages/telas/Historico'
 
@@ -27,9 +27,7 @@ export default function App() {
           headerTransparent: true,
           title: '',
         }} />
-        <Stack.Screen name="andamento" component={Andamento} options={{
-          headerShown: false,
-        }} />
+        <Stack.Screen name="andamento" component={Andamento}/>
       </Stack.Navigator>
     </NavigationContainer>
   );
