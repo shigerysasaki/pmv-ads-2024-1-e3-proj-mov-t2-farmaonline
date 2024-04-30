@@ -1,84 +1,630 @@
 import React, { useState, useEffect } from 'react';
 import { View, StyleSheet, Image, Text, ScrollView, TouchableOpacity } from 'react-native';
-import axios from 'axios';
-import Footeradm from '../../template/footeradm';
-import Header2 from '../../template/header2';
-
-
+import Footer from '../../template/footeradm';
 
 const HomeScreen = ({ navigation }) => {
   const [pedidos, setPedidos] = useState({
-     pedidosNesseMes: 0,
-     totalPedidos: 0
+    pedidosNesseMes: 0, 
+    obitidosNoMes: 0, 
+    totalObtido: 0, 
+    totalPedidos: 0,
+    totalPedidosPix: 0,
+    totalPedidosCartaoApp: 0,
+    totalPedidosCartaoEntrega: 0,
+    totalPedidosBoletoBancario: 0,
+    totalPedidosDinheiro: 0,
+    valorTotal: 0,
+    valorTotalPix: 0,
+    valorTotalCartaoApp: 0,
+    valorTotalCartaoEntrega: 0,
+    valorTotalBoletoBancario: 0,
+    valorTotalDinheiro: 0,
+    valorTotalMesPix: 0,
+    valorTotalMesCartaoApp: 0,
+    valorTotalMesCartaoEntrega: 0,
+    valorTotalMesBoletoBancario: 0,
+    valorTotalMesDinheiro: 0,
+
   });
-      
+  
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await fetch('http://10.0.2.2:5035/api/ControleVendas/Vendas/Total');
+        if (response.ok) {
+          const data = await response.json();
+          setPedidos(prevState => ({
+            ...prevState,
+            totalPedidos: data,
+          }));
+        } else {
+          console.error('Erro ao buscar dados de total de pedidos:', response.statusText);
+        }
+      } catch (error) {
+        console.error('Erro ao buscar dados de total de pedidos:', error);
+      }
+    };
+  
+    fetchData();
+  }, []);
+
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await fetch('http://10.0.2.2:5035/api/ControleVendas/Vendas/Mes');
+        if (response.ok) {
+          const data = await response.json();
+          setPedidos(prevState => ({
+            ...prevState,
+            pedidosNesseMes: data,
+          }));
+        } else {
+          console.error('Erro ao buscar dados de pedidos no mês:', response.statusText);
+        }
+      } catch (error) {
+        console.error('Erro ao buscar dados de pedidos no mês:', error);
+      }
+    };
+  
+    fetchData();
+  }, []);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await fetch('http://10.0.2.2:5035/api/ControleVendas/Vendas/Total/Pix');
+        if (response.ok) {
+          const data = await response.json();
+          setPedidos(prevState => ({
+            ...prevState,
+            totalPedidosPix: data,
+          }));
+        } else {
+          console.error('Erro ao buscar dados de total de pedidos Pix:', response.statusText);
+        }
+      } catch (error) {
+        console.error('Erro ao buscar dados de total de pedidos Pix:', error);
+      }
+    };
+  
+    fetchData();
+  }, []);
+
+  // GET /api/ControleVendas/Vendas/Total/CartaoApp
+useEffect(() => {
+  const fetchData = async () => {
+    try {
+      const response = await fetch('http://10.0.2.2:5035/api/ControleVendas/Vendas/Total/CartaoApp');
+      if (response.ok) {
+        const data = await response.json();
+        setPedidos(prevState => ({
+          ...prevState,
+          totalPedidosCartaoApp: data,
+        }));
+      } else {
+        console.error('Erro ao buscar dados de total de pedidos com Cartão App:', response.statusText);
+      }
+    } catch (error) {
+      console.error('Erro ao buscar dados de total de pedidos com Cartão App:', error);
+    }
+  };
+
+  fetchData();
+}, []);
+
+// GET /api/ControleVendas/Vendas/Mes/CartaoApp
+useEffect(() => {
+  const fetchData = async () => {
+    try {
+      const response = await fetch('http://10.0.2.2:5035/api/ControleVendas/Vendas/Mes/CartaoApp');
+      if (response.ok) {
+        const data = await response.json();
+        setPedidos(prevState => ({
+          ...prevState,
+          pedidosCartaoAppNesseMes: data,
+        }));
+      } else {
+        console.error('Erro ao buscar dados de pedidos com Cartão App no mês:', response.statusText);
+      }
+    } catch (error) {
+      console.error('Erro ao buscar dados de pedidos com Cartão App no mês:', error);
+    }
+  };
+
+  fetchData();
+}, []);
+
+// GET /api/ControleVendas/Vendas/Total/CartaoEntrega
+useEffect(() => {
+  const fetchData = async () => {
+    try {
+      const response = await fetch('http://10.0.2.2:5035/api/ControleVendas/Vendas/Total/CartaoEntrega');
+      if (response.ok) {
+        const data = await response.json();
+        setPedidos(prevState => ({
+          ...prevState,
+          totalPedidosCartaoEntrega: data,
+        }));
+      } else {
+        console.error('Erro ao buscar dados de total de pedidos com Cartão Entrega:', response.statusText);
+      }
+    } catch (error) {
+      console.error('Erro ao buscar dados de total de pedidos com Cartão Entrega:', error);
+    }
+  };
+
+  fetchData();
+}, []);
+
+// GET /api/ControleVendas/Vendas/Mes/CartaoEntrega
+useEffect(() => {
+  const fetchData = async () => {
+    try {
+      const response = await fetch('http://10.0.2.2:5035/api/ControleVendas/Vendas/Mes/CartaoEntrega');
+      if (response.ok) {
+        const data = await response.json();
+        setPedidos(prevState => ({
+          ...prevState,
+          pedidosCartaoEntregaNesseMes: data,
+        }));
+      } else {
+        console.error('Erro ao buscar dados de pedidos com Cartão Entrega no mês:', response.statusText);
+      }
+    } catch (error) {
+      console.error('Erro ao buscar dados de pedidos com Cartão Entrega no mês:', error);
+    }
+  };
+
+  fetchData();
+}, []);
+  // GET /api/ControleVendas/Vendas/Total/BoletoBancario
+useEffect(() => {
+  const fetchData = async () => {
+    try {
+      const response = await fetch('http://10.0.2.2:5035/api/ControleVendas/Vendas/Total/BoletoBancario');
+      if (response.ok) {
+        const data = await response.json();
+        setPedidos(prevState => ({
+          ...prevState,
+          totalPedidosBoletoBancario: data,
+        }));
+      } else {
+        console.error('Erro ao buscar dados de total de pedidos com Boleto Bancário:', response.statusText);
+      }
+    } catch (error) {
+      console.error('Erro ao buscar dados de total de pedidos com Boleto Bancário:', error);
+    }
+  };
+
+  fetchData();
+}, []);
+
+// GET /api/ControleVendas/Vendas/Mes/BoletoBancario
+useEffect(() => {
+  const fetchData = async () => {
+    try {
+      const response = await fetch('http://10.0.2.2:5035/api/ControleVendas/Vendas/Mes/BoletoBancario');
+      if (response.ok) {
+        const data = await response.json();
+        setPedidos(prevState => ({
+          ...prevState,
+          pedidosBoletoBancarioNesseMes: data,
+        }));
+      } else {
+        console.error('Erro ao buscar dados de pedidos com Boleto Bancário no mês:', response.statusText);
+      }
+    } catch (error) {
+      console.error('Erro ao buscar dados de pedidos com Boleto Bancário no mês:', error);
+    }
+  };
+
+  fetchData();
+}, []);
+
+// GET /api/ControleVendas/Vendas/Total/Dinheiro
+useEffect(() => {
+  const fetchData = async () => {
+    try {
+      const response = await fetch('http://10.0.2.2:5035/api/ControleVendas/Vendas/Total/Dinheiro');
+      if (response.ok) {
+        const data = await response.json();
+        setPedidos(prevState => ({
+          ...prevState,
+          totalPedidosDinheiro: data,
+        }));
+      } else {
+        console.error('Erro ao buscar dados de total de pedidos com Dinheiro:', response.statusText);
+      }
+    } catch (error) {
+      console.error('Erro ao buscar dados de total de pedidos com Dinheiro:', error);
+    }
+  };
+
+  fetchData();
+}, []);
+
+// GET /api/ControleVendas/Vendas/Mes/Dinheiro
+useEffect(() => {
+  const fetchData = async () => {
+    try {
+      const response = await fetch('http://10.0.2.2:5035/api/ControleVendas/Vendas/Mes/Dinheiro');
+      if (response.ok) {
+        const data = await response.json();
+        setPedidos(prevState => ({
+          ...prevState,
+          pedidosDinheiroNesseMes: data,
+        }));
+      } else {
+        console.error('Erro ao buscar dados de pedidos com Dinheiro no mês:', response.statusText);
+      }
+    } catch (error) {
+      console.error('Erro ao buscar dados de pedidos com Dinheiro no mês:', error);
+    }
+  };
+
+  fetchData();
+}, []);
+
+// GET /api/ControleVendas/Valor/Total
+useEffect(() => {
+  const fetchData = async () => {
+    try {
+      const response = await fetch('http://10.0.2.2:5035/api/ControleVendas/Valor/Total');
+      if (response.ok) {
+        const data = await response.json();
+        setPedidos(prevState => ({
+          ...prevState,
+          valorTotal: data,
+        }));
+      } else {
+        console.error('Erro ao buscar o valor total:', response.statusText);
+      }
+    } catch (error) {
+      console.error('Erro ao buscar o valor total:', error);
+    }
+  };
+
+  fetchData();
+}, []);
+  // GET /api/ControleVendas/Valor/Mes
+useEffect(() => {
+  const fetchData = async () => {
+    try {
+      const response = await fetch('http://10.0.2.2:5035/api/ControleVendas/Valor/Mes');
+      if (response.ok) {
+        const data = await response.json();
+        setPedidos(prevState => ({
+          ...prevState,
+          valorTotalMes: data,
+        }));
+      } else {
+        console.error('Erro ao buscar o valor total do mês:', response.statusText);
+      }
+    } catch (error) {
+      console.error('Erro ao buscar o valor total do mês:', error);
+    }
+  };
+
+  fetchData();
+}, []);
+
+// GET /api/ControleVendas/Valor/Total/Pix
+useEffect(() => {
+  const fetchData = async () => {
+    try {
+      const response = await fetch('http://10.0.2.2:5035/api/ControleVendas/Valor/Total/Pix');
+      if (response.ok) {
+        const data = await response.json();
+        setPedidos(prevState => ({
+          ...prevState,
+          valorTotalPix: data,
+        }));
+      } else {
+        console.error('Erro ao buscar o valor total de Pix:', response.statusText);
+      }
+    } catch (error) {
+      console.error('Erro ao buscar o valor total de Pix:', error);
+    }
+  };
+
+  fetchData();
+}, []);
+
+// GET /api/ControleVendas/Valor/Mes/Pix
+useEffect(() => {
+  const fetchData = async () => {
+    try {
+      const response = await fetch('http://10.0.2.2:5035/api/ControleVendas/Valor/Mes/Pix');
+      if (response.ok) {
+        const data = await response.json();
+        setPedidos(prevState => ({
+          ...prevState,
+          valorMesPix: data,
+        }));
+      } else {
+        console.error('Erro ao buscar o valor total de Pix no mês:', response.statusText);
+      }
+    } catch (error) {
+      console.error('Erro ao buscar o valor total de Pix no mês:', error);
+    }
+  };
+
+  fetchData();
+}, []);
+
+// GET /api/ControleVendas/Valor/Total/CartaoApp
+useEffect(() => {
+  const fetchData = async () => {
+    try {
+      const response = await fetch('http://10.0.2.2:5035/api/ControleVendas/Valor/Total/CartaoApp');
+      if (response.ok) {
+        const data = await response.json();
+        setPedidos(prevState => ({
+          ...prevState,
+          valorTotalCartaoApp: data,
+        }));
+      } else {
+        console.error('Erro ao buscar o valor total de Cartão App:', response.statusText);
+      }
+    } catch (error) {
+      console.error('Erro ao buscar o valor total de Cartão App:', error);
+    }
+  };
+
+  fetchData();
+}, []);
+
+// GET /api/ControleVendas/Valor/Mes/CartaoApp
+useEffect(() => {
+  const fetchData = async () => {
+    try {
+      const response = await fetch('http://10.0.2.2:5035/api/ControleVendas/Valor/Mes/CartaoApp');
+      if (response.ok) {
+        const data = await response.json();
+        setPedidos(prevState => ({
+          ...prevState,
+          valorMesCartaoApp: data,
+        }));
+      } else {
+        console.error('Erro ao buscar o valor total de Cartão App no mês:', response.statusText);
+      }
+    } catch (error) {
+      console.error('Erro ao buscar o valor total de Cartão App no mês:', error);
+    }
+  };
+
+  fetchData();
+}, []);
+// GET /api/ControleVendas/Valor/Total/CartaoEntrega
+useEffect(() => {
+  const fetchData = async () => {
+    try {
+      const response = await fetch('http://10.0.2.2:5035/api/ControleVendas/Valor/Total/CartaoEntrega');
+      if (response.ok) {
+        const data = await response.json();
+        setPedidos(prevState => ({
+          ...prevState,
+          valorTotalCartaoEntrega: data,
+        }));
+      } else {
+        console.error('Erro ao buscar o valor total de Cartão Entrega:', response.statusText);
+      }
+    } catch (error) {
+      console.error('Erro ao buscar o valor total de Cartão Entrega:', error);
+    }
+  };
+
+  fetchData();
+}, []);
+
+// GET /api/ControleVendas/Valor/Mes/CartaoEntrega
+useEffect(() => {
+  const fetchData = async () => {
+    try {
+      const response = await fetch('http://10.0.2.2:5035/api/ControleVendas/Valor/Mes/CartaoEntrega');
+      if (response.ok) {
+        const data = await response.json();
+        setPedidos(prevState => ({
+          ...prevState,
+          valorMesCartaoEntrega: data,
+        }));
+      } else {
+        console.error('Erro ao buscar o valor total de Cartão Entrega no mês:', response.statusText);
+      }
+    } catch (error) {
+      console.error('Erro ao buscar o valor total de Cartão Entrega no mês:', error);
+    }
+  };
+
+  fetchData();
+}, []);
+
+// GET /api/ControleVendas/Valor/Total/BoletoBancario
+useEffect(() => {
+  const fetchData = async () => {
+    try {
+      const response = await fetch('http://10.0.2.2:5035/api/ControleVendas/Valor/Total/BoletoBancario');
+      if (response.ok) {
+        const data = await response.json();
+        setPedidos(prevState => ({
+          ...prevState,
+          valorTotalBoletoBancario: data,
+        }));
+      } else {
+        console.error('Erro ao buscar o valor total de Boleto Bancário:', response.statusText);
+      }
+    } catch (error) {
+      console.error('Erro ao buscar o valor total de Boleto Bancário:', error);
+    }
+  };
+
+  fetchData();
+}, []);
+
+// GET /api/ControleVendas/Valor/Mes/BoletoBancario
+useEffect(() => {
+  const fetchData = async () => {
+    try {
+      const response = await fetch('http://10.0.2.2:5035/api/ControleVendas/Valor/Mes/BoletoBancario');
+      if (response.ok) {
+        const data = await response.json();
+        setPedidos(prevState => ({
+          ...prevState,
+          valorMesBoletoBancario: data,
+        }));
+      } else {
+        console.error('Erro ao buscar o valor total de Boleto Bancário no mês:', response.statusText);
+      }
+    } catch (error) {
+      console.error('Erro ao buscar o valor total de Boleto Bancário no mês:', error);
+    }
+  };
+
+  fetchData();
+}, []);
+
+// GET /api/ControleVendas/Valor/Total/Dinheiro
+useEffect(() => {
+  const fetchData = async () => {
+    try {
+      const response = await fetch('http://10.0.2.2:5035/api/ControleVendas/Valor/Total/Dinheiro');
+      if (response.ok) {
+        const data = await response.json();
+        setPedidos(prevState => ({
+          ...prevState,
+          valorTotalDinheiro: data,
+        }));
+      } else {
+        console.error('Erro ao buscar o valor total em Dinheiro:', response.statusText); 
+      }
+    } catch (error) {
+      console.error('Erro ao buscar o valor total em Dinheiro:', error);
+    }
+  };
+
+  fetchData();
+}, []);
+
+// GET /api/ControleVendas/Valor/Mes/Dinheiro
+useEffect(() => {
+  const fetchData = async () => {
+    try {
+      const response = await fetch('http://10.0.2.2:5035/api/ControleVendas/Valor/Mes/Dinheiro');
+      if (response.ok) {
+        const data = await response.json();
+        setPedidos(prevState => ({
+          ...prevState,
+          valorMesDinheiro: data,
+        }));
+      } else {
+        console.error('Erro ao buscar o valor total em Dinheiro no mês:', response.statusText);
+      }
+    } catch (error) {
+      console.error('Erro ao buscar o valor total em Dinheiro no mês:', error);
+    }
+  };
+
+  fetchData();
+}, []);
+  
+
+
+
+
   // Função para lidar com o logout
   const handleLogout = () => {
     navigation.navigate('Login');
   };
 
-  useEffect(() => {
-    const fetchVendas = async () => {
-      try {
-        const response = await axios.get('http://10.0.2.2:5035/api/Pedido/Total'); // Substitua '/api/Vendas' pela rota correta do seu back-end
-        setVendas(response.data);
-      } catch (error) {
-        console.error('Erro ao buscar dados de vendas:', error);
-      }
-    };
-
-    fetchVendas();
-  }, []);
-
   return (
     <View style={styles.container}>
-      <Header2/>
       <View style={styles.logo}>
         <Image source={require('../../../assets/Logo1.png')} />
       </View>
       
       <View style={styles.containerVendas}>
         <View style={styles.boxVendas}>
-        <Text style={styles.tituloVendas}>Pedidos</Text>
-            <Text style={styles.textoPadraoBox}>Pedidos nesse mês: {pedidos.pedidosNesseMes} </Text>
-            <Text style={styles.textoPadraoBox}>Total de pedidos: {pedidos.totalPedidos} </Text>
-
+          <Text style={styles.tituloVendas}>Pedidos</Text>
+          <Text style={styles.textoPadraoBox}>Pedidos nesse mês: {pedidos.pedidosNesseMes} </Text>
+          <Text style={styles.textoPadraoBox}>Total de pedidos: {pedidos.totalPedidos} </Text>
         </View>
         <View style={styles.boxVendas}>
           <Text style={styles.tituloVendas}>Dinheiro Movimentado</Text>
-          <Text style={styles.textoPadraoBox}>Obtido no mês:</Text>
-          <Text style={styles.textoPadraoBox}>Total obtido:</Text>
+          <Text style={styles.textoPadraoBox}>Obtido no mês: {pedidos.obitidosNoMes}</Text>
+          <Text style={styles.textoPadraoBox}>Total obtido: {pedidos.totalObtido}</Text>
         </View>
       </View>
 
-      <ScrollView horizontal style={styles.scrollView}>
-        <View style={styles.containerPagamento}>
-          <View style={styles.boxPagamento}>
-            <View style={styles.imagemPagamento}>
-              <View style={styles.icon}>
-                <Image source={require('../../../assets/pix.png')} />
-              </View>
-              <Text style={styles.pixImagem}>PIX</Text>
-            </View>    
-            <Text style={styles.textoPadraoBoxPagamento}>Vendas nesse mês:</Text>
-            <Text style={styles.textoPadraoBoxPagamento}>Total de vendas:</Text>
-            <Text style={styles.textoPadraoBoxPagamento}>Vendas nesse mês:</Text>
-            <Text style={styles.textoPadraoBoxPagamento}>Total de vendas:</Text>
-          </View>
-          <View style={styles.boxPagamento}>
-            <View style={styles.imagemPagamento}>
-              <View style={styles.icon}>
-                <Image source={require('../../../assets/cartao.png')} />
-              </View>
-              <Text style={styles.pixImagem}>Cartão de Crédito</Text>
-            </View>  
-            <Text style={styles.textoPadraoBoxPagamento}>Vendas nesse mês:</Text>
-            <Text style={styles.textoPadraoBoxPagamento}>Total de vendas:</Text>
-            <Text style={styles.textoPadraoBoxPagamento}>Vendas nesse mês:</Text>
-            <Text style={styles.textoPadraoBoxPagamento}>Total de vendas:</Text>
-          </View>
+      <View style={styles.ContainerScrollView}>
+        <ScrollView showsHorizontalScrollIndicator={false} horizontal style={styles.scrollView}>
+          <View style={styles.containerPagamento}>
+            <View style={styles.boxPagamento}>
+              <View style={styles.imagemPagamento}>
+                <View style={styles.icon}>
+                  <Image source={require('../../../assets/pix.png')} />
+                </View>
+                <Text style={styles.pixImagem}>PIX</Text>
+              </View>    
+              <Text style={styles.textoPadraoBoxPagamento}>Vendas neste mês:{pedidos.totalPedidosPix}</Text>
+              <Text style={styles.textoPadraoBoxPagamento}>Total de vendas:{pedidos.valorTotalPix}</Text>
+              <Text style={styles.textoPadraoBoxPagamento}>Vendas nesse mês(R$):{pedidos.valorTotalMesPix}</Text>
+              <Text style={styles.textoPadraoBoxPagamento}>Total de vendas(R$):{pedidos.valorTotalPix}</Text>
+            </View>
+            <View style={styles.boxPagamento}>
+              <View style={styles.imagemPagamento}>
+                <View style={styles.icon}>
+                  <Image source={require('../../../assets/cartao.png')} />
+                </View>
+                <Text style={styles.pixImagem}>Cartão de Crédito</Text>
+              </View>  
+              <Text style={styles.textoPadraoBoxPagamento}>Quantidade de vendas (mês): {pedidos.totalPedidosCartaoApp}</Text>
+              <Text style={styles.textoPadraoBoxPagamento}>Quantidade total de vendas: {pedidos.valorTotalCartaoApp}</Text>
+              <Text style={styles.textoPadraoBoxPagamento}>Vendas nesse mês(R$): {pedidos.valorTotalMesCartaoApp}</Text>
+              <Text style={styles.textoPadraoBoxPagamento}>Total de vendas(R$): {pedidos.valorTotalCartaoApp}</Text>
+            </View>
+            <View style={styles.boxPagamento}>
+          <View style={styles.imagemPagamento}>
+            <View style={styles.icon}>
+              <Image source={require('../../../assets/boleto.png')} />
+            </View>
+            <Text style={styles.pixImagem}>Boleto Bancário</Text>
+          </View>  
+          <Text style={styles.textoPadraoBoxPagamento}>Quantidade de vendas (mês): {pedidos.totalPedidosBoletoBancario}</Text>
+          <Text style={styles.textoPadraoBoxPagamento}>Total de vendas: {pedidos.valorTotalBoletoBancario}</Text>
+          <Text style={styles.textoPadraoBoxPagamento}>Vendas nesse mês(R$): {pedidos.valorTotalMesBoletoBancario}</Text>
+          <Text style={styles.textoPadraoBoxPagamento}>Total de vendas(R$): {pedidos.valorTotalBoletoBancario}</Text>
         </View>
-      </ScrollView>
+        <View style={styles.boxPagamento}>
+          <View style={styles.imagemPagamento}>
+            <View style={styles.icon}>
+              <Image source={require('../../../assets/moto.png')} />
+            </View>
+            <Text style={styles.pixImagem}>Cartão de Entrega</Text>
+          </View>  
+          <Text style={styles.textoPadraoBoxPagamento}>Quantidade de vendas (mês): {pedidos.totalPedidosCartaoEntrega}</Text>
+          <Text style={styles.textoPadraoBoxPagamento}>Total de vendas: {pedidos.valorTotalCartaoEntrega}</Text>
+          <Text style={styles.textoPadraoBoxPagamento}>Vendas nesse mês(R$): {pedidos.valorTotalMesCartaoEntrega}</Text>
+          <Text style={styles.textoPadraoBoxPagamento}>Total de vendas(R$): {pedidos.valorTotalCartaoEntrega}</Text>
+        </View>
+        <View style={styles.boxPagamento}>
+          <View style={styles.imagemPagamento}>
+            <View style={styles.icon}>
+              <Image source={require('../../../assets/dinheiro.png')} />
+            </View>
+            <Text style={styles.pixImagem}>Dinheiro</Text>
+          </View>  
+          <Text style={styles.textoPadraoBoxPagamento}>Quantidade de vendas (mês): {pedidos.totalPedidosDinheiro}</Text>
+          <Text style={styles.textoPadraoBoxPagamento}>Total de vendas: {pedidos.valorTotalDinheiro}</Text>
+          <Text style={styles.textoPadraoBoxPagamento}>Vendas nesse mês(R$): {pedidos.valorTotalMesDinheiro}</Text>
+          <Text style={styles.textoPadraoBoxPagamento}>Total de vendas: {pedidos.valorTotalDinheiro}</Text>
+        </View>
+          </View>
+
+        </ScrollView>
+
+      </View>
 
       <TouchableOpacity style={styles.botaoSair} onPress={handleLogout}>
         <View style={styles.botaoSairConteudo}>
@@ -86,11 +632,10 @@ const HomeScreen = ({ navigation }) => {
           <Text style={styles.buttonText}>Sair da Conta</Text>
         </View>
       </TouchableOpacity>
-      <Footeradm />
+      <Footer/>
     </View>
   );
 };
-
 
 const styles = StyleSheet.create({
   container: {
@@ -98,12 +643,10 @@ const styles = StyleSheet.create({
     backgroundColor: '#F4F4F4',
     justifyContent: 'flex-start',
     alignItems: 'center',
-    paddingTop: 50,
+    paddingTop: 20
   },
   logo: {
-    flex:1,
-    marginTop: 20
-  
+    marginBottom: 20,
   },
   containerVendas: {
     flexDirection: 'row',
@@ -117,6 +660,12 @@ const styles = StyleSheet.create({
     margin: 5,
     padding: 2,
     height: 120,
+  },
+  ContainerScrollView: {
+    height: 260
+  },
+  scrollView: {
+    flex: 1,
   },
   tituloVendas: {
     textAlign: 'center',
@@ -136,7 +685,6 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     backgroundColor: '#F4F4F4',
     width: '100%',
-    height: 100,
   },
   boxPagamento: {
     flex: 1,
@@ -158,19 +706,16 @@ const styles = StyleSheet.create({
     height: '40%',
     marginBottom: 15,
   },
+  
   textoPadraoBoxPagamento: {
     backgroundColor: '#FFFFFF',
     justifyContent: 'center',
-    marginLeft: 50,
+    marginLeft: 45,
     fontSize: 15,
   },
-  scrollView: {
-    height: 10,
-    width: 400,
-  },
   icon: {
-    width: 50,
-    height: 50,
+    width: 60,
+    height: 60,
     alignSelf: 'center',
   },
   pixImagem: {
@@ -202,7 +747,6 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
   },
-
 });
 
 export default HomeScreen;

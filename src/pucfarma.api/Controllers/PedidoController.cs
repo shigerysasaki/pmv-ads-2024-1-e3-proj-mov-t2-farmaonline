@@ -42,16 +42,6 @@ namespace pucfarma.api.Controllers
             return pedidoModel;
         }
 
-        // GET: api/Pedido/Total
-        [HttpGet("Total")]
-        public async Task<ActionResult<int>> GetTotalPedidos()
-        {
-            var totalPedidos = await _context.Pedidos.CountAsync();
-            return totalPedidos;
-        }
-
-
-
         // PUT: api/Pedido/5
         [HttpPut("{id}")]
         public async Task<IActionResult> EditarPedido(int id, PedidoModel pedidoModel)
@@ -112,5 +102,6 @@ namespace pucfarma.api.Controllers
         {
             return _context.Pedidos.Any(e => e.pedidoId == id);
         }
+
     }
 }

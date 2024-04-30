@@ -1,9 +1,13 @@
 import React, { useState, useEffect } from "react";
-import { View, TouchableOpacity, Text, StyleSheet, Image, TextInput, Alert, Modal } from "react-native";
+import { View, TouchableOpacity, Text, StyleSheet, Image, TextInput, Alert, Modal, Button } from "react-native";
 import * as ImagePicker from "expo-image-picker";
-import { TextInputMask } from 'react-native-masked-text';
 import { Ionicons } from '@expo/vector-icons';
 import { Picker } from '@react-native-picker/picker';
+import { useNavigation, useRoute } from '@react-navigation/native';
+<<<<<<< Updated upstream
+import Footer from '../template/footeradm';
+=======
+>>>>>>> Stashed changes
 
 export default function UploadScreen() {
     const [avatar, setAvatar] = useState(null);
@@ -13,8 +17,10 @@ export default function UploadScreen() {
     const [precoNormal, setPrecoNormal] = useState("");
     const [tipoOferta, setTipoOferta] = useState("");
     const [descricao, setDescricao] = useState("");
-    const [categoria, setCategoria] = useState("Medicamentos");
+    const [categoria, setCategoria] = useState(0);
     const [modalVisible, setModalVisible] = useState(false);
+
+    const navigation = useNavigation(); // Navegação
 
     useEffect(() => {
         (async () => {
@@ -46,16 +52,10 @@ export default function UploadScreen() {
         setPrecoNormal("");
         setTipoOferta("");
         setDescricao("");
-        setCategoria("Medicamentos");
+        setCategoria(0);
     }
 
     const handleSaveChanges = async () => {
-        console.log(fabricante);
-        console.log(productName);
-        console.log(precoNormal);
-        console.log(descricao);
-        console.log(quantidadeEstoque);
-        console.log(tipoOferta);
         console.log(categoria);
         try {
             const response = await fetch("http://10.0.2.2:5035/api/Produto", {
@@ -66,16 +66,16 @@ export default function UploadScreen() {
                 body: JSON.stringify({
                     fabricante: fabricante,
                     nomeProduto: productName,
-                    nomeFarmacia: "Araujo",
+                    nomeFarmacia: "string",
                     preco: precoNormal,
                     descricao: descricao,
                     estoqueDisponivel: quantidadeEstoque,
                     categoria: categoria,
-                    porcentagemDesconto: tipoOferta
-            
+                    porcentagemDesconto: tipoOferta,
+                    fotoProduto: "string"
                 })
             });
-            
+
             console.log(response);
             if (!response.ok) {
                 throw new Error('Erro na requisição: ' + response.status);
@@ -83,9 +83,13 @@ export default function UploadScreen() {
 
             const data = await response.json();
             console.log(data);
+            // Exibir o alerta de sucesso
+            Alert.alert('Produto Cadastrado', 'O produto foi cadastrado com sucesso!');
+            navigation.navigate('Produtos'); // Redirecionamento para a tela de Produtos
         } catch (error) {
             console.error('Erro:', error);
-            console.log('Erro', 'Não foi possível cadastrar o produto');
+            // Exibir o alerta de erro
+            Alert.alert('Erro', 'Não foi possível cadastrar o produto. Por favor, tente novamente mais tarde.');
         }
     }
 
@@ -138,20 +142,12 @@ export default function UploadScreen() {
                     </View>
                 </View>
                 <View style={styles.inputRow}>
-                    <View style={[styles.inputContainer, { width: '40%',  marginLeft: 10 }]}>
+                    <View style={[styles.inputContainer, { width: '40%', marginLeft: 10 }]}>
                         <View style={styles.titleContainer}>
                             <Text style={styles.title}>Preço normal</Text>
                         </View>
-                        <TextInputMask
+                        <TextInput
                             style={styles.smallInput}
-                            type={'money'}
-                            options={{
-                                precision: 2,
-                                separator: ',',
-                                delimiter: '.',
-                                unit: 'R$',
-                                suffixUnit: ''
-                            }}
                             onChangeText={text => setPrecoNormal(text)}
                             value={precoNormal}
                             keyboardType="numeric"
@@ -169,28 +165,27 @@ export default function UploadScreen() {
                         />
                     </View>
                     {/* Dropdown de Categoria */}
-                    <View style={[styles.inputContainer, { width: '100%', marginRight:5 }]}>
+                    <View style={[styles.inputContainer]}>
                         <View style={styles.titleContainer}>
                             <Text style={styles.title}>Categoria</Text>
                         </View>
                         <Picker
-                        
                             selectedValue={categoria}
                             style={styles.categoryInput}
                             onValueChange={(itemValue, itemIndex) => setCategoria(itemValue)}
                         >
-                            <Picker.Item label="Medicamentos" value="1" />
-                            <Picker.Item label="Beleza" value="2" />
-                            <Picker.Item label="Maternidade" value="3" />
-                            <Picker.Item label="Suplementos" value="4" />
-                            <Picker.Item label="Higiene" value="5" />
-                            <Picker.Item label="Produtos Infantis" value="6" />
-                            <Picker.Item label="Dermocosméticos" value="7" />
+                            <Picker.Item label="Medicamentos" value={0} />
+                            <Picker.Item label="Beleza" value={1} />
+                            <Picker.Item label="Maternidade" value={2} />
+                            <Picker.Item label="Suplementos" value={3} />
+                            <Picker.Item label="Higiene" value={4} />
+                            <Picker.Item label="Produtos Infantis" value={5} />
+                            <Picker.Item label="Dermocosméticos" value={6} />
                         </Picker>
                     </View>
                 </View>
                 <View style={styles.inputRow}>
-                    <View style={[styles.inputContainer, { width: '40%',  }]}>
+                    <View style={[styles.inputContainer, { width: '40%', }]}>
                         <View style={styles.titleContainer}>
                             <Text style={styles.title}>Descrição</Text>
                         </View>
@@ -200,7 +195,6 @@ export default function UploadScreen() {
                             value={descricao}
                             multiline={true}
                             numberOfLines={10}
-                        
                         />
                     </View>
                 </View>
@@ -230,7 +224,7 @@ const styles = StyleSheet.create({
         backgroundColor: '#fff',
         padding: 20,
         borderRadius: 10,
-        width: '100%', // Utilizando largura total
+        width: '98%', // Utilizando largura total
         marginBottom: 10
     },
     contentContainer: {
@@ -275,7 +269,7 @@ const styles = StyleSheet.create({
     uploadButton: {
         alignItems: "center",
         justifyContent: "center",
-        backgroundColor: "#007bff", // Azul
+        backgroundColor: "#74B0FF", // Azul
         width: 135,
         height: 35,
         borderRadius: 5,
@@ -311,12 +305,11 @@ const styles = StyleSheet.create({
         backgroundColor: 'rgba(137, 137, 137, 0.1)'
     },
     categoryInput: {
-        flex: 1, // Usando flexível para ocupar todo o espaço disponível
-        height: 5,
+        width: 150,
+        marginLeft: -20,
+        height: 35,
         borderColor: "#000000",
         borderRadius: 5,
-        paddingHorizontal: 10,
-        marginBottom: 12,
         backgroundColor: 'rgba(137, 137, 137, 0.1)',
     },
     clearButton: {
@@ -381,3 +374,7 @@ const styles = StyleSheet.create({
         alignItems: 'center',
     },
 });
+<<<<<<< Updated upstream
+=======
+    
+>>>>>>> Stashed changes
