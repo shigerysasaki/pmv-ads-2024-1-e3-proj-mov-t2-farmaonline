@@ -4,7 +4,10 @@ import * as ImagePicker from "expo-image-picker";
 import { Ionicons } from '@expo/vector-icons';
 import { Picker } from '@react-native-picker/picker';
 import { useNavigation, useRoute } from '@react-navigation/native';
+<<<<<<< Updated upstream
 import Footer from '../template/footeradm';
+=======
+>>>>>>> Stashed changes
 
 export default function UploadScreen() {
     const [avatar, setAvatar] = useState(null);
@@ -205,9 +208,7 @@ export default function UploadScreen() {
                     <Text style={styles.saveButtonText}>Salvar alterações</Text>
                 </TouchableOpacity>
             </View>
-            <Footer></Footer>
         </View>
-        
     );
 }
 
@@ -373,3 +374,7 @@ const styles = StyleSheet.create({
         alignItems: 'center',
     },
 });
+<<<<<<< Updated upstream
+=======
+    
+>>>>>>> Stashed changes
