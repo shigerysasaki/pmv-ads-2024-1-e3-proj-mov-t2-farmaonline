@@ -2,7 +2,7 @@ import React from 'react';
 import { View, Image, Text, StyleSheet, TouchableOpacity, ScrollView } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 
-import Footer from '../template/footer';
+import Footeradm from '../template/footeradm';
 import Header2 from '../template/header2';
 
 const Andamento = () => {
@@ -30,7 +30,7 @@ const Andamento = () => {
         </View>
         <View style={{ marginBottom: 10 }} />
       </ScrollView>
-      <Footer />
+      <Footeradm />
     </View>
   );
 };

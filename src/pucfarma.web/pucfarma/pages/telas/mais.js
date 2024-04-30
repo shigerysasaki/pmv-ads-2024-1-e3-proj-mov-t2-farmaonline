@@ -2,25 +2,51 @@ import React, { useState } from 'react';
 import { View, Image, Text, StyleSheet, TouchableOpacity, TextInput, Tab, } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import { useNavigation } from '@react-navigation/native';
+import * as ImagePicker from 'expo-image-picker';
+import { MaterialCommunityIcons } from '@expo/vector-icons';
+
+
 
 import Footer from '../template/footer';
-import Footeradm from '../template/footeradm';
 import Header2 from '../template/header2';
 
 const Mais = () => {
- 
+  const [image, setImage] = useState(null);
+
+  const pickImage = async () => {
+    let result = await ImagePicker.launchImageLibraryAsync({
+      mediaTypes: ImagePicker.MediaTypeOptions.Images,
+      allowsEditing: true,
+      aspect: [4, 3],
+      quality: 1,
+    });
+
+    if (!result.cancelled) {
+      setImage(result.uri);
+    } else {
+      Alert.alert('Aviso', 'Você cancelou a seleção de imagem.');
+    }
+  };
 
   return (
     <View style={styles.container}>
+      <Header2 />
 
-      <Header2/>
+      <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
+      <View style={styles.img}>
+        <TouchableOpacity onPress={pickImage}>
+          <MaterialCommunityIcons name="account-circle" size={100} color="#74b0ff" />
+        </TouchableOpacity>
+      </View>
+      <Text style={styles.perfil}>Matheus Soares da Silva</Text>
+    </View>
 
       <View style={styles.tabsContainer}>
-        <TouchableOpacity style={styles.tab}onPress={() => handleTabPress('DetalhesConta')}>
+        <TouchableOpacity style={styles.tab} onPress={() => handleTabPress('DetalhesConta')}>
           <Image source={require('../../assets/perfil-de-usuario.png')} style={styles.tabIcon} />
           <Text style={styles.tabText}>Detalhes da conta</Text>
         </TouchableOpacity>
-        <TouchableOpacity style={styles.tab}onPress={() => handleTabPress('PedidosAndamento')} >
+        <TouchableOpacity style={styles.tab} onPress={() => handleTabPress('PedidosAndamento')} >
           <Image source={require('../../assets/caixa.png')} style={styles.tabIcon} />
           <Text style={styles.tabText}>Pedidos em andamento</Text>
         </TouchableOpacity>
@@ -37,7 +63,6 @@ const Mais = () => {
           <Text style={styles.tabText}>Informações da loja</Text>
         </TouchableOpacity>
       </View>
-      
 
       <View style={styles.logoutButtonContainer}>
         <TouchableOpacity style={styles.logoutButton}>
@@ -46,7 +71,7 @@ const Mais = () => {
         </TouchableOpacity>
       </View>
 
-      <Footeradm />
+      <Footer />
     </View>
   );
 };
@@ -56,23 +81,7 @@ const styles = StyleSheet.create({
   container: {
     backgroundColor: '#EEEEEE',
     flex: 1,
-    alignItems: 'center',
-  },
-  profileImageContainer: {
-    width: 150,
-    height: 150,
-    borderRadius: 75,
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  centeredContent: {
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  profileImage: {
-    width: 150,
-    height: 150,
-    borderRadius: 75,
+    alignItems: 'center'
   },
   chooseImageText: {
     marginTop: 10,
@@ -80,9 +89,8 @@ const styles = StyleSheet.create({
   },
   tabsContainer: {
     backgroundColor: 'white',
-    marginTop: 100,
     width: '95%',
-    height: '57%',
+    height: '50%',
     flexDirection: 'column',
     flexWrap: 'wrap',
   },
@@ -103,11 +111,12 @@ const styles = StyleSheet.create({
   logoutButtonContainer: {
     backgroundColor: 'white',
     marginTop: 5,
-    height:'10%' ,
+    height: '10%',
     width: '95%',
     flexDirection: 'row',
     justifyContent: 'center',
-    alignItems: 'center'
+    alignItems: 'center',
+    marginBottom: '25%'
   },
   logoutButton: {
     flexDirection: 'row',
@@ -118,6 +127,18 @@ const styles = StyleSheet.create({
   logoutButtonText: {
     color: '#FF949A'
   },
+  img:{
+    flex: 1,
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginTop: 90
+  },
+  perfil:{
+    color: '#74b0ff',
+    fontSize: 18,
+    fontWeight: 'bold',
+    marginBottom: 5
+  }
 });
 
 export default Mais;

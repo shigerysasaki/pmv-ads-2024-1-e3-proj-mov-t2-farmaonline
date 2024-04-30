@@ -16,24 +16,24 @@ const Footeradm = () => {
   return (
     <View style={styles.footer}>
       <TouchableOpacity
-        style={[styles.tab, activeTab === 'Dados' && styles.active]}
-        onPress={() => handleTabPress('Dados')}>
-        {activeTab === 'Dados' ? (
+        style={[styles.tab, activeTab === 'Home' && styles.active]}
+        onPress={() => handleTabPress('Home')}>
+        {activeTab === 'Home' ? (
           <Image source={require('../../assets/analise.png')} style={styles.icon} />
         ) : (
           <Image source={require('../../assets/analiseactive.png')} style={styles.icon} />
         )}
-        <Text style={[styles.tabLabel, activeTab === 'Dados' && styles.activeTabLabel]}>Dados</Text>
+        <Text style={[styles.tabLabel, activeTab === 'Home' && styles.activeTabLabel]}>Dados</Text>
       </TouchableOpacity>
       <TouchableOpacity
-        style={[styles.tab, activeTab === 'Produtos' && styles.active]}
-        onPress={() => handleTabPress('Produtos')}>
-        {activeTab === 'Produtos' ? (
+        style={[styles.tab, activeTab === 'Andamento' && styles.active]}
+        onPress={() => handleTabPress('Andamento')}>
+        {activeTab === 'Andamento' ? (
           <Image source={require('../../assets/camadaactive.png')} style={styles.icon} />
         ) : (
           <Image source={require('../../assets/camada.png')} style={styles.icon} />
         )}
-        <Text style={[styles.tabLabel, activeTab === 'Produtos' && styles.activeTabLabel]}>Produtos</Text>
+        <Text style={[styles.tabLabel, activeTab === 'Andamento' && styles.activeTabLabel]}>Produtos</Text>
       </TouchableOpacity>
       <TouchableOpacity
         style={[styles.tab, activeTab === 'Pedidos' && styles.active]}

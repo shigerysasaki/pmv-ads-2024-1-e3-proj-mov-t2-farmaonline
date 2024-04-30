@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { View, StyleSheet, Image, Text, ScrollView, TouchableOpacity } from 'react-native';
 import axios from 'axios';
-import Footer from '../../template/footer';
+import Footeradm from '../../template/footeradm';
+import Header2 from '../../template/header2';
 
 
 
@@ -31,7 +32,7 @@ const HomeScreen = ({ navigation }) => {
 
   return (
     <View style={styles.container}>
-
+      <Header2/>
       <View style={styles.logo}>
         <Image source={require('../../../assets/Logo1.png')} />
       </View>
@@ -85,7 +86,7 @@ const HomeScreen = ({ navigation }) => {
           <Text style={styles.buttonText}>Sair da Conta</Text>
         </View>
       </TouchableOpacity>
-      <Footer />
+      <Footeradm />
     </View>
   );
 };
@@ -101,6 +102,7 @@ const styles = StyleSheet.create({
   },
   logo: {
     flex:1,
+    marginTop: 20
   
   },
   containerVendas: {
