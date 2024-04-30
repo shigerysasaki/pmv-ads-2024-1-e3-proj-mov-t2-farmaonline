@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigation } from '@react-navigation/native';
 import {
   View,
@@ -8,44 +8,64 @@ import {
   TouchableOpacity,
   TextInput,
   Image,
+  Alert,
 } from 'react-native';
-
-const produtos = [
-  { id: '001', nome: 'Produto_001', preco: 'R$00,00', estoque: '000' },
-  { id: '002', nome: 'Produto_002', preco: 'R$00,00', estoque: '000' },
-  // ... adicione mais produtos conforme necessário
-];
 
 export default function ListaProdutos() {
   const [searchQuery, setSearchQuery] = useState('');
+  const [produtos, setProdutos] = useState([]);
   const navigation = useNavigation(); // Usando o hook de navegação aqui
+
+  useEffect(() => {
+    handleGetProdutos();
+  }, []);
+
+  const handleGetProdutos = async () => {
+    try {
+      const response = await fetch("http://10.0.2.2:5035/api/Produto", {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json',
+        }
+      });
+
+      if (!response.ok) {
+        throw new Error('Erro na requisição: ' + response.status);
+      }
+
+      const data = await response.json();
+      setProdutos(data); // Atualiza o estado com os produtos obtidos
+    } catch (error) {
+      console.error('Erro:', error);
+      // Exibir o alerta de erro
+      Alert.alert('Erro', 'Não foi possível buscar os produtos. Por favor, tente novamente mais tarde.');
+    }
+  }
 
   const renderItem = ({ item }) => (
     <View style={styles.productItem}>
-      <Text style={styles.stockInfo}>Estoque: {item.estoque}</Text>
+      <Text style={styles.stockInfo}>Estoque: {item.estoqueDisponivel}</Text>
       <View style={styles.productContent}>
         <View style={styles.imagePlaceholder}></View>
         <View style={styles.productInfo}>
-          <Text style={styles.productTitle}>{item.nome}</Text>
+          <Text style={styles.productTitle}>{item.nomeProduto}</Text>
           <Text style={styles.productDetails}>Preço individual: {item.preco}</Text>
-          <Text style={styles.productDetails}>ID do produto: {item.id}</Text>
+          <Text style={styles.productDetails}>ID do produto: {item.produtoId}</Text>
         </View>
       </View>
-      <TouchableOpacity style={styles.editButton} onPress={() => {'ProdutosEdicao'}}>
+      <TouchableOpacity style={styles.editButton} onPress={() => handleEditProduct(item.id)}>
         <Text style={styles.editButtonText}>Editar Produto</Text>
       </TouchableOpacity>
     </View>
   );
-  
-  
 
   return (
     <View style={styles.container}>
       <Text style={styles.screenTitle}>Produtos</Text>
       <View style={styles.searchContainer}>
         <View style={styles.inputIconContainer}>
-          <Image 
-            source={require('../../assets/lupa.png')} 
+          <Image
+            source={require('../../assets/lupa.png')}
             style={styles.iconStyle}
           />
           <TextInput
@@ -56,23 +76,24 @@ export default function ListaProdutos() {
           />
         </View>
       </View>
-      <TouchableOpacity style={styles.addButton} onPress={() => navigation.navigate('ProdutosEdicao')}>
+      <TouchableOpacity style={styles.addButton} onPress={() => navigation.navigate('EditarProduto')}>
         <Text style={styles.addButtonText}>+ Adicionar produto</Text>
       </TouchableOpacity>
       <FlatList
         data={produtos}
         renderItem={renderItem}
-        keyExtractor={(item) => item.id.toString()}
+        keyExtractor={(item) => item.produtoId.toString()}
       />
     </View>
   );
-  
+
 }
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: '#f5f5f5',
+
   },
   screenTitle: {
     fontSize: 24,
@@ -93,6 +114,7 @@ const styles = StyleSheet.create({
     borderRadius: 20,
     flex: 1,
     alignItems: 'center',
+
   },
   iconStyle: {
     marginLeft: 10,
@@ -106,7 +128,7 @@ const styles = StyleSheet.create({
     borderRadius: 20,
     paddingLeft: 20,
     paddingRight: 10,
-    
+
   },
 
   addButton: {
@@ -118,20 +140,21 @@ const styles = StyleSheet.create({
     marginBottom: 20, // Margem inferior
     alignSelf: 'flex-start', // Alinha o botão à esquerda da tela
   },
-  
+
   addButtonText: {
     color: '#ffffff', // Cor do texto do botão de adicionar
     fontWeight: 'bold', // Negrito para o texto do botão
     fontSize: 16, // Tamanho da fonte do texto do botão
+
   },
-  
-  
+
+
   productItem: {
     flexDirection: 'column',
     justifyContent: 'space-between', // Distribuir o conteúdo verticalmente
     backgroundColor: '#fff',
     borderColor: '#E3E3E3',
-    height: 100,
+    height: 130,
     borderWidth: 1,
     padding: 12,
     marginHorizontal: 20,
@@ -139,10 +162,10 @@ const styles = StyleSheet.create({
   },
 
   stockInfo: {
-    alignSelf: 'flex-end', // Alinhar no topo à esquerda
+    alignSelf: 'flex-end',
     fontSize: 12,
     color: '#666',
-    paddingHorizontal: 10, // Espaçamento horizontal interno
+    paddingHorizontal: 10,
   },
   productContent: {
     flexDirection: 'row',
@@ -169,19 +192,21 @@ const styles = StyleSheet.create({
     color: '#666',
   },
   editButton: {
-    backgroundColor: '#74B0FF', // Cor azul mantida para o botÃ£o de editar
-    borderRadius: 2, // Bordas arredondadas ajustadas para 2
-    paddingVertical: 5, // Preenchimento vertical mantido
-    paddingHorizontal: 10, // Preenchimento horizontal mantido
-    width: 110, // Largura definida para 76
-    height: 30, // Altura definida para 19
-    alignSelf: 'flex-end', // Alinhamento ao final do contÃªiner pai (direita)
+    backgroundColor: '#74B0FF',
+    borderRadius: 2,
+    paddingVertical: 5,
+    paddingHorizontal: 10,
+    width: 110,
+    height: 30,
+    alignSelf: 'flex-end',
+    marginBottom: 200,
   },
-  
+
+
   editButtonText: {
-    color: '#ffffff', // Cor do texto do botÃ£o de editar
-    
-    fontSize: 14, // Tamanho da fonte do texto do botÃ£o
+    color: '#ffffff',
+
+    fontSize: 14, //
   },
 
 });
