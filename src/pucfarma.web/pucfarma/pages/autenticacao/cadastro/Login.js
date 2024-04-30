@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { View, KeyboardAvoidingView, TextInput, TouchableOpacity, Text, StyleSheet, Image, Animated, Keyboard } from 'react-native';
+import { View, KeyboardAvoidingView, TextInput, TouchableOpacity, Text, StyleSheet, Image, Animated, Keyboard, Alert } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 
 export default function Login() {
@@ -7,13 +7,12 @@ export default function Login() {
   const [opacity] = useState(new Animated.Value(0));
   const [logoScale] = useState(new Animated.Value(1));
   const navigation = useNavigation();
-
+  const [email, setEmail] = useState(''); //armazenamento de email para login
+  const [senha, setSenha] = useState(''); //armazenamento de senha para login
 
   useEffect(() => {
     const keyboardDidShowListener = Keyboard.addListener('keyboardDidShow', keyboardDidShow);
     const keyboardDidHideListener = Keyboard.addListener('keyboardDidHide', keyboardDidHide);
-
-    
 
     const animateOnMount = Animated.parallel([
       Animated.spring(offset.y, {
@@ -58,6 +57,38 @@ export default function Login() {
     ]).start();
   }
 
+  const handleLogin = async () => {
+    try {
+      const response = await fetch('http://10.0.2.2:5035/api/Autenticacao/Login', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          email: email,
+          senha: senha,
+        }),
+      });
+
+      const data = await response.json();
+
+      // Verificar se o login foi bem-sucedido
+      if (response.ok) {
+        // Navegar para a próxima tela após o login bem-sucedido
+        navigation.navigate('Home');
+      } else {
+        // Exibir uma mensagem de erro se o login falhar
+        Alert.alert('Login falhou. Por favor, verifique suas credenciais.');
+        console.error(response)
+      }
+    } catch (error) {
+      console.error('Erro ao fazer login:', error);
+      alert('Algo deu errado. Por favor, tente novamente mais tarde.');
+    }
+  };
+
+  
+
   return (
     <KeyboardAvoidingView style={styles.background}>
       <View style={styles.containerlogo}>
@@ -83,27 +114,30 @@ export default function Login() {
           style={styles.input}
           placeholder="Email"
           autoCorrect={false}
-          onChangeText={() => { }}
+          onChangeText={(text) => setEmail(text)}
         />
 
         <TextInput
           style={styles.input}
           placeholder="Senha"
           autoCorrect={false}
-          onChangeText={() => { }}
+          onChangeText={(text) => setSenha(text)}
+          secureTextEntry={true}
         />
+
 
         <TouchableOpacity>
           <Text style={styles.txtRecuperarSenha}>Esqueceu sua senha? Clique aqui</Text>
         </TouchableOpacity>
 
-        <TouchableOpacity style={styles.btnSubmit}>
+        <TouchableOpacity style={styles.btnSubmit} onPress={handleLogin}>
           <Text style={styles.submitText}>Fazer Login</Text>
         </TouchableOpacity>
 
+
         <Text style={styles.textoConta}>Ainda não possui conta?</Text>
 
-        <TouchableOpacity style={styles.btnSubmit} onPress={() => navigation.navigate('EditarProduto')}>
+        <TouchableOpacity style={styles.btnSubmit} onPress={() => navigation.navigate('Mais')}>
           <Text style={styles.submitText}>Criar Conta</Text>
         </TouchableOpacity>
 
@@ -120,8 +154,8 @@ const styles = StyleSheet.create({
     backgroundColor: '#FFFFFF'
   },
   containerlogo: {
-    marginTop:50,
-    marginBottom:30,
+    marginTop: 50,
+    marginBottom: 30,
     alignItems: 'center',
     justifyContent: 'center',
 

@@ -29,13 +29,17 @@ const styles = StyleSheet.create({
     backgroundColor: '#FFFFFF',
     flexDirection: 'row',
     justifyContent: 'center',
-    alignItems: 'center'
+    alignItems: 'center',
+    
   },
   texto: {
+    marginTop:10,
     color: '#898989',
     fontSize : 20,
-    fontWeight: 'bold'
-
+    fontWeight: 'bold',
+    textAlign: 'center',
+    justifyContent:'center',
+    
   },
   back: {
     position: 'absolute',
