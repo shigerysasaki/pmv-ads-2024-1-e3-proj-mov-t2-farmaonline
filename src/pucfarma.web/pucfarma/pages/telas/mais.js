@@ -1,11 +1,8 @@
 import React, { useState } from 'react';
 import { View, Image, Text, StyleSheet, TouchableOpacity, TextInput, Tab, } from 'react-native';
-import Icon from 'react-native-vector-icons/FontAwesome';
-import { useNavigation } from '@react-navigation/native';
-
-import Footer from '../template/footer';
 import Footeradm from '../template/footeradm';
 import Header2 from '../template/header2';
+import { useNavigation } from '@react-navigation/native';
 
 const Mais = () => {
  
