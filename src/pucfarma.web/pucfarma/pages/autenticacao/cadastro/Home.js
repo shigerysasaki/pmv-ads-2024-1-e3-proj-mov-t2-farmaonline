@@ -19,15 +19,15 @@ const HomeScreen = ({ navigation }) => {
     valorTotalCartaoEntrega: 0,
     valorTotalBoletoBancario: 0,
     valorTotalDinheiro: 0,
-    valorTotalMesPix: 0,
-    valorTotalMesCartaoApp: 0,
-    valorTotalMesCartaoEntrega: 0,
-    valorTotalMesBoletoBancario: 0,
-    valorTotalMesDinheiro: 0,
+    valorMesPix: 0,
+    valorMesCartaoApp: 0,
+    valorMesCartaoEntrega: 0,
+    valorMesBoletoBancario: 0,
+    valorMesDinheiro: 0,
 
   });
   
-
+// asdasd 
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -552,8 +552,8 @@ useEffect(() => {
         </View>
         <View style={styles.boxVendas}>
           <Text style={styles.tituloVendas}>Dinheiro Movimentado</Text>
-          <Text style={styles.textoPadraoBox}>Obtido no mês: {pedidos.obitidosNoMes}</Text>
-          <Text style={styles.textoPadraoBox}>Total obtido: {pedidos.totalObtido}</Text>
+          <Text style={styles.textoPadraoBox}>Obtido no mês: {pedidos.valorTotalMes}</Text>
+          <Text style={styles.textoPadraoBox}>Total obtido: {pedidos.valorTotalMes}</Text>
         </View>
       </View>
 
@@ -569,7 +569,7 @@ useEffect(() => {
               </View>    
               <Text style={styles.textoPadraoBoxPagamento}>Vendas neste mês:{pedidos.totalPedidosPix}</Text>
               <Text style={styles.textoPadraoBoxPagamento}>Total de vendas:{pedidos.valorTotalPix}</Text>
-              <Text style={styles.textoPadraoBoxPagamento}>Vendas nesse mês(R$):{pedidos.valorTotalMesPix}</Text>
+              <Text style={styles.textoPadraoBoxPagamento}>Vendas nesse mês(R$):{pedidos.valorMesPix}</Text>
               <Text style={styles.textoPadraoBoxPagamento}>Total de vendas(R$):{pedidos.valorTotalPix}</Text>
             </View>
             <View style={styles.boxPagamento}>
@@ -581,8 +581,8 @@ useEffect(() => {
               </View>  
               <Text style={styles.textoPadraoBoxPagamento}>Quantidade de vendas (mês): {pedidos.totalPedidosCartaoApp}</Text>
               <Text style={styles.textoPadraoBoxPagamento}>Quantidade total de vendas: {pedidos.valorTotalCartaoApp}</Text>
-              <Text style={styles.textoPadraoBoxPagamento}>Vendas nesse mês(R$): {pedidos.valorTotalMesCartaoApp}</Text>
-              <Text style={styles.textoPadraoBoxPagamento}>Total de vendas(R$): {pedidos.valorTotalCartaoApp}</Text>
+              <Text style={styles.textoPadraoBoxPagamento}>Vendas nesse mês(R$): {pedidos.valorTotalCartaoApp}</Text>
+              <Text style={styles.textoPadraoBoxPagamento}>Total de vendas(R$): {pedidos.valorMesCartaoApp}</Text>
             </View>
             <View style={styles.boxPagamento}>
           <View style={styles.imagemPagamento}>
@@ -593,7 +593,7 @@ useEffect(() => {
           </View>  
           <Text style={styles.textoPadraoBoxPagamento}>Quantidade de vendas (mês): {pedidos.totalPedidosBoletoBancario}</Text>
           <Text style={styles.textoPadraoBoxPagamento}>Total de vendas: {pedidos.valorTotalBoletoBancario}</Text>
-          <Text style={styles.textoPadraoBoxPagamento}>Vendas nesse mês(R$): {pedidos.valorTotalMesBoletoBancario}</Text>
+          <Text style={styles.textoPadraoBoxPagamento}>Vendas nesse mês(R$): {pedidos.valorTotalBoletoBancario}</Text>
           <Text style={styles.textoPadraoBoxPagamento}>Total de vendas(R$): {pedidos.valorTotalBoletoBancario}</Text>
         </View>
         <View style={styles.boxPagamento}>
@@ -605,8 +605,8 @@ useEffect(() => {
           </View>  
           <Text style={styles.textoPadraoBoxPagamento}>Quantidade de vendas (mês): {pedidos.totalPedidosCartaoEntrega}</Text>
           <Text style={styles.textoPadraoBoxPagamento}>Total de vendas: {pedidos.valorTotalCartaoEntrega}</Text>
-          <Text style={styles.textoPadraoBoxPagamento}>Vendas nesse mês(R$): {pedidos.valorTotalMesCartaoEntrega}</Text>
-          <Text style={styles.textoPadraoBoxPagamento}>Total de vendas(R$): {pedidos.valorTotalCartaoEntrega}</Text>
+          <Text style={styles.textoPadraoBoxPagamento}>Vendas nesse mês(R$): {pedidos.valorTotalCartaoEntrega}</Text>
+          <Text style={styles.textoPadraoBoxPagamento}>Total de vendas(R$): {pedidos.valorMesCartaoEntrega}</Text>
         </View>
         <View style={styles.boxPagamento}>
           <View style={styles.imagemPagamento}>
@@ -617,7 +617,7 @@ useEffect(() => {
           </View>  
           <Text style={styles.textoPadraoBoxPagamento}>Quantidade de vendas (mês): {pedidos.totalPedidosDinheiro}</Text>
           <Text style={styles.textoPadraoBoxPagamento}>Total de vendas: {pedidos.valorTotalDinheiro}</Text>
-          <Text style={styles.textoPadraoBoxPagamento}>Vendas nesse mês(R$): {pedidos.valorTotalMesDinheiro}</Text>
+          <Text style={styles.textoPadraoBoxPagamento}>Vendas nesse mês(R$): {pedidos.valorMesDinheiro}</Text>
           <Text style={styles.textoPadraoBoxPagamento}>Total de vendas: {pedidos.valorTotalDinheiro}</Text>
         </View>
           </View>
