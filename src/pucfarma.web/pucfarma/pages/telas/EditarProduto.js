@@ -6,6 +6,7 @@ import { Picker } from '@react-native-picker/picker';
 import { useNavigation, useRoute } from '@react-navigation/native';
 import Footer from '../template/footeradm';
 
+
 export default function UploadScreen() {
     const [avatar, setAvatar] = useState(null);
     const [productName, setProductName] = useState("");
@@ -17,8 +18,7 @@ export default function UploadScreen() {
     const [categoria, setCategoria] = useState(0);
     const [modalVisible, setModalVisible] = useState(false);
 
-    const navigation = useNavigation(); // Navegação
-
+    const navigation = useNavigation();
     useEffect(() => {
         (async () => {
             const { status } = await ImagePicker.requestMediaLibraryPermissionsAsync();
@@ -82,12 +82,13 @@ export default function UploadScreen() {
             console.log(data);
             // Exibir o alerta de sucesso
             Alert.alert('Produto Cadastrado', 'O produto foi cadastrado com sucesso!');
-            navigation.navigate('Produtos'); // Redirecionamento para a tela de Produtos
+            navigation.replace('Produtos');
         } catch (error) {
             console.error('Erro:', error);
             // Exibir o alerta de erro
             Alert.alert('Erro', 'Não foi possível cadastrar o produto. Por favor, tente novamente mais tarde.');
         }
+
     }
 
     return (
@@ -197,9 +198,21 @@ export default function UploadScreen() {
                 </View>
             </View>
             <View style={styles.buttonContainer}>
-                <TouchableOpacity style={styles.clearButton} onPress={handleClearAll}>
-                    <Ionicons name="trash-outline" size={24} color="white" />
+                <TouchableOpacity
+                    style={{
+                        backgroundColor: '#FF7878',
+                        flexDirection: 'row',
+                        padding: 10,
+                        borderRadius: 5,
+                        marginTop: 10,
+                        alignSelf: 'flex-start',
+                    }}
+                    onPress={() => navigation.navigate('Produtos')}
+                >
+                    <Text style={{ color: 'white', fontSize: 16 }}>Cancelar</Text>
                 </TouchableOpacity>
+
+
                 <TouchableOpacity style={styles.saveButton} onPress={handleSaveChanges}>
                     <Ionicons name="checkmark" size={24} color="white" style={styles.buttonIcon} />
                     <Text style={styles.saveButtonText}>Salvar alterações</Text>
@@ -207,7 +220,7 @@ export default function UploadScreen() {
             </View>
             <Footer></Footer>
         </View>
-        
+
     );
 }
 
@@ -217,13 +230,13 @@ const styles = StyleSheet.create({
         alignItems: "center",
         justifyContent: "flex-start",
         marginVertical: 10,
-        paddingHorizontal: 5, // Adicionando margem lateral de 5
+        paddingHorizontal: 5,
     },
     whiteBackground: {
         backgroundColor: '#fff',
         padding: 20,
         borderRadius: 10,
-        width: '98%', // Utilizando largura total
+        width: '98%',
         marginBottom: 10
     },
     contentContainer: {
@@ -239,12 +252,13 @@ const styles = StyleSheet.create({
     },
     titleContainer: {
         marginBottom: 10,
-        alignItems: 'flex-end' // Alinha o título à direita
+        alignItems: 'flex-end'
     },
     title: {
-        fontSize: 14, // Reduzindo o tamanho da fonte para 14
+        fontSize: 14,
         alignSelf: "flex-start",
         marginBottom: -8
+        
     },
     avatar: {
         width: 110,
@@ -274,7 +288,7 @@ const styles = StyleSheet.create({
         borderRadius: 5,
     },
     buttonText: {
-        color: "#ffffff", // Branco
+        color: "#ffffff",
         fontWeight: "bold",
         textAlign: "center"
     },
@@ -295,7 +309,7 @@ const styles = StyleSheet.create({
         backgroundColor: 'rgba(137, 137, 137, 0.1)'
     },
     smallInput: {
-        width: '70%', // Utilizando a largura total
+        width: '70%',
         height: 35,
         borderColor: "#000000",
         borderRadius: 5,
@@ -306,7 +320,7 @@ const styles = StyleSheet.create({
     categoryInput: {
         width: 150,
         marginLeft: -20,
-        height: 35,
+        height: 50,
         borderColor: "#000000",
         borderRadius: 5,
         backgroundColor: 'rgba(137, 137, 137, 0.1)',
@@ -346,7 +360,7 @@ const styles = StyleSheet.create({
         flex: 1,
         justifyContent: "center",
         alignItems: "center",
-        backgroundColor: 'rgba(0, 123, 255, 0.2)', // Azul claro com transparência
+        backgroundColor: 'rgba(0, 123, 255, 0.2)',
     },
     modalContent: {
         backgroundColor: '#fff',

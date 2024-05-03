@@ -7,9 +7,7 @@ import Login from './pages/autenticacao/cadastro/Login';
 import Home from './pages/autenticacao/cadastro/Home';
 import EditarProduto from './pages/telas/EditarProduto';
 import Mais from './pages/telas/mais';
-
 import Produtos from './pages/produtos/Produtos';
-
 import Andamento from './pages/telas/andamento';
 import Historico from './pages/telas/Historico'
 
@@ -23,8 +21,7 @@ export default function App() {
       <Stack.Screen name="EditarProduto" component={EditarProduto} />
         <Stack.Screen name="Login" component={Login} />
         <Stack.Screen name="Cadastro" component={Cadastro} />
-        <Stack.Screen name="Home" component={Home} />
-        <Stack.Screen name="EditarProduto" component={EditarProduto} />
+        <Stack.Screen name="Home" component={Home} />        
         <Stack.Screen name="Historico" component={Historico} />
         <Stack.Screen name="Mais" component={Mais} options={{
           headerShown: false,
