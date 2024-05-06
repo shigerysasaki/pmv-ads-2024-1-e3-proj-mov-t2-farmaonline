@@ -1,15 +1,22 @@
-import React, { useState } from 'react';
+import React, { startTransition, useState } from 'react';
 import { View, Text, StyleSheet, TouchableOpacity, Image, FlatList, TextInput } from 'react-native';
 import { ScrollView } from 'react-native-gesture-handler';
+import Footer from '../template/footer';
+import Header from '../template/header'
+import { color } from 'react-native-elements/dist/helpers';
+import { Button } from 'react-native-elements';
+
+
+
 
 const categories = [
-  { id: 1, name: 'Categoria 1', style: { backgroundColor: '#f0f0f0' } },
-  { id: 2, name: 'Categoria 2', style: { backgroundColor: 'lightblue' } },
-  { id: 3, name: 'Categoria 3', style: { backgroundColor: 'lightgreen' } },
-  { id: 4, name: 'Categoria 4', style: { backgroundColor: 'lightpink' } },
-  { id: 5, name: 'Categoria 5', style: { backgroundColor: 'lightsalmon' } },
-  { id: 6, name: 'Categoria 6', style: { backgroundColor: 'lightyellow' } },
-  { id: 7, name: 'Categoria 7', style: { backgroundColor: 'lightcyan' } },
+  { id: 1, name: 'Medicamentos ', style: { backgroundColor: '#FF949A' } },
+  { id: 2, name: 'Beleza', style: { backgroundColor: '#EBE4FF' } },
+  { id: 3, name: 'Maternidade', style: { backgroundColor: '#F9E7FF' } },
+  { id: 4, name: 'Suplementos', style: { backgroundColor: '#E5FFFE' } },
+  { id: 5, name: 'Higiene', style: { backgroundColor: '#CFFFC8' } },
+  { id: 6, name: 'Produtos Infantis', style: { backgroundColor: '#C8EEFF' } },
+  { id: 7, name: 'Dermocosmeticos', style: { backgroundColor: '#FFF3C9' } },
 ];
 
 const products = [
@@ -22,6 +29,8 @@ const products = [
   { id: 7, name: 'Produto 7', image: require('../../assets/oferactive.png'), price: 49.99, category: 1 },
   // Adicione mais produtos conforme necessário
 ];
+
+
 
 const HomeScreen = () => {
   // Estado para armazenar o texto da barra de pesquisa
@@ -40,18 +49,30 @@ const HomeScreen = () => {
     product.name.toLowerCase().includes(searchText.toLowerCase())
   );
 
+
+    const comprar = () => {
+      // Lógica a ser executada quando o botão é pressionado
+      console.log('Botão pressionado');
+    };
+ 
   return (
-    <View style={styles.container}>
+    
+    
+    <ScrollView style={styles.container}>
+      
+
       {/* Barra de Pesquisa */}
       <TextInput
         style={styles.searchBar}
-        placeholder="Pesquisar produtos..."
+        placeholder="Pesquisar produto..."
+        placeholderTextColor="#74B0FF"
         onChangeText={setSearchText}
         value={searchText}
       />
-
-      {/* Categorias */}
       
+      {/* Categorias */}
+      <Text style={styles.tituloCategorias}>Categorias</Text>
+      <View style={styles.containerCategorias}>
       <ScrollView horizontal style={styles.header}>
         {categories.map(category => (
           <TouchableOpacity 
@@ -62,23 +83,30 @@ const HomeScreen = () => {
           </TouchableOpacity>
         ))}
       </ScrollView>
+      </View>  
 
       {/* Destaques */}
       <Text style={styles.highlightsTitle}>Destaques</Text>
-      <FlatList
-        data={filteredProducts}
-        horizontal
-        renderItem={({ item }) => (
-          <TouchableOpacity style={styles.productItem}>
-            <Image source={item.image} style={styles.productImage} />
-            <Text style={styles.productName}>{item.name}</Text>
-            <Text style={styles.productPrice}>${item.price.toFixed(2)}</Text>
-          </TouchableOpacity>
-        )}
-        keyExtractor={item => item.id.toString()}
-      />
-
+      <ScrollView horizontal style={styles.scrowDestaques}>
+        <FlatList
+          data={filteredProducts}
+          horizontal
+          renderItem={({ item }) => (
+            <TouchableOpacity style={styles.productItem}>
+              <Image source={item.image} style={styles.productImage} />
+              <View style={styles.textControl}>
+                <Text style={styles.productName}>{item.name}</Text>
+                <Text style={styles.avaliacao}>★ 5.0 </Text>
+                <Text style={styles.productPrice}>${item.price.toFixed(2)}</Text>
+              </View>
+              <Button title="Comprar" onPress={comprar} buttonStyle={{ width: 140, alignSelf: 'center', height:40 }}>Comprar</Button>
+            </TouchableOpacity>
+          )}
+          keyExtractor={item => item.id.toString()}
+        />
+      </ScrollView>
       {/* Outros Produtos */}
+      <View>
       <Text style={styles.otherProductsTitle}>Outros Produtos</Text>
       <FlatList
         contentContainerStyle={styles.otherProductsContainer} // Adicionando o estilo ao contêiner
@@ -87,89 +115,147 @@ const HomeScreen = () => {
         renderItem={({ item }) => (
           <TouchableOpacity style={styles.productItem}>
             <Image source={item.image} style={styles.productImage} />
-            <Text style={styles.productName}>{item.name}</Text>
-            <Text style={styles.productPrice}>${item.price.toFixed(2)}</Text>
+            <View style={styles.textControl}>
+                <Text style={styles.productName}>{item.name}</Text>
+                <Text style={styles.avaliacao}>★ 5.0 </Text>
+                <Text style={styles.productPrice}>${item.price.toFixed(2)}</Text>
+              </View>
+              <Button title="Comprar" onPress={comprar} buttonStyle={{ width: 140, alignSelf: 'center', height:40 }}>Comprar</Button>
           </TouchableOpacity>
         )}
         keyExtractor={item => item.id.toString()}
+        
       />
-    </View>
+      </View>
+      <Footer/>
+    </ScrollView>
   );
 };
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    backgroundColor: '#F4F4F4'
   },
   header: {
     flexDirection: 'row',
-    height: 50,
+    height: 40,
     marginBottom: 5,
-    borderBottomWidth: 1,
-    borderBottomColor: '#ccc',
-    padding: 5,
+    padding: 8,
     
   },
   categoryItem: {
+    height: 40,
+    padding: 10,
     paddingHorizontal: 10,
     justifyContent: 'center',
     alignItems: 'center',
     marginRight: 10,
-    borderRadius: 5,
+    borderRadius: 8,
   },
   categoryText: {
-    fontSize: 16,
+    fontSize: 10,
+    
   },
   searchBar: {
     height: 40,
-    borderColor: 'gray',
+    width: 300,
+    alignSelf: 'center',
+    textAlign: 'center',
+    borderColor: '#74B0FF',
     borderWidth: 1,
     margin: 10,
     paddingHorizontal: 10,
-    borderRadius: 5,
+    borderRadius: 20,
+  
   },
   highlightsTitle: {
     marginTop: 20,
     fontSize: 20,
-    fontWeight: 'bold',
     marginLeft: 10,
-  },
+    margin: 10,
+    color: '#74B0FF',
+    },
   productItem: {
     justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: '#f0f0f0',
+    alignItems: 'start',
+    backgroundColor: '#fff',
     borderRadius: 5,
-    width: 150, // Ajuste o tamanho conforme necessário
-    height: 200, // Ajuste o tamanho conforme necessário
+    borderColor:'#E9E9E9',
+    width: 160, // Ajuste o tamanho conforme necessário
+    height: 'auto',
     marginBottom: 10,
     marginLeft: 10, // Adiciona um espaçamento à esquerda
   },
   productImage: {
-    width: 100,
-    height: 100,
+    
+    width: 130,
+    height: 140,
+    margin: 15,
+    backgroundColor: '#E9E9E9',
+    borderColor:'#E9E9E9',
     resizeMode: 'contain', // Ajusta o modo de redimensionamento da imagem
   },
   productName: {
     fontSize: 16,
     marginTop: 5,
     textAlign: 'center',
+    color: '#74B0FF',
   },
   productPrice: {
     fontSize: 14,
-    marginTop: 5,
+    marginBottom: 5,
     textAlign: 'center',
+    color:'#26CE55',
+    textAlign: 'left',
   },
   otherProductsTitle: {
     marginTop: 20,
     fontSize: 20,
-    fontWeight: 'bold',
+    color: '#74B0FF',
     marginLeft: 10,
   },
   otherProductsContainer: {
-    padding: 10, // Adiciona um espaçamento horizontal
+    flex: 1, // Use flexbox para permitir que o contêiner cresça dinamicamente
+    padding: 10,
+    margin: 5,
     alignItems: 'center',
-    justifyContent: 'space-around'
   },
+  
+  searchIcon:{
+    height: 10,
+    width: 10,
+  },
+  tituloCategorias:{
+    color: '#74B0FF',
+    fontSize: 20,
+    margin: 8,
+
+
+  },
+  containerCategorias:{
+    height: 60,
+  },
+
+  scrowDestaques:{
+    height: 320,
+    
+  },
+
+  avaliacao:{
+    color: '#FFD260',
+    fontSize: 14,
+
+  },
+
+  textControl:{
+    textAlign:'left',
+    marginLeft: 10,
+    height: 'auto',
+  },
+
+
+
 });
 
 export default HomeScreen;
