@@ -4,22 +4,22 @@ import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from "@react-navigation/stack";
 import Cadastro from './pages/autenticacao/cadastro/Cadastro';
 import Login from './pages/autenticacao/cadastro/Login';
-import Home from './pages/autenticacao/cadastro/Home';
+import Dados from './pages/autenticacao/cadastro/Dados';
 import EditarProduto from './pages/telas/EditarProduto';
 import Produtos from './pages/produtos/Produtos';
  
 import Historico from './pages/telas/Historico';
 import Mais from './pages/telas/Mais'; 
-import HomeClente from './pages/telaClientes/HomeCliente';
+import Home from './pages/telaClientes/Home';
 const Stack = createStackNavigator();
 
 export default function App() {
   return (
     <NavigationContainer>
       <Stack.Navigator>
-      <Stack.Screen name="HomeCliente" component={HomeClente} />
-        <Stack.Screen name="Login" component={Login} />
         <Stack.Screen name="Home" component={Home} />
+        <Stack.Screen name="Login" component={Login} />
+        <Stack.Screen name="Dados" component={Dados} />
         <Stack.Screen name="Produtos" component={Produtos} />
         <Stack.Screen name="EditarProduto" component={EditarProduto} />
         <Stack.Screen name="Cadastro" component={Cadastro} />
