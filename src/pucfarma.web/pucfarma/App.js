@@ -19,6 +19,7 @@ export default function App() {
   return (
     <NavigationContainer>
       <Stack.Navigator>
+        <Stack.Screen name="Login" component={Login} />
         <Stack.Screen name="Carrinho" component={Carrinho} options={{
           headerShown: false,
           headerTransparent: true,
@@ -26,8 +27,13 @@ export default function App() {
         }} />
         <Stack.Screen name="Produtos" component={Produtos} />
         <Stack.Screen name="EditarProduto" component={EditarProduto} />
-        <Stack.Screen name="Login" component={Login} />
-        <Stack.Screen name="Cadastro" component={Cadastro} />
+
+        <Stack.Screen name="Cadastro" component={Cadastro}
+         options={{
+          headerShown: false,
+          headerTransparent: true,
+          title: '',
+        }}  />
         <Stack.Screen name="Home" component={Home} />
         <Stack.Screen name="Historico" component={Historico} />
         <Stack.Screen name="Mais" component={Mais} options={{
