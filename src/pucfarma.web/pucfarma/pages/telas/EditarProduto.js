@@ -5,6 +5,8 @@ import { Ionicons } from '@expo/vector-icons';
 import { Picker } from '@react-native-picker/picker';
 import { useNavigation, useRoute } from '@react-navigation/native';
 
+
+
 export default function UploadScreen() {
     const [avatar, setAvatar] = useState(null);
     const [productName, setProductName] = useState("");
@@ -370,4 +372,4 @@ const styles = StyleSheet.create({
         alignItems: 'center',
     },
 });
-    
+
