@@ -61,7 +61,7 @@ const Footer = () => {
 
 const styles = StyleSheet.create({
   footer: {
-    position: 'absolute',
+    
     bottom: 0,
     width: '100%',
     height: '10%',
