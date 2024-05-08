@@ -3,6 +3,8 @@ import { View, Button, Image, StyleSheet, Text, Alert } from 'react-native';
 import { TextInput } from 'react-native-paper';
 import { useNavigation } from '@react-navigation/native';
 
+import Header2 from '../../template/header2';
+
 export default function Cadastro() {
   const navigation = useNavigation();
   const [nome, setNome] = useState('');
@@ -89,6 +91,7 @@ export default function Cadastro() {
 
   return (
     <View style={styles.container}>
+      <Header2/>
       <Image source={require('../../../assets/Logo1.png')} style={styles.sair} />
       <Text style={[styles.description, { color: '#74B0FF' }]}>Para criar sua conta, preencha todos os campos.</Text>
       <TextInput

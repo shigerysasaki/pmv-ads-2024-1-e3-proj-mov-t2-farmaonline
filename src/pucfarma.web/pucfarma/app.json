@@ -3,8 +3,10 @@
     "name": "pucfarma",
     "slug": "pucfarma",
     "version": "1.0.0",
+    "permissions": ["CAMERA_ROLL"],
     "assetBundlePatterns": [
       "**/*"
     ]
   }
 }
+
