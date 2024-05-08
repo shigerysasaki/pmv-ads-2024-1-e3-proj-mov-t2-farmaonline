@@ -130,7 +130,7 @@ export default function Login() {
           <Text style={styles.txtRecuperarSenha}>Esqueceu sua senha? Clique aqui</Text>
         </TouchableOpacity>
 
-        <TouchableOpacity style={styles.btnSubmit} onPress={handleLogin}>
+        <TouchableOpacity style={styles.btnSubmit} onPress={() => navigation.navigate('Dados')}>
           <Text style={styles.submitText}>Fazer Login</Text>
         </TouchableOpacity>
 
