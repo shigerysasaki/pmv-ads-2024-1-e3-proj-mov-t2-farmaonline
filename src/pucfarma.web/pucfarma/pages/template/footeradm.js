@@ -6,7 +6,7 @@ import { useNavigation } from '@react-navigation/native';
 const Footeradm = () => {
   const navigation = useNavigation();
 
-  const [activeTab, setActiveTab] = useState('Home');
+  const [activeTab, setActiveTab] = useState('Dados');
 
   const handleTabPress = (tab) => {
     setActiveTab(tab);
@@ -16,14 +16,14 @@ const Footeradm = () => {
   return (
     <View style={styles.footer}>
       <TouchableOpacity
-        style={[styles.tab, activeTab === 'Home' && styles.active]}
-        onPress={() => handleTabPress('Home')}>
-        {activeTab === 'Home' ? (
+        style={[styles.tab, activeTab === 'Dados' && styles.active]}
+        onPress={() => handleTabPress('Dados')}>
+        {activeTab === 'Dados' ? (
           <Image source={require('../../assets/analise.png')} style={styles.icon} />
         ) : (
           <Image source={require('../../assets/analiseactive.png')} style={styles.icon} />
         )}
-        <Text style={[styles.tabLabel, activeTab === 'Home' && styles.activeTabLabel]}>Dados</Text>
+        <Text style={[styles.tabLabel, activeTab === 'Dados' && styles.activeTabLabel]}>Dados</Text>
       </TouchableOpacity>
       <TouchableOpacity
         style={[styles.tab, activeTab === 'EditarProduto' && styles.active]}
@@ -64,7 +64,7 @@ const styles = StyleSheet.create({
     position: 'absolute',
     bottom: 0,
     width: '100%',
-    height: '10%',
+    height: '9%',
     backgroundColor: '#FFFFFF',
     borderWidth: 1,
     borderRadius: 3,

@@ -18,7 +18,7 @@ const Footer = () => {
       <TouchableOpacity
         style={[styles.tab, activeTab === 'Home' && styles.active]}
         onPress={() => handleTabPress('Home')}>
-        {activeTab === 'Home' ? (
+        {activeTab === 'home' ? (
           <Image source={require('../../assets/homeactive.png')} style={styles.icon} />
         ) : (
           <Image source={require('../../assets/home.png')} style={styles.icon} />
@@ -64,7 +64,7 @@ const styles = StyleSheet.create({
     position: 'absolute',
     bottom: 0,
     width: '100%',
-    height: '10%',
+    height: '9%',
     backgroundColor: '#FFFFFF',
     borderWidth: 1,
     borderRadius: 3,
