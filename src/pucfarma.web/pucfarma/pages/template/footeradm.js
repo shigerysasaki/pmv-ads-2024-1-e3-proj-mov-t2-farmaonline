@@ -26,14 +26,14 @@ const Footeradm = () => {
         <Text style={[styles.tabLabel, activeTab === 'Dados' && styles.activeTabLabel]}>Dados</Text>
       </TouchableOpacity>
       <TouchableOpacity
-        style={[styles.tab, activeTab === 'EditarProduto' && styles.active]}
-        onPress={() => handleTabPress('EditarProduto')}>
-        {activeTab === 'EditarProduto' ? (
+        style={[styles.tab, activeTab === 'Produtos' && styles.active]}
+        onPress={() => handleTabPress('Produtos')}>
+        {activeTab === 'Produtos' ? (
           <Image source={require('../../assets/camadaactive.png')} style={styles.icon} />
         ) : (
           <Image source={require('../../assets/camada.png')} style={styles.icon} />
         )}
-        <Text style={[styles.tabLabel, activeTab === 'EditarProduto' && styles.activeTabLabel]}>Produtos</Text>
+        <Text style={[styles.tabLabel, activeTab === 'Produtos' && styles.activeTabLabel]}>Produtos</Text>
       </TouchableOpacity>
       <TouchableOpacity
         style={[styles.tab, activeTab === 'andamento' && styles.active]}
