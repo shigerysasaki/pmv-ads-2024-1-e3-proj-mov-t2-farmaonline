@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { View, Image, Text, StyleSheet, TouchableOpacity, TextInput, Tab, } from 'react-native';
-import Footeradm from '../template/footeradm';
+import Footeradm from '../template/footer';
 import Header2 from '../template/header2';
 import { useNavigation } from '@react-navigation/native';
 
