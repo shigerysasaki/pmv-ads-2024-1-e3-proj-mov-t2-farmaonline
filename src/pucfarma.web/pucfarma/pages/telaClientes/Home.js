@@ -62,80 +62,93 @@ const HomeScreen = () => {
       
 
       {/* Barra de Pesquisa */}
-      <TextInput
-        style={styles.searchBar}
-        placeholder="Pesquisar produto..."
-        placeholderTextColor="#74B0FF"
-        onChangeText={setSearchText}
-        value={searchText}
-      />
-      
-      {/* Categorias */}
-      <Text style={styles.tituloCategorias}>Categorias</Text>
-      <View style={styles.containerCategorias}>
-      <ScrollView horizontal style={styles.header}>
-        {categories.map(category => (
-          <TouchableOpacity 
-            key={category.id} 
-            style={[styles.categoryItem, category.style]}
-          >
-            <Text style={styles.categoryText}>{category.name}</Text>
-          </TouchableOpacity>
-        ))}
-      </ScrollView>
-      </View>  
+      <View style={styles.inputIconContainer}>
+          <Image
+            source={require('../../assets/lupa.png')}
+            style={styles.iconStyle}
+          />
+          <TextInput
+            style={styles.searchBar}
+            placeholder="Pesquisar produto..."
+            placeholderTextColor="#74B0FF"
+            onChangeText={setSearchText}
+            value={searchText}
+          />
+      </View>   
 
-      {/* Destaques */}
-      <Text style={styles.highlightsTitle}>Destaques</Text>
-      <ScrollView horizontal style={styles.scrowDestaques}>
-        <FlatList
-          data={filteredProducts}
-          horizontal
-          renderItem={({ item }) => (
-            <TouchableOpacity style={styles.productItem}>
-              <Image source={item.image} style={styles.productImage} />
-              <View style={styles.textControl}>
-                <Text style={styles.productName}>{item.name}</Text>
-                <Text style={styles.avaliacao}>★ 5.0 </Text>
-                <Text style={styles.productPrice}>${item.price.toFixed(2)}</Text>
-              </View>
-              <Button title="Comprar" onPress={comprar} buttonStyle={{ width: 140, alignSelf: 'center', height:40 }}>Comprar</Button>
-            </TouchableOpacity>
-          )}
-          keyExtractor={item => item.id.toString()}
-        />
-      </ScrollView>
-      {/* Outros Produtos */}
-      <View>
-      <Text style={styles.otherProductsTitle}>Outros Produtos</Text>
-      <FlatList
-        contentContainerStyle={styles.otherProductsContainer} // Adicionando o estilo ao contêiner
-        data={filteredOtherProducts}
-        numColumns={2} // Definindo para duas colunas
-        renderItem={({ item }) => (
-          <TouchableOpacity style={styles.productItem}>
-            <Image source={item.image} style={styles.productImage} />
-            <View style={styles.textControl}>
-                <Text style={styles.productName}>{item.name}</Text>
-                <Text style={styles.avaliacao}>★ 5.0 </Text>
-                <Text style={styles.productPrice}>${item.price.toFixed(2)}</Text>
-              </View>
-              <Button title="Comprar" onPress={comprar} buttonStyle={{ width: 140, alignSelf: 'center', height:40 }}>Comprar</Button>
-          </TouchableOpacity>
-        )}
-        keyExtractor={item => item.id.toString()}
+            {/* Categorias */}
+
         
-      />
-      </View>
+        <Text style={styles.tituloCategorias}>Categorias</Text>
+        <View style={styles.containerCategorias}>
+        <ScrollView horizontal style={styles.header}>
+          {categories.map(category => (
+            <TouchableOpacity 
+              key={category.id} 
+              style={[styles.categoryItem, category.style]}
+            >
+              <Text style={styles.categoryText}>{category.name}</Text>
+            </TouchableOpacity>
+          ))}
+        </ScrollView>
+        </View>  
+          
+        {/* Destaques */}
+        <Text style={styles.highlightsTitle}>Destaques</Text>
+        <ScrollView horizontal style={styles.scrowDestaques}>
+          <FlatList
+            data={filteredProducts}
+            horizontal
+            renderItem={({ item }) => (
+              <TouchableOpacity style={styles.productItem}>
+                <Image source={item.image} style={styles.productImage} />
+                <View style={styles.textControl}>
+                  <Text style={styles.productName}>{item.name}</Text>
+                  <Text style={styles.avaliacao}>★ 5.0 </Text>
+                  <Text style={styles.productPrice}>${item.price.toFixed(2)}</Text>
+                </View>
+                <Button title="Comprar" onPress={comprar} buttonStyle={{ width: 140, alignSelf: 'center', height: 40 }}>Comprar</Button>
+              </TouchableOpacity>
+            )}
+            keyExtractor={item => item.id.toString()}
+          />
+        </ScrollView>
+
+        {/* Outros Produtos */}
+        <Text style={styles.highlightsTitle}>Outros Produtos</Text>
+        <ScrollView horizontal style={styles.scrowDestaques}>
+          <FlatList
+            data={filteredProducts}
+            horizontal
+            renderItem={({ item }) => (
+              <TouchableOpacity style={styles.productItem}>
+                <Image source={item.image} style={styles.productImage} />
+                <View style={styles.textControl}>
+                  <Text style={styles.productName}>{item.name}</Text>
+                  <Text style={styles.avaliacao}>★ 5.0 </Text>
+                  <Text style={styles.productPrice}>${item.price.toFixed(2)}</Text>
+                </View>
+                <Button title="Comprar" onPress={comprar} buttonStyle={{ width: 140, alignSelf: 'center', height:40  }}>Comprar</Button>
+              </TouchableOpacity>
+            )}
+            keyExtractor={item => item.id.toString()}
+          />
+        </ScrollView>
       <Footer/>
     </ScrollView>
+    
   );
 };
 
 const styles = StyleSheet.create({
+  
+
   container: {
-    flex: 1,
-    backgroundColor: '#F4F4F4'
+    backgroundColor: '#F4F4F4',
+    width: '100%',
+    
+
+    
   },
   header: {
     flexDirection: 'row',
@@ -158,16 +171,9 @@ const styles = StyleSheet.create({
     
   },
   searchBar: {
-    height: 40,
-    width: 300,
     alignSelf: 'center',
-    textAlign: 'center',
-    borderColor: '#74B0FF',
-    borderWidth: 1,
-    margin: 10,
-    paddingHorizontal: 10,
-    borderRadius: 20,
-  
+
+    
   },
   highlightsTitle: {
     marginTop: 20,
@@ -183,13 +189,13 @@ const styles = StyleSheet.create({
     borderRadius: 5,
     borderColor:'#E9E9E9',
     width: 160, // Ajuste o tamanho conforme necessário
-    height: 'auto',
-    marginBottom: 10,
+    height: 310,
+    marginBottom: 50,
     marginLeft: 10, // Adiciona um espaçamento à esquerda
   },
   productImage: {
     
-    width: 130,
+    width: 'auto',
     height: 140,
     margin: 15,
     backgroundColor: '#E9E9E9',
@@ -238,7 +244,7 @@ const styles = StyleSheet.create({
   },
 
   scrowDestaques:{
-    height: 320,
+    height: 'auto',
     
   },
 
@@ -253,7 +259,28 @@ const styles = StyleSheet.create({
     marginLeft: 10,
     height: 'auto',
   },
+  iconStyle: {
+    marginLeft: 10,
+    marginRight: 10,
+    width: 20,
+    height: 20,
+    
+  },
+  inputIconContainer: {
+    margin:10,
+    flexDirection: 'row',
+    backgroundColor: '#fff',
+    borderRadius: 20,
+    flex: 1,
+    alignItems: 'center',
+    borderColor: '#74B0FF',
+    borderWidth: 1,
+    width:300,
+    height: 30,
+    justifyContent:'center',
+    alignSelf:'center',
 
+  },
 
 
 });
