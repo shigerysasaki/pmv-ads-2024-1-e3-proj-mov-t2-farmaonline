@@ -8,11 +8,13 @@ const HomeScreen = ({ navigation }) => {
     obitidosNoMes: 0, 
     totalObtido: 0, 
     totalPedidos: 0,
+
     totalPedidosPix: 0,
     totalPedidosCartaoApp: 0,
     totalPedidosCartaoEntrega: 0,
     totalPedidosBoletoBancario: 0,
     totalPedidosDinheiro: 0,
+
     valorTotal: 0,
     valorTotalPix: 0,
     valorTotalCartaoApp: 0,
@@ -24,9 +26,124 @@ const HomeScreen = ({ navigation }) => {
     valorMesCartaoEntrega: 0,
     valorMesBoletoBancario: 0,
     valorMesDinheiro: 0,
+    
+    totalMespix: 0,
+    totalMesCartaoApp: 0,
+    totalMesCartaoEntrega: 0,
+    totalMesBoletoBancario: 0,
+    totalMesDinheiro: 0,
 
   });
   
+
+
+// Puxar os dados do backend
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await fetch('http://10.0.2.2:5035/api/ControleVendas/Vendas/Mes/Dinheiro');
+        if (response.ok) {
+          const data = await response.json();
+          setPedidos(prevState => ({
+            ...prevState,
+            totalMesDinheiro: data,
+          }));
+        } else {
+          console.error('Erro ao buscar dados de total de pedidos:', response.statusText);
+        }
+      } catch (error) {
+        console.error('Erro ao buscar dados de total de pedidos:', error);
+      }
+    };
+
+    fetchData();
+  }, []);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await fetch('http://10.0.2.2:5035/api/ControleVendas/Vendas/Mes/BoletoBancario');
+        if (response.ok) {
+          const data = await response.json();
+          setPedidos(prevState => ({
+            ...prevState,
+            totalMesBoletoBancario: data,
+          }));
+        } else {
+          console.error('Erro ao buscar dados de total de pedidos:', response.statusText);
+        }
+      } catch (error) {
+        console.error('Erro ao buscar dados de total de pedidos:', error);
+      }
+    };
+
+    fetchData();
+  }, []);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await fetch('http://10.0.2.2:5035/api/ControleVendas/Vendas/Mes/CartaoEntrega');
+        if (response.ok) {
+          const data = await response.json();
+          setPedidos(prevState => ({
+            ...prevState,
+            totalMesCartaoEntrega: data,
+          }));
+        } else {
+          console.error('Erro ao buscar dados de total de pedidos:', response.statusText);
+        }
+      } catch (error) {
+        console.error('Erro ao buscar dados de total de pedidos:', error);
+      }
+    };
+
+    fetchData();
+  }, []);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await fetch('http://10.0.2.2:5035/api/ControleVendas/Vendas/Mes/CartaoApp');
+        if (response.ok) {
+          const data = await response.json();
+          setPedidos(prevState => ({
+            ...prevState,
+            totalMesCartaoApp: data,
+          }));
+        } else {
+          console.error('Erro ao buscar dados de total de pedidos:', response.statusText);
+        }
+      } catch (error) {
+        console.error('Erro ao buscar dados de total de pedidos:', error);
+      }
+    };
+
+    fetchData();
+  }, []);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await fetch('http://10.0.2.2:5035/api/ControleVendas/Vendas/Mes/Pix');
+        if (response.ok) {
+          const data = await response.json();
+          setPedidos(prevState => ({
+            ...prevState,
+            totalMespix: data,
+          }));
+        } else {
+          console.error('Erro ao buscar dados de total de pedidos:', response.statusText);
+        }
+      } catch (error) {
+        console.error('Erro ao buscar dados de total de pedidos:', error);
+      }
+    };
+
+    fetchData();
+  }, []);
+
 
   useEffect(() => {
     const fetchData = async () => {
@@ -529,7 +646,7 @@ const HomeScreen = ({ navigation }) => {
     fetchData();
   }, []);
 
-
+// Fim
 
 
 
@@ -567,8 +684,8 @@ const HomeScreen = ({ navigation }) => {
                 </View>
                 <Text style={styles.pixImagem}>PIX</Text>
               </View>    
-              <Text style={styles.textoPadraoBoxPagamento}>Vendas neste mês:{pedidos.totalPedidosPix}</Text>
-              <Text style={styles.textoPadraoBoxPagamento}>Total de vendas:{pedidos.valorTotalPix}</Text>
+              <Text style={styles.textoPadraoBoxPagamento}>Vendas neste mês:{pedidos.totalMespix}</Text>
+              <Text style={styles.textoPadraoBoxPagamento}>Total de vendas:{pedidos.totalPedidosPix}</Text>
               <Text style={styles.textoPadraoBoxPagamento}>Vendas nesse mês(R$):{pedidos.valorMesPix}</Text>
               <Text style={styles.textoPadraoBoxPagamento}>Total de vendas(R$):{pedidos.valorTotalPix}</Text>
             </View>
@@ -579,8 +696,8 @@ const HomeScreen = ({ navigation }) => {
                 </View>
                 <Text style={styles.pixImagem}>Cartão de Crédito</Text>
               </View>  
-              <Text style={styles.textoPadraoBoxPagamento}>Quantidade de vendas (mês): {pedidos.totalPedidosCartaoApp}</Text>
-              <Text style={styles.textoPadraoBoxPagamento}>Quantidade total de vendas: {pedidos.valorTotalCartaoApp}</Text>
+              <Text style={styles.textoPadraoBoxPagamento}>Quantidade de vendas (mês): {pedidos.totalMesCartaoApp}</Text>
+              <Text style={styles.textoPadraoBoxPagamento}>Quantidade total de vendas: {pedidos.totalPedidosCartaoApp}</Text>
               <Text style={styles.textoPadraoBoxPagamento}>Vendas nesse mês(R$): {pedidos.valorTotalCartaoApp}</Text>
               <Text style={styles.textoPadraoBoxPagamento}>Total de vendas(R$): {pedidos.valorMesCartaoApp}</Text>
             </View>
@@ -591,8 +708,8 @@ const HomeScreen = ({ navigation }) => {
             </View>
             <Text style={styles.pixImagem}>Boleto Bancário</Text>
           </View>  
-          <Text style={styles.textoPadraoBoxPagamento}>Quantidade de vendas (mês): {pedidos.totalPedidosBoletoBancario}</Text>
-          <Text style={styles.textoPadraoBoxPagamento}>Total de vendas: {pedidos.valorTotalBoletoBancario}</Text>
+          <Text style={styles.textoPadraoBoxPagamento}>Quantidade de vendas (mês): {pedidos.totalMesBoletoBancario}</Text>
+          <Text style={styles.textoPadraoBoxPagamento}>Total de vendas: {pedidos.totalPedidosBoletoBancario}</Text>
           <Text style={styles.textoPadraoBoxPagamento}>Vendas nesse mês(R$): {pedidos.valorTotalBoletoBancario}</Text>
           <Text style={styles.textoPadraoBoxPagamento}>Total de vendas(R$): {pedidos.valorTotalBoletoBancario}</Text>
         </View>
@@ -603,8 +720,8 @@ const HomeScreen = ({ navigation }) => {
             </View>
             <Text style={styles.pixImagem}>Cartão de Entrega</Text>
           </View>  
-          <Text style={styles.textoPadraoBoxPagamento}>Quantidade de vendas (mês): {pedidos.totalPedidosCartaoEntrega}</Text>
-          <Text style={styles.textoPadraoBoxPagamento}>Total de vendas: {pedidos.valorTotalCartaoEntrega}</Text>
+          <Text style={styles.textoPadraoBoxPagamento}>Quantidade de vendas (mês): {pedidos.totalMesCartaoEntrega}</Text>
+          <Text style={styles.textoPadraoBoxPagamento}>Total de vendas: {pedidos.totalPedidosCartaoEntrega}</Text>
           <Text style={styles.textoPadraoBoxPagamento}>Vendas nesse mês(R$): {pedidos.valorTotalCartaoEntrega}</Text>
           <Text style={styles.textoPadraoBoxPagamento}>Total de vendas(R$): {pedidos.valorMesCartaoEntrega}</Text>
         </View>
@@ -615,8 +732,8 @@ const HomeScreen = ({ navigation }) => {
             </View>
             <Text style={styles.pixImagem}>Dinheiro</Text>
           </View>  
-          <Text style={styles.textoPadraoBoxPagamento}>Quantidade de vendas (mês): {pedidos.totalPedidosDinheiro}</Text>
-          <Text style={styles.textoPadraoBoxPagamento}>Total de vendas: {pedidos.valorTotalDinheiro}</Text>
+          <Text style={styles.textoPadraoBoxPagamento}>Quantidade de vendas (mês): {pedidos.totalMesDinheiro}</Text>
+          <Text style={styles.textoPadraoBoxPagamento}>Total de vendas: {pedidos.totalPedidosDinheiro}</Text>
           <Text style={styles.textoPadraoBoxPagamento}>Vendas nesse mês(R$): {pedidos.valorMesDinheiro}</Text>
           <Text style={styles.textoPadraoBoxPagamento}>Total de vendas: {pedidos.valorTotalDinheiro}</Text>
         </View>
