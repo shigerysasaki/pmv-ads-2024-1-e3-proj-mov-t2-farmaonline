@@ -1,13 +1,12 @@
 import React, { startTransition, useState } from 'react';
-import { View, Text, StyleSheet, TouchableOpacity, Image, FlatList, TextInput } from 'react-native';
+import { View, Text, StyleSheet, TouchableOpacity, Image, FlatList, TextInput, Button} from 'react-native';
 import { ScrollView } from 'react-native-gesture-handler';
 import Footer from '../template/footer';
-import Header from '../template/header'
+import Header from '../template/header';
+/*
 import { color } from 'react-native-elements/dist/helpers';
 import { Button } from 'react-native-elements';
-
-
-
+*/
 
 const categories = [
   { id: 1, name: 'Medicamentos ', style: { backgroundColor: '#FF949A' } },
@@ -135,7 +134,7 @@ const HomeScreen = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#F4F4F4'
+    backgroundColor: '#F4F4F4',
   },
   header: {
     flexDirection: 'row',
@@ -253,7 +252,6 @@ const styles = StyleSheet.create({
     marginLeft: 10,
     height: 'auto',
   },
-
 
 
 });
