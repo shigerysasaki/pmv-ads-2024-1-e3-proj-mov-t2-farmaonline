@@ -8,7 +8,7 @@ import Dados from './pages/autenticacao/cadastro/Dados';
 import EditarProduto from './pages/telas/EditarProduto';
 import Produtos from './pages/telas/Produtos';
 import Historico from './pages/telas/Historico';
-import Mais from './pages/telas/mais'; 
+import Mais from './pages/telas/Mais'; 
 import Home from './pages/telaClientes/Home';
 const Stack = createStackNavigator();
 

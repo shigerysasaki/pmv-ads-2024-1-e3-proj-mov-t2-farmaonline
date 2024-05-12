@@ -3,7 +3,6 @@ import { View, Image, Text, StyleSheet, TouchableOpacity, TextInput, Tab, } from
 import Footeradm from '../template/footer';
 import Header2 from '../template/header2';
 import { useNavigation } from '@react-navigation/native';
-import Header2 from '../template/header2';
 import Footer from '../template/footer';
 
 const Mais = () => {
@@ -38,7 +37,7 @@ const Mais = () => {
           <Image source={require('../../assets/cuidado.png')} style={styles.tabIcon} />
           <Text style={styles.tabText}>Informações da loja</Text>
         </TouchableOpacity>
-      </View>
+      </View> 
 
       <View style={styles.logoutButtonContainer}>
         <TouchableOpacity style={styles.logoutButton} onPress={handleLogout}>

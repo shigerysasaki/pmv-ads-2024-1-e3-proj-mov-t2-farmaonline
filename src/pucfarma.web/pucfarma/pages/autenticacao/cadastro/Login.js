@@ -69,15 +69,17 @@ export default function Login() {
           senha: senha,
         }),
       });
-
+  
       const data = await response.json();
-
-      // Verificar se o login foi bem-sucedido
+  
       if (response.ok) {
-        // Navegar para a próxima tela após o login bem-sucedido
-        navigation.navigate('Home');
+        // Verificar se o login é do usuário "adm" com senha "adm"
+        if (email === 'adm' && senha === 'adm123456789') {
+          navigation.navigate('Dados');
+        } else {
+          navigation.navigate('Home');
+        }
       } else {
-        // Exibir uma mensagem de erro se o login falhar
         Alert.alert('Login falhou. Por favor, verifique suas credenciais.');
         console.error(response)
       }
@@ -86,6 +88,7 @@ export default function Login() {
       alert('Algo deu errado. Por favor, tente novamente mais tarde.');
     }
   };
+  
 
   
 
@@ -130,7 +133,7 @@ export default function Login() {
           <Text style={styles.txtRecuperarSenha}>Esqueceu sua senha? Clique aqui</Text>
         </TouchableOpacity>
 
-        <TouchableOpacity style={styles.btnSubmit} onPress={() => navigation.navigate('Dados')}>
+        <TouchableOpacity style={styles.btnSubmit} onPress={handleLogin}>
           <Text style={styles.submitText}>Fazer Login</Text>
         </TouchableOpacity>
 
