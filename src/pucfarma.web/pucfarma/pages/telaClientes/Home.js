@@ -16,7 +16,7 @@ const categories = [
   { id: 7, name: 'Dermocosmeticos', style: { backgroundColor: '#FFF3C9' } },
 ];
 
-const HomeScreen = () => {
+const HomeScreen = ({ navigation }) => { // Modificação aqui: Adicionando { navigation }
   const [searchText, setSearchText] = useState('');
   const [produtos, setProdutos] = useState([]);
 
@@ -80,9 +80,10 @@ const HomeScreen = () => {
           data={produtos}
           keyExtractor={item => item.produtoId.toString()}
           renderItem={({ item }) => (
-            <TouchableOpacity style={styles.productItem}>
+            <TouchableOpacity style={styles.productItem} onPress={() => navigation.navigate('ProdutosCliente', { productId: item.produtoId })}>
               <Image source={{ uri: item.fotoProduto }} style={styles.productImage} />
               <View style={styles.textControl}>
+                
                 <Text style={styles.productName}>{item.nomeProduto}</Text>
                 <Text style={styles.avaliacao}>★: {item.produtoAvaliacao}</Text>
                 <Text style={styles.textoPreco}>Preço: R${item.preco}</Text>
@@ -105,7 +106,7 @@ const HomeScreen = () => {
           data={produtos}
           keyExtractor={item => item.produtoId.toString()}
           renderItem={({ item }) => (
-            <TouchableOpacity style={styles.productItem}>
+            <TouchableOpacity style={styles.productItem} onPress={() => navigation.navigate('ProdutosCliente', { productId: item.produtoId })}>
               <Image source={{ uri: item.fotoProduto }} style={styles.productImage} />
               <View style={styles.textControl}>
                 <Text style={styles.productName}>{item.nomeProduto}</Text>
