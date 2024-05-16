@@ -1,15 +1,62 @@
 import React, { useState, useEffect } from "react";
-import { View, TouchableOpacity, Text, StyleSheet, Image, TextInput, ScrollView, Modal, Pressable } from "react-native";
+import { View, TouchableOpacity, Text, StyleSheet, Image, TextInput, ScrollView, Modal, Pressable, Keyboard } from "react-native";
 import * as ImagePicker from "expo-image-picker";
 import { useNavigation } from '@react-navigation/native';
-import { Ionicons } from '@expo/vector-icons'; // Importe o ícone de avatar
+import { Ionicons } from '@expo/vector-icons';
 import Footer from '../template/footer';
 
 export default function PerfilClienteScreen() {
     const [avatar, setAvatar] = useState(null);
     const [selectedState, setSelectedState] = useState('');
     const [modalVisible, setModalVisible] = useState(false);
+    const [keyboardIsVisible, setKeyboardIsVisible] = useState(false);
     const navigation = useNavigation();
+    const [usuario, setUsuario] = useState(null);
+
+    useEffect(() => {
+        const keyboardDidShowListener = Keyboard.addListener(
+            'keyboardDidShow',
+            () => {
+                setKeyboardIsVisible(true);
+            }
+        );
+        const keyboardDidHideListener = Keyboard.addListener(
+            'keyboardDidHide',
+            () => {
+                setKeyboardIsVisible(false);
+            }
+        );
+
+        return () => {
+            keyboardDidShowListener.remove();
+            keyboardDidHideListener.remove();
+        };
+    }, []);
+
+    useEffect(() => {
+        handleGetUsuario();
+    }, []);
+
+    const handleGetUsuario = async () => {
+        try {
+            const response = await fetch("http://10.0.2.2:5035/api/Cadastro/4", {
+                method: 'GET',
+                headers: {
+                    'Content-Type': 'application/json',
+                }
+            });
+
+            if (!response.ok) {
+                throw new Error('Erro na requisição: ' + response.status);
+            }
+
+            const data = await response.json();
+            setUsuario(data);
+            setSelectedState(data.estado);
+        } catch (error) {
+            console.error('Erro:', error);
+        }
+    }
 
     const estados = [
         'Acre',
@@ -91,21 +138,25 @@ export default function PerfilClienteScreen() {
                                 )}
                             </View>
                         </TouchableOpacity>
-                        <Text style={styles.fullNameText}>Nome completo</Text>
+                        <Text style={styles.fullNameText}></Text>
                     </View>
                     <View style={styles.inputContainer}>
                         <Text style={styles.label}>Nome Completo</Text>
                         <TextInput
                             style={styles.input}
+                            value={usuario && usuario.nomeCompleto} // Define o valor inicial do campo com base nos dados do usuário
                         />
+
                         <Text style={styles.label}>E-mail</Text>
                         <TextInput
                             style={styles.input}
+                            value={usuario && usuario.email}
                         />
                         <Text style={styles.label}>Celular</Text>
                         <TextInput
                             style={styles.input}
                             keyboardType="numeric" // Definindo o teclado como numérico
+                            value={usuario && usuario.telefone}
                         />
                     </View>
                     <View style={styles.inputContainer}>
@@ -113,18 +164,21 @@ export default function PerfilClienteScreen() {
                         <TextInput
                             style={[styles.input, { maxWidth: 200 }]} // Defina o tamanho máximo desejado
                             keyboardType="numeric" // Definindo o teclado como numérico
+                            value={usuario && usuario.cep}
                         />
                         <View style={styles.addressContainer}>
                             <View style={styles.addressInput}>
                                 <Text style={styles.label}>Cidade</Text>
                                 <TextInput
                                     style={[styles.input, { maxWidth: 200 }]}
+                                    value={usuario && usuario.cidade}
                                 />
                             </View>
                             <View style={styles.addressInput}>
                                 <Text style={styles.label}>Estado</Text>
                                 <TouchableOpacity onPress={openModal}>
                                     <Text style={[styles.input, styles.selectedStateText]}>{selectedState || 'Selecione'}</Text>
+                                    
                                 </TouchableOpacity>
                                 <Modal
                                     animationType="slide"
@@ -156,6 +210,7 @@ export default function PerfilClienteScreen() {
                         <Text style={styles.label}>Rua</Text>
                         <TextInput
                             style={styles.input}
+                            value={usuario && usuario.rua}
                         />
                         <View style={styles.addressContainer}>
                             <View style={styles.addressInput}>
@@ -163,24 +218,28 @@ export default function PerfilClienteScreen() {
                                 <TextInput
                                     style={[styles.input, { flex: 0.2 }]} // Ocupa 20% da largura
                                     keyboardType="numeric" // Definindo o teclado como numérico
+                                    value={usuario && usuario.numero}
                                 />
                             </View>
                             <View style={styles.addressInput}>
                                 <Text style={styles.label}>Complemento</Text>
                                 <TextInput
                                     style={[styles.input, { flex: 0.8 }]} // Ocupa 80% da largura
+                                    value={usuario && usuario.complemento}
                                 />
                             </View>
                         </View>
                     </View>
 
                     {/* Botão de salvar */}
-                    <TouchableOpacity onPress={saveInformation} style={styles.saveButton}>
-                        <Text style={styles.saveButtonText}>Salvar</Text>
-                    </TouchableOpacity>
+                    {!keyboardIsVisible && (
+                        <TouchableOpacity onPress={saveInformation} style={styles.saveButton}>
+                            <Text style={styles.saveButtonText}>Salvar</Text>
+                        </TouchableOpacity>
+                    )}
                 </View>
             </ScrollView>
-            <Footer />
+            {!keyboardIsVisible && <Footer />}
         </View>
     );
 }
@@ -195,7 +254,7 @@ const styles = StyleSheet.create({
     },
     scrollViewContent: {
         flexGrow: 1,
-        paddingBottom: 60, // Altura do Footer
+        paddingBottom: 10, // Altura do Footer
     },
     content: {
         flexGrow: 1,
@@ -232,14 +291,12 @@ const styles = StyleSheet.create({
     inputContainer: {
         width: '100%',
         backgroundColor: '#fff',
-        borderRadius: 10,
         padding: 10,
         marginTop: 10, // Adicionando margem ao topo
     },
     input: {
         height: 40,
         borderColor: 'gray',
-        borderWidth: 1,
         borderRadius: 5,
         marginBottom: 10,
         paddingHorizontal: 10,
@@ -297,12 +354,12 @@ const styles = StyleSheet.create({
         backgroundColor: '#74B0FF',
         paddingVertical: 10,
         borderRadius: 5,
-        width:150,
+        width: 150,
         marginTop: 25,
         marginBottom: 25,
         alignItems: 'center',
-        alignSelf: 'center',      
-        
+        alignSelf: 'center',
+
     },
     saveButtonText: {
         color: '#fff',
