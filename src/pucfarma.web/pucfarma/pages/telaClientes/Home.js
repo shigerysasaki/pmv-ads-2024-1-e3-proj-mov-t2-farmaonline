@@ -16,7 +16,7 @@ const categories = [
   { id: 7, name: 'Dermocosmeticos', style: { backgroundColor: '#FFF3C9' } },
 ];
 
-const HomeScreen = ({ navigation }) => { // Modificação aqui: Adicionando { navigation }
+const HomeScreen = ({ navigation }) => {
   const [searchText, setSearchText] = useState('');
   const [produtos, setProdutos] = useState([]);
 

@@ -41,7 +41,10 @@ const ProdutosCliente = ({ route, navigation }) => {
         </TouchableOpacity>
       </View>
 
-      <Image style={styles.productImage} source={{ uri: fotoProduto }} />
+      <Image 
+        style={styles.productImage} 
+        source={{ uri: `data:image/png;base64,${fotoProduto}` }} 
+      />
       <View style={styles.productCard}>
         <Text style={styles.productName}>{nomeProduto}</Text>
         <Text style={styles.manufacturer}>{fabricante}</Text>
