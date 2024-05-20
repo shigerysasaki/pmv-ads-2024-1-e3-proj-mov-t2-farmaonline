@@ -1,15 +1,19 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, StyleSheet, Image, TouchableOpacity, ScrollView, ActivityIndicator } from 'react-native';
+import { View, Text, StyleSheet, Image, TouchableOpacity, ScrollView, ActivityIndicator, TextInput } from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
 
 const ProdutosCliente = ({ route, navigation }) => {
-  const { productId } = route.params;
+  const { productId } = route.params; // Obtenção do productId dos parâmetros da rota
   const [productDetails, setProductDetails] = useState(null);
+  const [quantity, setQuantity] = useState(1);
 
   useEffect(() => {
     const fetchProductDetails = async () => {
       try {
         const response = await fetch(`http://10.0.2.2:5035/api/Produto/${productId}`);
+        if (!response.ok) {
+          throw new Error('Erro na requisição: ' + response.status);
+        }
         const data = await response.json();
         setProductDetails(data);
       } catch (error) {
@@ -28,7 +32,7 @@ const ProdutosCliente = ({ route, navigation }) => {
     );
   }
 
-  const { nomeProduto, fabricante, fotoProduto, preco, descricao } = productDetails;
+  const { nomeProduto, fabricante, fotoProduto, preco, descricao, avaliacoes, porcentagemDesconto } = productDetails;
 
   return (
     <ScrollView style={styles.container}>
@@ -40,16 +44,45 @@ const ProdutosCliente = ({ route, navigation }) => {
           <Icon name="ellipsis-vertical" size={24} color="#000" />
         </TouchableOpacity>
       </View>
-
-      <Image 
-        style={styles.productImage} 
-        source={{ uri: `data:image/png;base64,${fotoProduto}` }} 
-      />
+      <Image style={styles.productImage} source={{ uri: `data:image/png;base64,${fotoProduto}` }} />
       <View style={styles.productCard}>
         <Text style={styles.productName}>{nomeProduto}</Text>
         <Text style={styles.manufacturer}>{fabricante}</Text>
-        <Text style={styles.description}>{descricao}</Text>
-        <Text style={styles.price}>{`Preço: R$${preco}`}</Text>
+        <Text style={styles.rating}>{avaliacoes && avaliacoes.length > 0 ? `${avaliacoes.reduce((acc, curr) => acc + curr.nota, 0) / avaliacoes.length} (${avaliacoes.length} avaliações)` : 'Sem avaliações'}</Text>
+        <Text style={styles.lineThrough}>{`R$ ${preco.toFixed(2)}`}</Text>
+        <Text style={styles.discountPrice}>{`R$ ${(preco * (1 - porcentagemDesconto / 100)).toFixed(2)}`}</Text>
+        <View style={styles.quantitySection}>
+          <TextInput 
+            style={styles.quantityInput} 
+            keyboardType="numeric"
+            onChangeText={(text) => setQuantity(text)}
+            value={String(quantity)}
+            placeholder="Qty"
+          />
+          <TouchableOpacity style={styles.addToCartButton}>
+            <Text style={styles.addToCartText}>Adicionar ao carrinho</Text>
+          </TouchableOpacity>
+        </View>
+      </View>
+
+      <View style={styles.descriptionSection}>
+        <Text style={styles.descriptionTitle}>Descrição</Text>
+        <Text style={styles.descriptionText}>{descricao}</Text>
+      </View>
+
+      <View style={styles.reviewSection}>
+        <Text style={styles.reviewTitle}>Avaliações</Text>
+        <Text style={styles.reviewCount}>{avaliacoes ? `${avaliacoes.length} comentários` : '0 comentários'}</Text>
+        {avaliacoes && avaliacoes.map((avaliacao, index) => (
+          <View key={index} style={styles.reviewCard}>
+            <Icon name="person-circle" size={40} color="#000" />
+            <View style={styles.reviewContent}>
+              <Text style={styles.reviewerName}>{avaliacao.usuarioId} (User ID)</Text>
+              <Text style={styles.reviewerReview}>{avaliacao.comentario}</Text>
+              <Text style={styles.reviewerRating}>⭐ {avaliacao.nota}</Text>
+            </View>
+          </View>
+        ))}
       </View>
     </ScrollView>
   );
@@ -59,11 +92,6 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     padding: 10,
-  },
-  loadingContainer: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
   },
   header: {
     flexDirection: 'row',
@@ -85,28 +113,112 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.1,
     shadowRadius: 5,
     elevation: 3,
+    justifyContent: 'space-between', // Maintain vertical spacing
+    height: 190, // Adjusted to fit content
   },
   productName: {
     fontSize: 16,
     fontWeight: 'bold',
-    color: '#74B0FF',
-    marginBottom: 4,
+    color: '#74B0FF', // Darker text color for better readability
+    marginBottom: 4, // Tighter spacing
   },
   manufacturer: {
     fontSize: 14,
     color: '#666',
     marginBottom: 4,
   },
-  description: {
+  rating: {
     fontSize: 14,
-    color: '#666',
-    marginBottom: 8,
+    color: '#FFD260',
+    marginBottom: 4,
   },
-  price: {
-    fontSize: 16,
+  lineThrough: {
+    textDecorationLine: 'line-through',
+    color: '#666',
+    marginBottom: 4,
+  },
+  discountPrice: {
+    fontSize: 18,
+    color: '#26CE55', // Orange color for discount price
     fontWeight: 'bold',
-    color: '#26CE55',
+    marginBottom: 10, // More space before the quantity section
+  },
+  quantitySection: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between', // Ensure the button is aligned to the right
+  },
+  quantityInput: {
+    width: 46, // As specified
+    height: 23, // As specified
+    borderWidth: 1,
+    borderColor: '#ccc',
+    paddingVertical: 2,
+    paddingHorizontal: 5, // Reduced padding to fit the content in the given size
+    fontSize: 12,
+  },
+  addToCartButton: {
+    backgroundColor: '#74B0FF',
+    heigh: 35,
+    padding: 8, // Slightly reduced padding
+    borderRadius: 3, // Rounded corners for the button
+  },
+  addToCartText: {
+    color: '#fff',
+    fontSize: 12, // Smaller font for the button text
+  },
+  descriptionSection: {
+    backgroundColor: '#fff',
+    padding: 10,
+    borderRadius: 5,
+    marginVertical: 10,
+  },
+  descriptionTitle: {
+    fontWeight: 'bold',
+    marginBottom: 5,
+  },
+  descriptionText: {
+    color: '#666',
+  },
+  reviewSection: {
+    paddingTop: 10,
+    borderTopWidth: 1,
+    borderTopColor: '#ccc',
+    backgroundColor: '#fff'
+  },
+  reviewTitle: {
+    fontSize: 20,
+    fontWeight: 'bold',
+    marginBottom: 5,
+  },
+  reviewCount: {
+    fontSize: 16,
+    color: '#999',
+    marginBottom: 10,
+  },
+  reviewCard: {
+    flexDirection: 'row',
+    marginBottom: 10,
+    alignItems: 'center',
+    backgroundColor: '#fff'
+  },
+  reviewContent: {
+    marginLeft: 10,
+  },
+  reviewerName: {
+    fontSize: 18,
+    fontWeight: 'bold',
+    color: '#333',
+  },
+  reviewerReview: {
+    fontSize: 16,
+    color: '#666',
+  },
+  reviewerRating: {
+    fontSize: 16,
+    color: '#FFD700', // Gold color for the stars
   },
 });
+
 
 export default ProdutosCliente;
