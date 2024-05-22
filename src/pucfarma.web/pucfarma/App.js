@@ -19,7 +19,7 @@ export default function App() {
   return (
     <NavigationContainer>
       <Stack.Navigator>
-      <Stack.Screen name="DetalhesDaConta" component={DetalhesDaConta} />
+      
         <Stack.Screen name="Login" component={Login} />
         <Stack.Screen name="Dados" component={Dados} />
         <Stack.Screen name="Produtos" component={Produtos} />

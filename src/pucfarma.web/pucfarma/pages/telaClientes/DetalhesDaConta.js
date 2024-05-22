@@ -1,17 +1,24 @@
 import React, { useState, useEffect } from "react";
-import { View, TouchableOpacity, Text, StyleSheet, Image, TextInput, ScrollView, Modal, Pressable, Keyboard } from "react-native";
-import * as ImagePicker from "expo-image-picker";
+import { View, TouchableOpacity, Text, StyleSheet, TextInput, ScrollView, Modal, Pressable, Keyboard, Alert } from "react-native";
 import { useNavigation } from '@react-navigation/native';
-import { Ionicons } from '@expo/vector-icons';
 import Footer from '../template/footer';
 
 export default function PerfilClienteScreen() {
-    const [avatar, setAvatar] = useState(null);
     const [selectedState, setSelectedState] = useState('');
     const [modalVisible, setModalVisible] = useState(false);
     const [keyboardIsVisible, setKeyboardIsVisible] = useState(false);
     const navigation = useNavigation();
     const [usuario, setUsuario] = useState(null);
+    const [nomeCompleto, setNomeCompleto] = useState('');
+    const [email, setEmail] = useState('');
+    const [telefone, setTelefone] = useState('');
+    const [cep, setCep] = useState('');
+    const [estado, setEstado] = useState('');
+    const [cidade, setCidade] = useState('');
+    const [rua, setRua] = useState('');
+    const [bairro, setBairro] = useState('');
+    const [numero, setNumero] = useState('');
+    const [complemento, setComplemento] = useState('');
 
     useEffect(() => {
         const keyboardDidShowListener = Keyboard.addListener(
@@ -51,64 +58,28 @@ export default function PerfilClienteScreen() {
             }
 
             const data = await response.json();
+            console.log(data);
             setUsuario(data);
-            setSelectedState(data.estado);
+            setNomeCompleto(data.nomeCompleto);
+            setEmail(data.email);
+            setTelefone(data.telefone);
+            if (data.enderecoEntrega) {
+                setCep(data.enderecoEntrega.cep);
+                setCidade(data.enderecoEntrega.cidade);
+                setSelectedState(data.enderecoEntrega.estado);
+                setRua(data.enderecoEntrega.rua);
+                setBairro(data.enderecoEntrega.bairro);                
+                setNumero(data.enderecoEntrega.numero);
+                setComplemento(data.enderecoEntrega.complemento);
+            }
         } catch (error) {
             console.error('Erro:', error);
         }
-    }
+    };
 
     const estados = [
-        'Acre',
-        'Alagoas',
-        'Amapá',
-        'Amazonas',
-        'Bahia',
-        'Ceará',
-        'Distrito Federal',
-        'Espírito Santo',
-        'Goiás',
-        'Maranhão',
-        'Mato Grosso',
-        'Mato Grosso do Sul',
-        'Minas Gerais',
-        'Pará',
-        'Paraíba',
-        'Paraná',
-        'Pernambuco',
-        'Piauí',
-        'Rio de Janeiro',
-        'Rio Grande do Norte',
-        'Rio Grande do Sul',
-        'Rondônia',
-        'Roraima',
-        'Santa Catarina',
-        'São Paulo',
-        'Sergipe',
-        'Tocantins'
+        'Acre', 'Alagoas', 'Amapá', 'Amazonas', 'Bahia', 'Ceará', 'Distrito Federal', 'Espírito Santo', 'Goiás', 'Maranhão', 'Mato Grosso', 'Mato Grosso do Sul', 'Minas Gerais', 'Pará', 'Paraíba', 'Paraná', 'Pernambuco', 'Piauí', 'Rio de Janeiro', 'Rio Grande do Norte', 'Rio Grande do Sul', 'Rondônia', 'Roraima', 'Santa Catarina', 'São Paulo', 'Sergipe', 'Tocantins'
     ];
-
-    useEffect(() => {
-        (async () => {
-            const { status } = await ImagePicker.requestMediaLibraryPermissionsAsync();
-            if (status !== 'granted') {
-                alert('Nós precisamos dessa permissão.');
-            }
-        })();
-    }, []);
-
-    async function imagePickerCall() {
-        let result = await ImagePicker.launchImageLibraryAsync({
-            mediaTypes: ImagePicker.MediaTypeOptions.All,
-            allowsEditing: true,
-            aspect: [4, 3],
-            quality: 1,
-        });
-
-        if (!result.cancelled) {
-            setAvatar(result.assets[0].uri);
-        }
-    }
 
     const openModal = () => {
         setModalVisible(true);
@@ -118,126 +89,161 @@ export default function PerfilClienteScreen() {
         setModalVisible(false);
     };
 
-    const saveInformation = () => {
-        // Adicione sua lógica para salvar as informações aqui
-        // Por exemplo, enviar para um servidor, salvar no AsyncStorage, etc.
-        alert('Informações salvas com sucesso!');
+    const saveInformation = async () => {
+        try {
+            const updatedUsuario = {
+                ...usuario,
+                nomeCompleto,
+                email,
+                telefone,
+                enderecoEntrega: {
+                    cep,
+                    estado: selectedState,
+                    cidade,
+                    rua,
+                    bairro,
+                    numero,
+                    complemento
+                }
+            };
+
+            const response = await fetch("http://10.0.2.2:5035/api/Cadastro/4", {
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(updatedUsuario)
+            });
+
+            if (!response.ok) {
+                throw new Error('Erro na requisição: ' + response.status);
+            }
+
+            const data = await response.json();
+            Alert.alert('Dados atualizados', 'O cadastro foi atualizado com sucesso!');
+            navigation.replace('Produtos');
+        } catch (error) {
+            console.error('Erro:', error);
+            Alert.alert('Erro', 'Não foi possível atualizar o cadastro. Por favor, tente novamente mais tarde.');
+        }
     };
 
     return (
         <View style={styles.container}>
-            <ScrollView style={styles.scrollView} contentContainerStyle={styles.scrollViewContent}>
-                <View style={styles.content}>
-                    <View style={styles.whiteBackground}>
-                        <TouchableOpacity onPress={imagePickerCall}>
-                            <View style={styles.imagePicker}>
-                                {avatar ? (
-                                    <Image source={{ uri: avatar }} style={styles.avatar} />
-                                ) : (
-                                    <Ionicons name="person" size={80} color="#fff" />
-                                )}
-                            </View>
-                        </TouchableOpacity>
-                        <Text style={styles.fullNameText}></Text>
-                    </View>
-                    <View style={styles.inputContainer}>
-                        <Text style={styles.label}>Nome Completo</Text>
-                        <TextInput
-                            style={styles.input}
-                            value={usuario && usuario.nomeCompleto} // Define o valor inicial do campo com base nos dados do usuário
-                        />
-
-                        <Text style={styles.label}>E-mail</Text>
-                        <TextInput
-                            style={styles.input}
-                            value={usuario && usuario.email}
-                        />
-                        <Text style={styles.label}>Celular</Text>
-                        <TextInput
-                            style={styles.input}
-                            keyboardType="numeric" // Definindo o teclado como numérico
-                            value={usuario && usuario.telefone}
-                        />
-                    </View>
-                    <View style={styles.inputContainer}>
-                        <Text style={styles.label}>CEP</Text>
-                        <TextInput
-                            style={[styles.input, { maxWidth: 200 }]} // Defina o tamanho máximo desejado
-                            keyboardType="numeric" // Definindo o teclado como numérico
-                            value={usuario && usuario.cep}
-                        />
-                        <View style={styles.addressContainer}>
-                            <View style={styles.addressInput}>
-                                <Text style={styles.label}>Cidade</Text>
-                                <TextInput
-                                    style={[styles.input, { maxWidth: 200 }]}
-                                    value={usuario && usuario.cidade}
-                                />
-                            </View>
-                            <View style={styles.addressInput}>
-                                <Text style={styles.label}>Estado</Text>
-                                <TouchableOpacity onPress={openModal}>
-                                    <Text style={[styles.input, styles.selectedStateText]}>{selectedState || 'Selecione'}</Text>
-                                    
-                                </TouchableOpacity>
-                                <Modal
-                                    animationType="slide"
-                                    transparent={true}
-                                    visible={modalVisible}
-                                    onRequestClose={closeModal}
-                                >
-                                    <View style={styles.modalContainer}>
-                                        <View style={styles.modalContent}>
-                                            <ScrollView>
-                                                {estados.map((estado) => (
-                                                    <Pressable
-                                                        key={estado}
-                                                        style={[styles.stateOption, selectedState === estado && styles.selectedStateOption]}
-                                                        onPress={() => {
-                                                            setSelectedState(estado);
-                                                            closeModal();
-                                                        }}
-                                                    >
-                                                        <Text style={styles.stateText}>{estado}</Text>
-                                                    </Pressable>
-                                                ))}
-                                            </ScrollView>
-                                        </View>
-                                    </View>
-                                </Modal>
-                            </View>
-                        </View>
-                        <Text style={styles.label}>Rua</Text>
-                        <TextInput
-                            style={styles.input}
-                            value={usuario && usuario.rua}
-                        />
-                        <View style={styles.addressContainer}>
-                            <View style={styles.addressInput}>
-                                <Text style={styles.label}>Número</Text>
-                                <TextInput
-                                    style={[styles.input, { flex: 0.2 }]} // Ocupa 20% da largura
-                                    keyboardType="numeric" // Definindo o teclado como numérico
-                                    value={usuario && usuario.numero}
-                                />
-                            </View>
-                            <View style={styles.addressInput}>
-                                <Text style={styles.label}>Complemento</Text>
-                                <TextInput
-                                    style={[styles.input, { flex: 0.8 }]} // Ocupa 80% da largura
-                                    value={usuario && usuario.complemento}
-                                />
-                            </View>
-                        </View>
-                    </View>
-
-                    {/* Botão de salvar */}
-                    {!keyboardIsVisible && (
-                        <TouchableOpacity onPress={saveInformation} style={styles.saveButton}>
-                            <Text style={styles.saveButtonText}>Salvar</Text>
-                        </TouchableOpacity>
-                    )}
+            <ScrollView contentContainerStyle={styles.scrollViewContent}>
+                <View style={styles.inputContainer}>
+                    <Text style={styles.label}>Nome Completo</Text>
+                    <TextInput
+                        style={styles.input}
+                        value={nomeCompleto}
+                        onChangeText={text => setNomeCompleto(text)}
+                    />
+                    <Text style={styles.label}>E-mail</Text>
+                    <TextInput
+                        style={styles.input}
+                        value={email}
+                        onChangeText={text => setEmail(text)}
+                    />
+                    <Text style={styles.label}>Celular</Text>
+                    <TextInput
+                        style={styles.input}
+                        keyboardType="numeric"
+                        value={telefone}
+                        onChangeText={text => setTelefone(text)}
+                    />
                 </View>
+                <View style={styles.inputContainer}>
+                    <Text style={styles.label}>CEP</Text>
+                    <TextInput
+                        style={[styles.input, { maxWidth: 200 }]}
+                        keyboardType="numeric"
+                        value={cep}
+                        onChangeText={text => setCep(text)}
+                    />
+                    <View style={styles.addressContainer}>
+                        <View style={styles.addressInput}>
+                            <Text style={styles.label}>Cidade</Text>
+                            <TextInput
+                                style={[styles.input, { maxWidth: 200 }]}
+                                value={cidade}
+                                onChangeText={text => setCidade(text)}
+                            />
+                        </View>
+                        <View style={styles.addressInput}>
+                            <Text style={styles.label}>Estado</Text>
+                            <TouchableOpacity onPress={openModal}>
+                                <Text style={[styles.input, styles.selectedStateText]}>{selectedState || 'Selecione'}</Text>
+                            </TouchableOpacity>
+                            <Modal
+                                animationType="slide"
+                                transparent={true}
+                                visible={modalVisible}
+                                onRequestClose={closeModal}
+                            >
+                                <View style={styles.modalContainer}>
+                                    <View style={styles.modalContent}>
+                                        <ScrollView>
+                                            {estados.map((estado) => (
+                                                <Pressable
+                                                    key={estado}
+                                                    style={[styles.stateOption, selectedState === estado && styles.selectedStateOption]}
+                                                    onPress={() => {
+                                                        setSelectedState(estado);
+                                                        closeModal();
+                                                    }}
+                                                >
+                                                    <Text style={styles.stateText}>{estado}</Text>
+                                                </Pressable>
+                                            ))}
+                                        </ScrollView>
+                                    </View>
+                                </View>
+                            </Modal>
+                        </View>
+                    </View>
+                    <View style={styles.addressContainer}>
+                        <View style={styles.addressInput}>
+                            <Text style={styles.label}>Rua</Text>
+                            <TextInput
+                                style={styles.input}
+                                value={rua}
+                                onChangeText={text => setRua(text)}
+                            />
+                        </View>
+                        <View style={styles.addressInput}>
+                            <Text style={styles.label}>Bairro</Text>
+                            <TextInput
+                                style={styles.input}
+                                value={bairro}
+                                onChangeText={text => setBairro(text)}
+                            />
+                        </View>
+                    </View>
+                    <View style={styles.addressContainer}>
+                        <View style={styles.addressInput}>
+                            <Text style={styles.label}>Número</Text>
+                            <TextInput
+                                style={[styles.input, { flex: 0.2 }]}
+                                keyboardType="numeric"
+                                value={numero}
+                                onChangeText={text => setNumero(text)}
+                            />
+                        </View>
+                        <View style={styles.addressInput}>
+                            <Text style={styles.label}>Complemento</Text>
+                            <TextInput
+                                style={[styles.input, { flex: 0.8 }]}
+                                value={complemento}
+                                onChangeText={text => setComplemento(text)}
+                            />
+                        </View>
+                    </View>
+                </View>
+                {!keyboardIsVisible && (
+                    <TouchableOpacity onPress={saveInformation} style={styles.saveButton}>
+                        <Text style={styles.saveButtonText}>Salvar</Text>
+                    </TouchableOpacity>
+                )}
             </ScrollView>
             {!keyboardIsVisible && <Footer />}
         </View>
@@ -247,52 +253,16 @@ export default function PerfilClienteScreen() {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        margin: 10,
-    },
-    scrollView: {
-        flex: 1,
     },
     scrollViewContent: {
         flexGrow: 1,
-        paddingBottom: 10, // Altura do Footer
-    },
-    content: {
-        flexGrow: 1,
-        paddingHorizontal: 5,
-        backgroundColor: '#EEEEEE',
-    },
-    whiteBackground: {
-        backgroundColor: '#eee',
-        padding: 20,
-        borderRadius: 10,
-        width: '95%',
-        marginBottom: 10
-    },
-    imagePicker: {
-        width: 100,
-        height: 100,
-        backgroundColor: '#74B0FF',
-        justifyContent: 'center',
-        alignItems: 'center',
-        marginBottom: 20,
-        borderRadius: 75, // Torna a imagem circular
-        alignSelf: 'center', // Centraliza horizontalmente
-    },
-    avatar: {
-        width: '100%',
-        height: '100%',
-        borderRadius: 75, // Torna a imagem circular
-    },
-    fullNameText: {
-        fontSize: 18,
-        color: '#74B0FF',
-        textAlign: 'center',
+        padding: 10,
     },
     inputContainer: {
         width: '100%',
         backgroundColor: '#fff',
         padding: 10,
-        marginTop: 10, // Adicionando margem ao topo
+        marginTop: 10,
     },
     input: {
         height: 40,
@@ -306,12 +276,6 @@ const styles = StyleSheet.create({
         fontSize: 16,
         marginBottom: 5,
         color: '#898989',
-    },
-    sectionTitle: {
-        fontSize: 18,
-        fontWeight: 'bold',
-        marginBottom: 10,
-        color: '#74B0FF',
     },
     addressContainer: {
         flexDirection: 'row',
@@ -359,7 +323,6 @@ const styles = StyleSheet.create({
         marginBottom: 25,
         alignItems: 'center',
         alignSelf: 'center',
-
     },
     saveButtonText: {
         color: '#fff',
