@@ -89,6 +89,7 @@ export default function Produtos() {
         data={produtos.filter(produto => produto.nomeProduto.toLowerCase().includes(searchQuery.toLowerCase()))}
         renderItem={renderItem}
         keyExtractor={(item) => item.produtoId.toString()}
+        
       />
       <Footer />
     </View>
