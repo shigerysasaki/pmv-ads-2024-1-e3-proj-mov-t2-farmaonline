@@ -45,7 +45,7 @@ export default function PerfilClienteScreen() {
 
     const handleGetUsuario = async () => {
         try {
-            const response = await fetch("http://10.0.2.2:5035/api/Autenticacao/UsuarioLogado", {
+            const response = await fetch("http://10.0.2.2:5035/api/Cadastro/4", {
                 method: 'GET',
                 headers: {
                     'Content-Type': 'application/json',
@@ -64,7 +64,7 @@ export default function PerfilClienteScreen() {
                 throw new Error('Resposta vazia do servidor.');
             }
 
-            
+            // Converte a resposta para JSON
             const data = JSON.parse(responseText);
             setUsuario(data);
             setNomeCompleto(data.nomeCompleto);
@@ -98,72 +98,53 @@ export default function PerfilClienteScreen() {
     };
 
     const saveInformation = async () => {
-        try {           
-            
+        try {
             const updatedUsuario = {
-                ...usuario, 
-                nomeCompleto: nomeCompleto,
-                email: email,
-                telefone: telefone,
+                usuarioId: usuario.usuarioId,
+                nomeCompleto,
+                email,
+                telefone,
+                senha: usuario.senha,
                 enderecoEntrega: {
-                    ...usuario.enderecoEntrega, 
-                    cep: cep || '', 
-                    estado: selectedState || '',
-                    cidade: cidade || '',
-                    bairro: bairro || '',
-                    rua: rua || '',
-                    numero: numero || '',
-                    complemento: complemento || ''
-                }
+                    cep,
+                    estado: selectedState,
+                    cidade,
+                    bairro,
+                    rua,
+                    numero,
+                    complemento
+                },
+                tipoUsuario: usuario.tipoUsuario,
+                usuarioPedido: null,
+                usuarioAvaliacao: null
             };
-            console.log(updatedUsuario);
-            const response = await fetch("http://10.0.2.2:5035/api/Cadastro/" + usuario.usuarioId, {
+
+            console.log(updatedUsuario)
+            const response = await fetch("http://10.0.2.2:5035/api/Cadastro/4", {
                 method: 'PUT',
                 headers: {
                     'Content-Type': 'application/json',
                 },
-                body: JSON.stringify(updatedUsuario) 
+                body: JSON.stringify(updatedUsuario)
             });
-    
+
             if (!response.ok) {
                 const errorText = await response.text();
                 throw new Error('Erro na requisição: ' + response.status + ' - ' + errorText);
             }
-                
-            Alert.alert('Sucesso', 'Cadastro atualizado com sucesso!');
-                
+
+            const data = await response.json();
+            Alert.alert('Dados atualizados', 'O cadastro foi atualizado com sucesso!');
+            navigation.replace('Produtos');
         } catch (error) {
             console.error('Erro:', error);
             Alert.alert('Erro', 'Não foi possível atualizar o cadastro. Por favor, tente novamente mais tarde.');
         }
     };
-    
-    
 
     return (
         <View style={styles.container}>
-            <ScrollView contentContainerStyle={styles.scrollViewContent}>
-                <View style={styles.inputContainer}>
-                    <Text style={styles.label}>Nome Completo</Text>
-                    <TextInput
-                        style={styles.input}
-                        value={nomeCompleto}
-                        onChangeText={text => setNomeCompleto(text)}
-                    />
-                    <Text style={styles.label}>E-mail</Text>
-                    <TextInput
-                        style={styles.input}
-                        value={email}
-                        onChangeText={text => setEmail(text)}
-                    />
-                    <Text style={styles.label}>Celular</Text>
-                    <TextInput
-                        style={styles.input}
-                        keyboardType="numeric"
-                        value={telefone}
-                        onChangeText={text => setTelefone(text)}
-                    />
-                </View>
+            <ScrollView contentContainerStyle={styles.scrollViewContent}>               
                 <View style={styles.inputContainer}>
                     <Text style={styles.label}>CEP</Text>
                     <TextInput
