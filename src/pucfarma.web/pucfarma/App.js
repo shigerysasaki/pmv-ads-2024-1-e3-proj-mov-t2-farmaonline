@@ -13,6 +13,7 @@ import Mais from './pages/telas/Mais';
 import Home from './pages/telaClientes/Home';
 import ProdutosCliente from './pages/telaClientes/ProdutosCliente';
 import DetalhesDaConta from './pages/telaClientes/DetalhesDaConta';
+import EnderecoDeEntrega from './pages/telaClientes/EnderecoDeEntrega';
 const Stack = createStackNavigator();
 
 export default function App() {
@@ -20,6 +21,7 @@ export default function App() {
     <NavigationContainer>
       <Stack.Navigator>
       
+     
         <Stack.Screen name="Login" component={Login} />
         <Stack.Screen name="Dados" component={Dados} />
         <Stack.Screen name="Produtos" component={Produtos} />
@@ -27,7 +29,10 @@ export default function App() {
         <Stack.Screen name="Cadastro" component={Cadastro} />
         <Stack.Screen name="Historico" component={Historico} />
         <Stack.Screen name="ProdutosCliente" component={ProdutosCliente} />
-        <Stack.Screen name="DetalhesDaConta" component={DetalhesDaConta} />
+         <Stack.Screen name="DetalhesDaConta" component={DetalhesDaConta} />
+        <Stack.Screen name="EnderecoDeEntrega" component={EnderecoDeEntrega} />
+
+        
         <Stack.Screen name="Mais" component={Mais} options={{
           headerShown: false,
           headerTransparent: true,
