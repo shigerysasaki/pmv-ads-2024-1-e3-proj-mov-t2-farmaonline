@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigation } from '@react-navigation/native';
+import Footer from '../template/footeradm';
+
 import {
   View,
   Text,
@@ -11,10 +13,10 @@ import {
   Alert,
 } from 'react-native';
 
-export default function ListaProdutos() {
-  const [searchQuery, setSearchQuery] = useState('');
+export default function Produtos() {
   const [produtos, setProdutos] = useState([]);
-  const navigation = useNavigation(); // Usando o hook de navegação aqui
+  const [searchQuery, setSearchQuery] = useState('');
+  const navigation = useNavigation();
 
   useEffect(() => {
     handleGetProdutos();
@@ -34,13 +36,16 @@ export default function ListaProdutos() {
       }
 
       const data = await response.json();
-      setProdutos(data); // Atualiza o estado com os produtos obtidos
+      setProdutos(data);
     } catch (error) {
       console.error('Erro:', error);
-      // Exibir o alerta de erro
       Alert.alert('Erro', 'Não foi possível buscar os produtos. Por favor, tente novamente mais tarde.');
     }
-  }
+  };
+
+  const handleEditProduct = (id) => {
+    navigation.navigate('EditarProduto', { productId: id }); // Certifique-se de que 'EditarProduto' é o nome da tela no App.js
+  };
 
   const renderItem = ({ item }) => (
     <View style={styles.productItem}>
@@ -53,12 +58,13 @@ export default function ListaProdutos() {
           <Text style={styles.productDetails}>ID do produto: {item.produtoId}</Text>
         </View>
       </View>
-      <TouchableOpacity style={styles.editButton} onPress={() => handleEditProduct(item.id)}>
+      <TouchableOpacity style={styles.editButton} onPress={() => handleEditProduct(item.produtoId)}>
         <Text style={styles.editButtonText}>Editar Produto</Text>
       </TouchableOpacity>
     </View>
   );
 
+  
   return (
     <View style={styles.container}>
       <Text style={styles.screenTitle}>Produtos</Text>
@@ -80,21 +86,20 @@ export default function ListaProdutos() {
         <Text style={styles.addButtonText}>+ Adicionar produto</Text>
       </TouchableOpacity>
       <FlatList
-        data={produtos}
+        data={produtos.filter(produto => produto.nomeProduto.toLowerCase().includes(searchQuery.toLowerCase()))}
         renderItem={renderItem}
         keyExtractor={(item) => item.produtoId.toString()}
         
       />
+      <Footer />
     </View>
   );
-
 }
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: '#f5f5f5',
-
   },
   screenTitle: {
     fontSize: 24,
@@ -115,7 +120,6 @@ const styles = StyleSheet.create({
     borderRadius: 20,
     flex: 1,
     alignItems: 'center',
-
   },
   iconStyle: {
     marginLeft: 10,
@@ -129,9 +133,7 @@ const styles = StyleSheet.create({
     borderRadius: 20,
     paddingLeft: 20,
     paddingRight: 10,
-
   },
-
   addButton: {
     backgroundColor: "#74B0FF", // Nova cor azul claro para o botão de adicionar
     borderRadius: 2, // Bordas com curvatura menor
@@ -141,15 +143,11 @@ const styles = StyleSheet.create({
     marginBottom: 20, // Margem inferior
     alignSelf: 'flex-start', // Alinha o botão à esquerda da tela
   },
-
   addButtonText: {
     color: '#ffffff', // Cor do texto do botão de adicionar
     fontWeight: 'bold', // Negrito para o texto do botão
     fontSize: 16, // Tamanho da fonte do texto do botão
-
   },
-
-
   productItem: {
     flexDirection: 'column',
     justifyContent: 'space-between', // Distribuir o conteúdo verticalmente
@@ -161,7 +159,6 @@ const styles = StyleSheet.create({
     marginHorizontal: 20,
     marginBottom: 10,
   },
-
   stockInfo: {
     alignSelf: 'flex-end',
     fontSize: 12,
@@ -202,12 +199,8 @@ const styles = StyleSheet.create({
     alignSelf: 'flex-end',
     marginBottom: 200,
   },
-
-
   editButtonText: {
     color: '#ffffff',
-
-    fontSize: 14, //
+    fontSize: 14,
   },
-
 });
