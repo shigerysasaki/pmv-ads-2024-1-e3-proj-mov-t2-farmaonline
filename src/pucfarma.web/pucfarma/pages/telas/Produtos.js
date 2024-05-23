@@ -83,6 +83,7 @@ export default function ListaProdutos() {
         data={produtos}
         renderItem={renderItem}
         keyExtractor={(item) => item.produtoId.toString()}
+        
       />
     </View>
   );
