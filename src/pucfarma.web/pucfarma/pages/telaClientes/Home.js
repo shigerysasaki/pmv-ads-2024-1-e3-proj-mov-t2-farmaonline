@@ -1,5 +1,5 @@
 import React, { startTransition, useState } from 'react';
-import { View, Text, StyleSheet, TouchableOpacity, Image, FlatList, TextInput } from 'react-native';
+import { View, Text, StyleSheet, TouchableOpacity, Image, FlatList, TextInput, Alert  } from 'react-native';
 import { ScrollView } from 'react-native-gesture-handler';
 import Footer from '../template/footer';
 import { Button } from 'react-native-elements';
@@ -19,6 +19,13 @@ const categories = [
 const HomeScreen = ({ navigation }) => {
   const [searchText, setSearchText] = useState('');
   const [produtos, setProdutos] = useState([]);
+  const [carrinho, setCarrinho] = useState([]);
+  const [produtosFiltrados, setProdutosFiltrados] = useState([]);
+
+  const adicionarAoCarrinho = (produto) => {
+    setCarrinho([...carrinho, produto]);
+    Alert.alert('Produto Adicionado', 'O produto foi adicionado ao carrinho.');
+  };
 
   useEffect(() => {
     const fetchProdutos = async () => {
@@ -34,9 +41,21 @@ const HomeScreen = ({ navigation }) => {
     fetchProdutos();
   }, []);
 
+  // Atualiza a lista de produtos filtrados sempre que o texto da pesquisa muda
+  useEffect(() => {
+    const filteredProducts = produtos.filter(produto =>
+      produto.nomeProduto.toLowerCase().includes(searchText.toLowerCase())
+    );
+    setProdutosFiltrados(filteredProducts);
+  }, [searchText, produtos]);
+
+  
   const comprar = () => {
     console.log('Botão pressionado');
   };
+
+
+  
 
   return (
     <ScrollView style={styles.container}>
@@ -53,7 +72,9 @@ const HomeScreen = ({ navigation }) => {
           onChangeText={setSearchText}
           value={searchText}
         />
-      </View>   
+      </View>  
+      
+       
 
       {/* Categorias */}
       <Text style={styles.tituloCategorias}>Categorias</Text>
@@ -77,18 +98,17 @@ const HomeScreen = ({ navigation }) => {
       <View style={styles.horizontalScrollView}>
         <FlatList
           horizontal
-          data={produtos}
+          data={produtosFiltrados} // Alterado para usar a lista de produtos filtrados
           keyExtractor={item => item.produtoId.toString()}
           renderItem={({ item }) => (
             <TouchableOpacity style={styles.productItem} onPress={() => navigation.navigate('ProdutosCliente', { productId: item.produtoId })}>
-              <Image source={{ uri: item.fotoProduto }} style={styles.productImage} />
+              <Image source={{ uri: `data:image/png;base64,${item.fotoProduto}` }} style={styles.productImage} />
               <View style={styles.textControl}>
-                
                 <Text style={styles.productName}>{item.nomeProduto}</Text>
                 <Text style={styles.avaliacao}>★: {item.produtoAvaliacao}</Text>
                 <Text style={styles.textoPreco}>Preço: R${item.preco}</Text>
               </View>
-              <Button title="Comprar" onPress={comprar} buttonStyle={{ width: 140, alignSelf: 'center', height: 40 }} />
+              <Button title="Comprar" onPress={() => adicionarAoCarrinho(item)} buttonStyle={{ width: 140, alignSelf: 'center', height: 40 }} />
             </TouchableOpacity>
           )}
         />
@@ -103,21 +123,23 @@ const HomeScreen = ({ navigation }) => {
       <View style={styles.horizontalScrollView}>
         <FlatList
           horizontal
-          data={produtos}
+          data={produtosFiltrados} // Alterado para usar a lista de produtos filtrados
           keyExtractor={item => item.produtoId.toString()}
           renderItem={({ item }) => (
             <TouchableOpacity style={styles.productItem} onPress={() => navigation.navigate('ProdutosCliente', { productId: item.produtoId })}>
-              <Image source={{ uri: item.fotoProduto }} style={styles.productImage} />
+              <Image source={{ uri: `data:image/png;base64,${item.fotoProduto}` }} style={styles.productImage} />
               <View style={styles.textControl}>
                 <Text style={styles.productName}>{item.nomeProduto}</Text>
                 <Text style={styles.avaliacao}>★: {item.produtoAvaliacao}</Text>
                 <Text style={styles.textoPreco}>Preço: R${item.preco}</Text>
+                <Text style={styles.textoPreco}>{item.categoria}</Text>
               </View>
-              <Button title="Comprar" onPress={comprar} buttonStyle={{ width: 140, alignSelf: 'center', height: 40 }} />
+              <Button title="Comprar" onPress={() => adicionarAoCarrinho(item)} buttonStyle={{ width: 140, alignSelf: 'center', height: 40 }} />
             </TouchableOpacity>
           )}
         />
       </View>
+
 
       </ScrollView>
       <Footer/>

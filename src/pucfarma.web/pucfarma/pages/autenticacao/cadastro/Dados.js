@@ -35,6 +35,9 @@ const HomeScreen = ({ navigation }) => {
 
   });
   
+  const formatarParaReais = (valor) => {
+    return valor.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
+  };
 
 
 // Puxar os dados do backend
@@ -669,8 +672,8 @@ const HomeScreen = ({ navigation }) => {
         </View>
         <View style={styles.boxVendas}>
           <Text style={styles.tituloVendas}>Dinheiro Movimentado</Text>
-          <Text style={styles.textoPadraoBox}>Obtido no mês: {pedidos.valorTotalMes}</Text>
-          <Text style={styles.textoPadraoBox}>Total obtido: {pedidos.valorTotalMes}</Text>
+          <Text style={styles.textoPadraoBox}>Obtido no mês: {formatarParaReais(pedidos.valorTotalMes)}</Text>
+          <Text style={styles.textoPadraoBox}>Total obtido: {formatarParaReais(pedidos.valorTotal)}</Text>
         </View>
       </View>
 
@@ -686,8 +689,8 @@ const HomeScreen = ({ navigation }) => {
               </View>    
               <Text style={styles.textoPadraoBoxPagamento}>Vendas neste mês:{pedidos.totalMespix}</Text>
               <Text style={styles.textoPadraoBoxPagamento}>Total de vendas:{pedidos.totalPedidosPix}</Text>
-              <Text style={styles.textoPadraoBoxPagamento}>Vendas nesse mês(R$):{pedidos.valorMesPix}</Text>
-              <Text style={styles.textoPadraoBoxPagamento}>Total de vendas(R$):{pedidos.valorTotalPix}</Text>
+              <Text style={styles.textoPadraoBoxPagamento}>Vendas nesse mês(R$): {formatarParaReais(pedidos.valorMesPix)}</Text>
+              <Text style={styles.textoPadraoBoxPagamento}>Total de vendas(R$): {formatarParaReais(pedidos.valorTotalPix)}</Text>
             </View>
             <View style={styles.boxPagamento}>
               <View style={styles.imagemPagamento}>
@@ -698,8 +701,8 @@ const HomeScreen = ({ navigation }) => {
               </View>  
               <Text style={styles.textoPadraoBoxPagamento}>Quantidade de vendas (mês): {pedidos.totalMesCartaoApp}</Text>
               <Text style={styles.textoPadraoBoxPagamento}>Quantidade total de vendas: {pedidos.totalPedidosCartaoApp}</Text>
-              <Text style={styles.textoPadraoBoxPagamento}>Vendas nesse mês(R$): {pedidos.valorTotalCartaoApp}</Text>
-              <Text style={styles.textoPadraoBoxPagamento}>Total de vendas(R$): {pedidos.valorMesCartaoApp}</Text>
+              <Text style={styles.textoPadraoBoxPagamento}>Vendas nesse mês(R$): {formatarParaReais(pedidos.valorMesCartaoApp)}</Text>
+              <Text style={styles.textoPadraoBoxPagamento}>Total de vendas(R$): {formatarParaReais(pedidos.valorTotalCartaoApp)}</Text>
             </View>
             <View style={styles.boxPagamento}>
           <View style={styles.imagemPagamento}>
@@ -710,8 +713,8 @@ const HomeScreen = ({ navigation }) => {
           </View>  
           <Text style={styles.textoPadraoBoxPagamento}>Quantidade de vendas (mês): {pedidos.totalMesBoletoBancario}</Text>
           <Text style={styles.textoPadraoBoxPagamento}>Total de vendas: {pedidos.totalPedidosBoletoBancario}</Text>
-          <Text style={styles.textoPadraoBoxPagamento}>Vendas nesse mês(R$): {pedidos.valorTotalBoletoBancario}</Text>
-          <Text style={styles.textoPadraoBoxPagamento}>Total de vendas(R$): {pedidos.valorTotalBoletoBancario}</Text>
+          <Text style={styles.textoPadraoBoxPagamento}>Vendas nesse mês(R$): {formatarParaReais(pedidos.valorMesBoletoBancario)}</Text>
+          <Text style={styles.textoPadraoBoxPagamento}>Total de vendas(R$): {formatarParaReais(pedidos.valorTotalBoletoBancario)}</Text>
         </View>
         <View style={styles.boxPagamento}>
           <View style={styles.imagemPagamento}>
@@ -722,8 +725,8 @@ const HomeScreen = ({ navigation }) => {
           </View>  
           <Text style={styles.textoPadraoBoxPagamento}>Quantidade de vendas (mês): {pedidos.totalMesCartaoEntrega}</Text>
           <Text style={styles.textoPadraoBoxPagamento}>Total de vendas: {pedidos.totalPedidosCartaoEntrega}</Text>
-          <Text style={styles.textoPadraoBoxPagamento}>Vendas nesse mês(R$): {pedidos.valorTotalCartaoEntrega}</Text>
-          <Text style={styles.textoPadraoBoxPagamento}>Total de vendas(R$): {pedidos.valorMesCartaoEntrega}</Text>
+          <Text style={styles.textoPadraoBoxPagamento}>Vendas nesse mês(R$): {formatarParaReais(pedidos.valorMesCartaoEntrega)}</Text>
+          <Text style={styles.textoPadraoBoxPagamento}>Total de vendas(R$): {formatarParaReais(pedidos.valorTotalCartaoEntrega)}</Text>
         </View>
         <View style={styles.boxPagamento}>
           <View style={styles.imagemPagamento}>
@@ -734,8 +737,8 @@ const HomeScreen = ({ navigation }) => {
           </View>  
           <Text style={styles.textoPadraoBoxPagamento}>Quantidade de vendas (mês): {pedidos.totalMesDinheiro}</Text>
           <Text style={styles.textoPadraoBoxPagamento}>Total de vendas: {pedidos.totalPedidosDinheiro}</Text>
-          <Text style={styles.textoPadraoBoxPagamento}>Vendas nesse mês(R$): {pedidos.valorMesDinheiro}</Text>
-          <Text style={styles.textoPadraoBoxPagamento}>Total de vendas: {pedidos.valorTotalDinheiro}</Text>
+          <Text style={styles.textoPadraoBoxPagamento}>Vendas nesse mês(R$): {formatarParaReais(pedidos.valorMesDinheiro)}</Text>
+        <Text style={styles.textoPadraoBoxPagamento}>Total de vendas: {formatarParaReais(pedidos.valorTotalDinheiro)}</Text>
         </View>
           </View>
 
