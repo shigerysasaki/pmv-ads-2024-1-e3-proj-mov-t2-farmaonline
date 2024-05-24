@@ -1,11 +1,12 @@
 import React, { startTransition, useState } from 'react';
-import { View, Text, StyleSheet, TouchableOpacity, Image, FlatList, TextInput } from 'react-native';
+import { View, Text, StyleSheet, TouchableOpacity, Image, FlatList, TextInput, Button } from 'react-native';
 import { ScrollView } from 'react-native-gesture-handler';
 import Footer from '../template/footer';
 import Header from '../template/header'
+/*
 import { color } from 'react-native-elements/dist/helpers';
 import { Button } from 'react-native-elements';
-
+*/
 
 
 

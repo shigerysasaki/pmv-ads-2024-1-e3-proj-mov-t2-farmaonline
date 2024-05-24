@@ -1,9 +1,8 @@
 import React, { useState } from 'react';
-import { View, Image, Text, StyleSheet, TouchableOpacity, TextInput, Tab, } from 'react-native';
+import { View, Image, Text, StyleSheet, TouchableOpacity, TextInput, Tab, handleTabPress } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import { useNavigation } from '@react-navigation/native';
-import * as ImagePicker from 'expo-image-picker';
-import { MaterialCommunityIcons } from '@expo/vector-icons';
+
 
 
 
@@ -11,35 +10,18 @@ import Footer from '../template/footer';
 import Header2 from '../template/header2';
 
 const Mais = () => {
-  const [image, setImage] = useState(null);
+  const navigation = useNavigation();
 
-  const pickImage = async () => {
-    let result = await ImagePicker.launchImageLibraryAsync({
-      mediaTypes: ImagePicker.MediaTypeOptions.Images,
-      allowsEditing: true,
-      aspect: [4, 3],
-      quality: 1,
-    });
+  const [activeTab, setActiveTab] = useState('Home');
 
-    if (!result.cancelled) {
-      setImage(result.uri);
-    } else {
-      Alert.alert('Aviso', 'Você cancelou a seleção de imagem.');
-    }
+  const handleTabPress = (tab) => {
+    setActiveTab(tab);
+    navigation.navigate(tab);
   };
 
   return (
     <View style={styles.container}>
       <Header2 />
-
-      <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
-      <View style={styles.img}>
-        <TouchableOpacity onPress={pickImage}>
-          <MaterialCommunityIcons name="account-circle" size={100} color="#74b0ff" />
-        </TouchableOpacity>
-      </View>
-      <Text style={styles.perfil}>Matheus Soares da Silva</Text>
-    </View>
 
       <View style={styles.tabsContainer}>
         <TouchableOpacity style={styles.tab} onPress={() => handleTabPress('DetalhesConta')}>
@@ -88,6 +70,7 @@ const styles = StyleSheet.create({
     color: '#74b0ff',
   },
   tabsContainer: {
+    marginTop: 80,
     backgroundColor: 'white',
     width: '95%',
     height: '50%',

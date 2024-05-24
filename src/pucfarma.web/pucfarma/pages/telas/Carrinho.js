@@ -15,79 +15,44 @@ const Carrinho = () => {
         navigation.navigate(tab);
       };
 
-    const fetchCartItems = async () => {
-
-        const response = await fetch('http://10.0.2.2:5035/api/Carrinho/Carrinho/lista');
-      
-        if (response.ok) {
-          const productsData = await response.json();
-      
-          const cartItems = productsData.map(product => ({
-            id: product.id,
-            name: product.name,
-            price: product.price,
-            quantity: 1, 
-          }));
-      
-          setCartItems(cartItems);
-        } else {
-          console.error('Erro ao buscar dados de produtos:', response.statusText);
-        }
+      const fetchCartItems = async () => {
+        const cartItemsString = localStorage.getItem('cartItems');
+        const cartItems = cartItemsString ? JSON.parse(cartItemsString) : [];
+        setCartItems(cartItems);
       };
       
 
       const handleRemoveItem = async (itemId) => {
-        try {
-          // Envie a requisição para o controller para remover o item
-          const response = await fetch('http://10.0.2.2:5035/api/Carrinho/Carrinho/Remover', {
-            method: 'DELETE',
-          });
+        const updatedCartItems = cartItems.filter(item => item.id !== itemId);
+        setCartItems(updatedCartItems);
+        localStorage.setItem('cartItems', JSON.stringify(updatedCartItems));
+      };
       
-          // Verifique se a requisição foi bem-sucedida
-          if (response.ok) {
-            // Atualize o estado do carrinho localmente
-            const updatedCartItems = cartItems.filter(item => item.id !== itemId);
-            setCartItems(updatedCartItems);
       
-            // Atualize a interface do usuário
-            // ... (Renderize a lista de itens do carrinho, exiba mensagem de confirmação, etc.)
-          } else {
-            // Trate o erro
-            console.error('Erro ao remover item do carrinho:', response.statusText);
-            // ... (Exiba mensagem de erro para o usuário, reative o item removido, etc.)
+      const handleIncreaseQuantity = (itemId) => {
+        const updatedCartItems = cartItems.map(item => {
+          if (item.id === itemId) {
+            return { ...item, quantity: item.quantity + 1 };
           }
-        } catch (error) {
-          // Trate erros inesperados
-          console.error('Erro inesperado ao remover item do carrinho:', error);
-          // ... (Exiba mensagem de erro genérica para o usuário, redirecione para login, etc.)
-        }
+          return item;
+        });
+        setCartItems(updatedCartItems);
+        localStorage.setItem('cartItems', JSON.stringify(updatedCartItems));
+      };
+      
+      const handleDecreaseQuantity = (itemId) => {
+        const updatedCartItems = cartItems.map(item => {
+          if (item.id === itemId && item.quantity > 1) {
+            return { ...item, quantity: item.quantity - 1 };
+          }
+          return item;
+        });
+        setCartItems(updatedCartItems);
+        localStorage.setItem('cartItems', JSON.stringify(updatedCartItems));
       };
       
 
-    const handleIncreaseQuantity = (itemId) => {
-        // Função para aumentar a quantidade de um item no carrinho
-        const updatedCartItems = cartItems.map(item => {
-            if (item.id === itemId) {
-                return { ...item, quantity: item.quantity + 1 };
-            }
-            return item;
-        });
-        setCartItems(updatedCartItems);
-    };
-
-    const handleDecreaseQuantity = (itemId) => {
-        // Função para diminuir a quantidade de um item no carrinho
-        const updatedCartItems = cartItems.map(item => {
-            if (item.id === itemId && item.quantity > 1) {
-                return { ...item, quantity: item.quantity - 1 };
-            }
-            return item;
-        });
-        setCartItems(updatedCartItems);
-    };
-
     const calculateTotalPrice = () => {
-        // Função para calcular o preço total do carrinho
         return cartItems.reduce((total, item) => total + (item.price * item.quantity), 0);
     };
 
