@@ -18,17 +18,6 @@ namespace pucfarma.api.Data
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            modelBuilder.Entity<UsuarioModel>()
-                .OwnsOne(e => e.enderecoEntrega, sa =>
-                {
-                    sa.Property(a => a.estado).IsRequired();
-                    sa.Property(a => a.cidade).IsRequired();
-                    sa.Property(a => a.bairro).IsRequired();
-                    sa.Property(a => a.rua).IsRequired();
-                    sa.Property(a => a.numero).IsRequired();
-                    sa.Property(a => a.complemento);
-                });
-
             modelBuilder.Entity<FarmaciaModel>()
                 .OwnsOne(e => e.enderecoFarmacia, sa =>
                 {
