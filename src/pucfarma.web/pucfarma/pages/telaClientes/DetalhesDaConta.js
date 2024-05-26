@@ -70,13 +70,13 @@ export default function PerfilClienteScreen() {
             setNomeCompleto(data.nomeCompleto);
             setEmail(data.email);
             setTelefone(data.telefone);
-            setCep(data.enderecoEntrega.cep);
-            setCidade(data.enderecoEntrega.cidade);
-            setSelectedState(data.enderecoEntrega.estado);
-            setRua(data.enderecoEntrega.rua);
-            setBairro(data.enderecoEntrega.bairro);
-            setNumero(data.enderecoEntrega.numero);
-            setComplemento(data.enderecoEntrega.complemento);
+            setCep(data.cep);
+            setCidade(data.cidade);
+            setSelectedState(data.estado);
+            setRua(data.rua);
+            setBairro(data.bairro);
+            setNumero(data.numero);
+            setComplemento(data.complemento);
 
         } catch (error) {
             console.error('Erro:', error);
@@ -104,20 +104,18 @@ export default function PerfilClienteScreen() {
                 nomeCompleto: nomeCompleto,
                 email: email,
                 telefone: telefone,
-                enderecoEntrega: {
-                    cep: cep,
-                    estado: selectedState,
-                    cidade: cidade,
-                    bairro: bairro,
-                    rua: rua,
-                    numero: numero,
-                    complemento: complemento
-                },
+                cep: cep,
+                estado: selectedState,
+                cidade: cidade,
+                bairro: bairro,
+                rua: rua,
+                numero: numero,
+                complemento: complemento,                
                 tipoUsuario: usuario.tipoUsuario
             };
-            
-            console.log("Updated Usuario:", JSON.stringify(updatedUsuario, null, 2)); // Log para verificar o conteúdo antes do envio
-            
+
+            console.log("Updated Usuario:", JSON.stringify(updatedUsuario, null, 2)); 
+
             const response = await fetch("http://10.0.2.2:5035/api/Cadastro/" + usuario.usuarioId, {
                 method: 'PUT',
                 headers: {
@@ -125,19 +123,19 @@ export default function PerfilClienteScreen() {
                 },
                 body: JSON.stringify(updatedUsuario)
             });
-    
+
             if (!response.ok) {
                 const errorText = await response.text();
                 throw new Error('Erro na requisição: ' + response.status + ' - ' + errorText);
             }
-    
+
             Alert.alert('Sucesso', 'Cadastro atualizado com sucesso!');
         } catch (error) {
             console.error('Erro:', error);
             Alert.alert('Erro', 'Não foi possível atualizar o cadastro. Por favor, tente novamente mais tarde.');
         }
     };
-    
+
 
 
 

@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { View, TouchableOpacity, Text, StyleSheet, TextInput, ScrollView, Modal, Pressable, Keyboard, Image, Alert,  } from "react-native";
+import { View, TouchableOpacity, Text, StyleSheet, TextInput, ScrollView, Modal, Pressable, Keyboard, Image, Alert, } from "react-native";
 import { useNavigation, useRoute } from '@react-navigation/native';
 import Footer from '../template/footer';
 import Header from '../template/header';
@@ -53,40 +53,50 @@ export default function PerfilClienteScreen() {
 
     const handleGetUsuario = async () => {
         try {
-            const response = await fetch("http://10.0.2.2:5035/api/Cadastro/2", {
+            const response = await fetch("http://10.0.2.2:5035/api/Autenticacao/UsuarioLogado", {
                 method: 'GET',
                 headers: {
                     'Content-Type': 'application/json',
                 }
             });
-
+    
             if (!response.ok) {
                 const errorText = await response.text();
                 throw new Error('Erro na requisição: ' + response.status + ' - ' + errorText);
             }
-
+    
             const responseText = await response.text();
             console.log('Resposta completa:', responseText);
-
+    
             if (!responseText) {
                 throw new Error('Resposta vazia do servidor.');
             }
-
-            const data = JSON.parse(responseText);
+    
+            let data;
+            try {
+                data = JSON.parse(responseText);
+                console.log('Dados parseados:', data);
+            } catch (jsonError) {
+                console.error('Erro ao parsear JSON:', jsonError.message);
+                throw new Error('Erro ao parsear JSON: ' + jsonError.message);
+            }
+    
             setUsuario(data);
-            setCep(data.enderecoEntrega.cep);
-            setCidade(data.enderecoEntrega.cidade);
-            setSelectedState(data.enderecoEntrega.estado);
-            setRua(data.enderecoEntrega.rua);
-            setBairro(data.enderecoEntrega.bairro);
-            setNumero(data.enderecoEntrega.numero);
-            setComplemento(data.enderecoEntrega.complemento);
-
+            setCep(data.cep);
+            setCidade(data.cidade);
+            setSelectedState(data.estado);
+            setRua(data.rua);
+            setBairro(data.bairro);
+            setNumero(data.numero);
+            setComplemento(data.complemento);
+    
         } catch (error) {
             console.error('Erro:', error);
             Alert.alert('Erro', 'Não foi possível obter os dados do usuário. Por favor, tente novamente mais tarde.');
         }
     };
+    
+    
 
     const atualizarPrecoEntrega = (cep) => {
         const precoEntrega = calcularPrecoEntrega(cep);
@@ -109,39 +119,43 @@ export default function PerfilClienteScreen() {
         try {
             const updatedUsuario = {
                 usuarioId: usuario.usuarioId,
-                enderecoEntrega: {
-                    cep: cep,
-                    estado: selectedState,
-                    cidade: cidade,
-                    bairro: bairro,
-                    rua: rua,
-                    numero: numero,
-                    complemento: complemento
-                },
+                senha: usuario.senha,
+                nomeCompleto: usuario.nomeCompleto,
+                email: usuario.email,
+                telefone: usuario.telefone,
+                cep: cep,
+                estado: selectedState,
+                cidade: cidade,
+                bairro: bairro,
+                rua: rua,
+                numero: numero,
+                complemento: complemento,                
+                tipoUsuario: usuario.tipoUsuario
             };
-
-            console.log(updatedUsuario);
-            const response = await fetch("http://10.0.2.2:5035/api/Cadastro/2", {
+    
+            console.log("Updated Usuario:", JSON.stringify(updatedUsuario, null, 2)); 
+    
+            const response = await fetch("http://10.0.2.2:5035/api/Cadastro/" + usuario.usuarioId, {
                 method: 'PUT',
                 headers: {
                     'Content-Type': 'application/json',
                 },
                 body: JSON.stringify(updatedUsuario)
             });
-
+  
             if (!response.ok) {
                 const errorText = await response.text();
                 throw new Error('Erro na requisição: ' + response.status + ' - ' + errorText);
             }
-
-            const data = await response.json();
-            Alert.alert('Dados atualizados', 'O cadastro foi atualizado com sucesso!');
-            navigation.replace('Produtos');
+             
+            Alert.alert('Dados atualizados', 'O Endereço foi atualizado com sucesso!');
+            navigation.navigate('Selecionarpagamento')
         } catch (error) {
             console.error('Erro:', error);
             Alert.alert('Erro', 'Não foi possível atualizar o cadastro. Por favor, tente novamente mais tarde.');
         }
     };
+    
 
     const estados = [
         'Acre', 'Alagoas', 'Amapá', 'Amazonas', 'Bahia', 'Ceará', 'Distrito Federal', 'Espírito Santo', 'Goiás', 'Maranhão', 'Mato Grosso', 'Mato Grosso do Sul', 'Minas Gerais', 'Pará', 'Paraíba', 'Paraná', 'Pernambuco', 'Piauí', 'Rio de Janeiro', 'Rio Grande do Norte', 'Rio Grande do Sul', 'Rondônia', 'Roraima', 'Santa Catarina', 'São Paulo', 'Sergipe', 'Tocantins'
@@ -262,7 +276,7 @@ export default function PerfilClienteScreen() {
                     </View>
 
                     {!keyboardIsVisible && (
-                        <TouchableOpacity style={styles.selecionarPagamento} onPress={() => navigation.navigate('Selecionarpagamento')}>
+                        <TouchableOpacity style={styles.selecionarPagamento} onPress={saveInformation}>
                             <Text style={styles.pagamentoText}>Selecionar forma de pagamento</Text>
                             <Image source={require('../../assets/iconSeta.png')} style={styles.tabIcon} />
                         </TouchableOpacity>
@@ -272,8 +286,8 @@ export default function PerfilClienteScreen() {
             </View>
         </View>
     );
-        
-    
+
+
 }
 
 const styles = StyleSheet.create({
@@ -307,7 +321,7 @@ const styles = StyleSheet.create({
         padding: 10,
         marginTop: 10,
     },
-   
+
     addresstopoText: {
         color: '#74B0FF',
         fontWeight: 'bold',
@@ -387,7 +401,7 @@ const styles = StyleSheet.create({
         marginTop: 20,
 
         padding: 20,
-        alignItems: 'flex-end', // Adicionado para alinhar todos os itens à direita
+        alignItems: 'flex-end', 
     },
 
     summaryText: {
@@ -399,7 +413,7 @@ const styles = StyleSheet.create({
     summaryTextTotal: {
         fontSize: 18,
         color: '#26CE55',
-        fontWeight: 'bold', // Adicionado para deixar o texto em negrito
+        fontWeight: 'bold', 
     },
 
 
@@ -413,22 +427,22 @@ const styles = StyleSheet.create({
         marginTop: 25,
         marginBottom: 25,
         alignItems: 'center',
-        alignSelf: 'flex-end', // Alinha o componente à direita
-        flexDirection: 'row', // Dispor os elementos em uma linha
-        justifyContent: 'space-between', // Espaçamento igual entre os elementos
-        position: 'relative', // Permite posicionar o ícone absolutamente em relação ao botão
+        alignSelf: 'flex-end', 
+        flexDirection: 'row', 
+        justifyContent: 'space-between', 
+        position: 'relative', 
     },
     pagamentoText: {
         color: '#fff',
         fontSize: 16,
         fontWeight: 'bold',
-        textAlign: 'left', // Alinha o texto à esquerda
+        textAlign: 'left', 
     },
     tabIcon: {
         width: 40,
         height: 40,
-        position: 'absolute', // Posiciona o ícone absolutamente em relação ao botão
-        right: 1, // Ajusta a posição do ícone à direita
-        alignSelf: 'center', // Centraliza o ícone verticalmente
+        position: 'absolute', 
+        right: 1, 
+        alignSelf: 'center', 
     },
 });
