@@ -23,7 +23,7 @@ export default function App() {
   return (
     <NavigationContainer>
       <Stack.Navigator>
-
+      
         <Stack.Screen name="Login" component={Login} />
         <Stack.Screen name="Dados" component={Dados} />
         <Stack.Screen name="Produtos" component={Produtos} />
@@ -32,9 +32,10 @@ export default function App() {
         <Stack.Screen name="Historico" component={Historico} />
         <Stack.Screen name="Carrinho" component={Carrinho} />
         <Stack.Screen name="ProdutosCliente" component={ProdutosCliente} />
-
         <Stack.Screen name="DetalhesDaConta" component={DetalhesDaConta} />
         <Stack.Screen name="EnderecoDeEntrega" component={EnderecoDeEntrega} />
+        
+       
         <Stack.Screen name="Mais" component={Mais} options={{
           headerShown: false,
           headerTransparent: true,

@@ -114,7 +114,7 @@ const Carrinho = () => {
 
             <View style={styles.final}>
                 <Text style={styles.total}>Subtotal: R${calculateTotalPrice().toFixed(2)}</Text>
-                <TouchableOpacity style={styles.entrega} onPress={() => {/* Função para prosseguir para o checkout */ }}>
+                <TouchableOpacity style={styles.entrega} onPress={() => navigation.navigate('EnderecoDeEntrega', { subtotal: calculateTotalPrice() })}>
                     <Text style={styles.entregatext}>Informar endereço de entrega</Text>
                     <Image source={require('../../assets/seta.png')} style={styles.tabIcon} />
                 </TouchableOpacity>
