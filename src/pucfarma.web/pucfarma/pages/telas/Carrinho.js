@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, Button, StyleSheet, Image, TouchableOpacity, ScrollView, handleTabPress } from 'react-native';
+import { View, Text, Button, StyleSheet, Image, TouchableOpacity, ScrollView, handleTabPress, localStorage } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 import Footer from '../template/footer';
 import Header from '../template/header';
@@ -13,47 +14,58 @@ const Carrinho = () => {
     const handleTabPress = (tab) => {
         setActiveTab(tab);
         navigation.navigate(tab);
-      };
+    };
 
-      const fetchCartItems = async () => {
-        const cartItemsString = localStorage.getItem('cartItems');
-        const cartItems = cartItemsString ? JSON.parse(cartItemsString) : [];
-        setCartItems(cartItems);
-      };
-      
+    useEffect(() => {
+        const getCartItems = async () => {
+            try {
+                const storedCartItems = await AsyncStorage.getItem('cartItems');
+                if (storedCartItems) {
+                    setCartItems(JSON.parse(storedCartItems));
+                }
+            } catch (error) {
+                console.error('Erro ao recuperar itens do carrinho:', error);
+            }
+        };
+        getCartItems();
+    }, []);    
 
-      const handleRemoveItem = async (itemId) => {
-        const updatedCartItems = cartItems.filter(item => item.id !== itemId);
-        setCartItems(updatedCartItems);
-        localStorage.setItem('cartItems', JSON.stringify(updatedCartItems));
+    const handleRemoveItem = (itemId) => {
+        const itemIndex = cartItems.findIndex((item) => item.id === itemId);
+        if (itemIndex !== -1) {
+          const updatedCartItems = [...cartItems];
+          updatedCartItems.splice(itemIndex, 1);
+          setCartItems(updatedCartItems);
+          AsyncStorage.setItem('cartItems', JSON.stringify(updatedCartItems));
+        } else {
+          console.warn(`Item with ID ${itemId} not found in cart`);
+        }
       };
-      
-      
+        
       const handleIncreaseQuantity = (itemId) => {
-        const updatedCartItems = cartItems.map(item => {
-          if (item.id === itemId) {
-            return { ...item, quantity: item.quantity + 1 };
-          }
-          return item;
-        });
+        const updatedCartItems = cartItems.map((item) =>
+          item.id === itemId ? { ...item, quantity: item.quantity + 1 } : item
+        );
+      
         setCartItems(updatedCartItems);
-        localStorage.setItem('cartItems', JSON.stringify(updatedCartItems));
+        AsyncStorage.setItem('cartItems', JSON.stringify(updatedCartItems));
       };
       
       const handleDecreaseQuantity = (itemId) => {
-        const updatedCartItems = cartItems.map(item => {
-          if (item.id === itemId && item.quantity > 1) {
-            return { ...item, quantity: item.quantity - 1 };
+        const updatedCartItems = cartItems.map((item) => {
+          if (item.id === itemId) {
+            const newQuantity = item.quantity - 1;
+            return newQuantity > 0 ? { ...item, quantity: newQuantity } : null;
           }
           return item;
-        });
-        setCartItems(updatedCartItems);
-        localStorage.setItem('cartItems', JSON.stringify(updatedCartItems));
-      };
+        }).filter((item) => item !== null);
       
-
-    const calculateTotalPrice = () => {
-        return cartItems.reduce((total, item) => total + (item.price * item.quantity), 0);
+        setCartItems(updatedCartItems);
+        AsyncStorage.setItem('cartItems', JSON.stringify(updatedCartItems));
+      };
+            
+    const getTotalPrice = () => {
+        return cartItems.reduce((acc, item) => acc + (item.preco * item.quantity), 0);
     };
 
     return (
@@ -65,20 +77,19 @@ const Carrinho = () => {
                         <View style={styles.emptyCart}>
                             <Image source={require('../../assets/sacola.png')} style={styles.imagempty} />
                             <Text style={styles.emptyCartText}>Seu carrinho está vazio !</Text>
-                            <TouchableOpacity style={styles.entrega}  onPress={() => handleTabPress('Home')}>
+                            <TouchableOpacity style={styles.entrega} onPress={() => handleTabPress('Home')}>
                                 <Text style={styles.entregatext}>Conferir produtos</Text>
                             </TouchableOpacity>
                         </View>
                     ) : (
                         <>
                             <Text style={styles.title}>Seu Carrinho</Text>
-                            {cartItems.map(item => (
+                            {cartItems.map((item) => (
                                 <View key={item.id} style={styles.itemContainer}>
                                     <Image source={require('../../assets/imageicon.png')} style={styles.image} />
                                     <View style={styles.productInfo}>
-                                        <Text style={styles.nome}>{item.name}</Text>
-                                        <Text style={styles.valor1}>R${item.price.toFixed(2)}</Text>
-                                        <Text style={styles.valor}>Total: R${(item.price * item.quantity).toFixed(2)}</Text>
+                                        <Text style={styles.cartItemName}>{item.nomeProduto}</Text>
+                                        <Text style={styles.cartItemPrice}>{`R$ ${(item.preco * item.quantity).toFixed(2)}`}</Text>
                                     </View>
                                     <View style={styles.buttonsContainer}>
                                         <Text style={styles.quantidade}>{item.quantity}</Text>
@@ -93,6 +104,7 @@ const Carrinho = () => {
                                         <Image source={require('../../assets/lixeira.png')} style={styles.tabIcon} />
                                     </TouchableOpacity>
                                 </View>
+                                
                             ))}
                         </>
                     )}
@@ -100,8 +112,8 @@ const Carrinho = () => {
             </View>
 
             <View style={styles.final}>
-                <Text style={styles.total}>Subtotal: R${calculateTotalPrice().toFixed(2)}</Text>
-                <TouchableOpacity style={styles.entrega} onPress={() => navigation.navigate('EnderecoDeEntrega', { subtotal: calculateTotalPrice() })}>
+            <Text style={styles.total}>Subtotal: R${getTotalPrice().toFixed(2)}</Text>
+                <TouchableOpacity style={styles.entrega} onPress={() => navigation.navigate('EnderecoDeEntrega', { subtotal: getTotalPrice() })}>
                     <Text style={styles.entregatext}>Informar endereço de entrega</Text>
                     <Image source={require('../../assets/seta.png')} style={styles.tabIcon} />
                 </TouchableOpacity>

@@ -1,8 +1,8 @@
 import React, { startTransition, useState } from 'react';
-import { View, Text, StyleSheet, TouchableOpacity, Image, FlatList, TextInput, Alert  } from 'react-native';
+import { View, Text, StyleSheet, TouchableOpacity, Image, FlatList, TextInput, Alert, Button  } from 'react-native';
 import { ScrollView } from 'react-native-gesture-handler';
 import Footer from '../template/footer';
-import { Button } from 'react-native-elements';
+/*import { Button } from 'react-native-elements';*/
 import { useEffect } from 'react';
 
 

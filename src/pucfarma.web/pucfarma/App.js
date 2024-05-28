@@ -29,7 +29,12 @@ export default function App() {
         <Stack.Screen name="EditarProduto" component={EditarProduto} />
         <Stack.Screen name="Cadastro" component={Cadastro} />
         <Stack.Screen name="Historico" component={Historico} />
-        <Stack.Screen name="Carrinho" component={Carrinho} />
+        <Stack.Screen name="Carrinho" component={Carrinho}options={{
+          headerShown: false,
+          headerTransparent: true,
+          title: '',
+        }} 
+         />
         <Stack.Screen name="ProdutosCliente" component={ProdutosCliente} />
         <Stack.Screen name="DetalhesDaConta" component={DetalhesDaConta} />
         <Stack.Screen name="EnderecoDeEntrega" component={EnderecoDeEntrega} />
