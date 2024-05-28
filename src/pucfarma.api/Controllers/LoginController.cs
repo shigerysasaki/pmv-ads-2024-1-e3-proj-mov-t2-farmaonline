@@ -64,5 +64,19 @@ namespace pucfarma.api.Controllers
 
             return Ok(new { message = "Logout bem-sucedido." });
         }
+
+        [HttpGet("UsuarioLogado")]
+        public async Task<ActionResult<UsuarioModel>> GetIdUsuario()
+        {
+            var idUsuario = Convert.ToInt32(User.FindFirstValue(ClaimTypes.NameIdentifier));
+            var usuarioModel = await _context.Usuarios.FindAsync(idUsuario);
+
+            if (usuarioModel == null)
+            {
+                return NotFound();
+            }
+
+            return usuarioModel;
+        }
     }
 }

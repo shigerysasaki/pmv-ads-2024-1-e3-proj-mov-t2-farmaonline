@@ -24,7 +24,7 @@ const Mais = () => {
       <Header2 />
 
       <View style={styles.tabsContainer}>
-        <TouchableOpacity style={styles.tab} onPress={() => handleTabPress('DetalhesConta')}>
+      <TouchableOpacity style={styles.tab} onPress={() => navigation.navigate('DetalhesDaConta')}>
           <Image source={require('../../assets/perfil-de-usuario.png')} style={styles.tabIcon} />
           <Text style={styles.tabText}>Detalhes da conta</Text>
         </TouchableOpacity>

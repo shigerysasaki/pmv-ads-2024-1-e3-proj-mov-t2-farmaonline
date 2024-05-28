@@ -1,14 +1,15 @@
 import React, { useState, useEffect } from "react";
-import { View, TouchableOpacity, Text, StyleSheet, Image, TextInput, Alert, Modal, Button } from "react-native";
+import { View, TouchableOpacity, Text, StyleSheet, Image, TextInput, Alert } from "react-native";
 import * as ImagePicker from "expo-image-picker";
+import * as FileSystem from "expo-file-system";
 import { Ionicons } from '@expo/vector-icons';
 import { Picker } from '@react-native-picker/picker';
 import { useNavigation, useRoute } from '@react-navigation/native';
 import Footer from '../template/footeradm';
 
-
-export default function UploadScreen() {
+export default function EditarProduto() {
     const [avatar, setAvatar] = useState(null);
+    const [base64Image, setBase64Image] = useState("");
     const [productName, setProductName] = useState("");
     const [fabricante, setFabricante] = useState("");
     const [quantidadeEstoque, setQuantidadeEstoque] = useState("");
@@ -16,9 +17,11 @@ export default function UploadScreen() {
     const [tipoOferta, setTipoOferta] = useState("");
     const [descricao, setDescricao] = useState("");
     const [categoria, setCategoria] = useState(0);
-    const [modalVisible, setModalVisible] = useState(false);
 
     const navigation = useNavigation();
+    const route = useRoute();
+    const { productId } = route.params;
+
     useEffect(() => {
         (async () => {
             const { status } = await ImagePicker.requestMediaLibraryPermissionsAsync();
@@ -26,7 +29,39 @@ export default function UploadScreen() {
                 alert('Nós precisamos dessa permissão.');
             }
         })();
-    }, []);
+
+        if (productId) {
+            fetchProductDetails(productId);
+        }
+    }, [productId]);
+
+    const fetchProductDetails = async (id) => {
+        try {
+            const response = await fetch(`http://10.0.2.2:5035/api/Produto/${id}`, {
+                method: 'GET',
+                headers: {
+                    'Content-Type': 'application/json',
+                }
+            });
+
+            if (!response.ok) {
+                throw new Error('Erro na requisição: ' + response.status);
+            }
+
+            const data = await response.json();
+            setProductName(data.nomeProduto);
+            setFabricante(data.fabricante);
+            setQuantidadeEstoque(data.estoqueDisponivel.toString());
+            setPrecoNormal(data.preco.toString());
+            setTipoOferta(data.porcentagemDesconto.toString());
+            setDescricao(data.descricao);
+            setCategoria(data.categoria);
+            setAvatar(data.fotoProduto);
+        } catch (error) {
+            console.error('Erro:', error);
+            Alert.alert('Erro', 'Não foi possível carregar os detalhes do produto.');
+        }
+    };
 
     async function imagePickerCall() {
         let result = await ImagePicker.launchImageLibraryAsync({
@@ -37,26 +72,16 @@ export default function UploadScreen() {
         });
 
         if (!result.cancelled) {
-            setAvatar(result.assets[0].uri);
+            setAvatar(result.uri); // Corrigido para result.uri
+            const base64 = await FileSystem.readAsStringAsync(result.uri, { encoding: 'base64' }); // Corrigido para result.uri
+            setBase64Image(base64);
         }
     }
 
-    function handleClearAll() {
-        setAvatar(null);
-        setProductName("");
-        setFabricante("");
-        setQuantidadeEstoque("");
-        setPrecoNormal("");
-        setTipoOferta("");
-        setDescricao("");
-        setCategoria(0);
-    }
-
     const handleSaveChanges = async () => {
-        console.log(categoria);
         try {
-            const response = await fetch("http://10.0.2.2:5035/api/Produto", {
-                method: 'POST',
+            const response = await fetch(`http://10.0.2.2:5035/api/Produto${productId ? `/${productId}` : ''}`, {
+                method: productId ? 'PUT' : 'POST',
                 headers: {
                     'Content-Type': 'application/json',
                 },
@@ -69,27 +94,22 @@ export default function UploadScreen() {
                     estoqueDisponivel: quantidadeEstoque,
                     categoria: categoria,
                     porcentagemDesconto: tipoOferta,
-                    fotoProduto: "string"
+                    fotoProduto: base64Image
                 })
             });
 
-            console.log(response);
             if (!response.ok) {
                 throw new Error('Erro na requisição: ' + response.status);
             }
 
             const data = await response.json();
-            console.log(data);
-            // Exibir o alerta de sucesso
-            Alert.alert('Produto Cadastrado', 'O produto foi cadastrado com sucesso!');
+            Alert.alert('Produto', productId ? 'Produto atualizado com sucesso!' : 'Produto cadastrado com sucesso!');
             navigation.replace('Produtos');
         } catch (error) {
             console.error('Erro:', error);
-            // Exibir o alerta de erro
-            Alert.alert('Erro', 'Não foi possível cadastrar o produto. Por favor, tente novamente mais tarde.');
+            Alert.alert('Erro', 'Não foi possível salvar as mudanças. Por favor, tente novamente mais tarde.');
         }
-
-    }
+    };
 
     return (
         <View style={styles.container}>
@@ -162,7 +182,6 @@ export default function UploadScreen() {
                             keyboardType="numeric"
                         />
                     </View>
-                    {/* Dropdown de Categoria */}
                     <View style={[styles.inputContainer]}>
                         <View style={styles.titleContainer}>
                             <Text style={styles.title}>Categoria</Text>
@@ -170,7 +189,7 @@ export default function UploadScreen() {
                         <Picker
                             selectedValue={categoria}
                             style={styles.categoryInput}
-                            onValueChange={(itemValue, itemIndex) => setCategoria(itemValue)}
+                            onValueChange={(itemValue) => setCategoria(itemValue)}
                         >
                             <Picker.Item label="Medicamentos" value={0} />
                             <Picker.Item label="Beleza" value={1} />
@@ -183,7 +202,7 @@ export default function UploadScreen() {
                     </View>
                 </View>
                 <View style={styles.inputRow}>
-                    <View style={[styles.inputContainer, { width: '40%', }]}>
+                    <View style={[styles.inputContainer, { width: '40%' }]}>
                         <View style={styles.titleContainer}>
                             <Text style={styles.title}>Descrição</Text>
                         </View>
@@ -211,16 +230,13 @@ export default function UploadScreen() {
                 >
                     <Text style={{ color: 'white', fontSize: 16 }}>Cancelar</Text>
                 </TouchableOpacity>
-
-
                 <TouchableOpacity style={styles.saveButton} onPress={handleSaveChanges}>
                     <Ionicons name="checkmark" size={24} color="white" style={styles.buttonIcon} />
                     <Text style={styles.saveButtonText}>Salvar alterações</Text>
                 </TouchableOpacity>
             </View>
-            <Footer></Footer>
+            <Footer />
         </View>
-
     );
 }
 
@@ -258,7 +274,6 @@ const styles = StyleSheet.create({
         fontSize: 14,
         alignSelf: "flex-start",
         marginBottom: -8
-        
     },
     avatar: {
         width: 110,
