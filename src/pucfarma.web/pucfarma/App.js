@@ -11,10 +11,11 @@ import Historico from './pages/telas/Historico';
 import Mais from './pages/telas/Mais'; 
 import Home from './pages/telaClientes/Home';
 import Carrinho from './pages/telas/Carrinho';
-
+import Andamento from './pages/telas/andamento';
 import ProdutosCliente from './pages/telaClientes/ProdutosCliente';
 import EnderecoDeEntrega from './pages/telaClientes/EnderecoDeEntrega';
-import  DetalhesDaConta from './pages/telaClientes/DetalhesDaConta';
+import DetalhesDaConta from './pages/telaClientes/DetalhesDaConta';
+
 
 const Stack = createStackNavigator();
 
@@ -46,7 +47,7 @@ export default function App() {
           title: '',
         }} />
         <Stack.Screen name="Home" component={Home} />
-
+        <Stack.Screen name='Andamento' component={Andamento} />
       </Stack.Navigator>
     </NavigationContainer>
   );
