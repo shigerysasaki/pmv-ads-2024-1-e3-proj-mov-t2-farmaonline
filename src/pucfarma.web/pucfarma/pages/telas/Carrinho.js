@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, Button, StyleSheet, Image, TouchableOpacity, ScrollView, handleTabPress } from 'react-native';
+import { View, Text, Button, StyleSheet, Image, TouchableOpacity, ScrollView, handleTabPress, localStorage } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 import Footer from '../template/footer';
 import Header from '../template/header';
@@ -13,85 +14,97 @@ const Carrinho = () => {
     const handleTabPress = (tab) => {
         setActiveTab(tab);
         navigation.navigate(tab);
-      };
-
-    // Simulação de dados do carrinho
-    const fetchCartItems = () => {
-        // Aqui você faria a requisição para o backend para obter os dados do carrinho
-        // Suponha que você tenha um endpoint /cart que retorna os itens do carrinho
-        // Axios ou fetch podem ser usados para isso
-        // Exemplo:
-        // axios.get('/cart')
-        //   .then(response => setCartItems(response.data))
-        const mockCartItems = [
-            { id: 1, name: 'Produto 1', price: 10, quantity: 2 },
-            { id: 2, name: 'Produto 2', price: 20, quantity: 1 },
-
-        ];
-        setCartItems(mockCartItems);
     };
 
     useEffect(() => {
-        fetchCartItems();
+        const getCartItems = async () => {
+            try {
+                const storedCartItems = await AsyncStorage.getItem('cartItems');
+                if (storedCartItems) {
+                    setCartItems(JSON.parse(storedCartItems));
+                }
+            } catch (error) {
+                console.error('Erro ao recuperar itens do carrinho:', error);
+            }
+        };
+        getCartItems();
     }, []);
 
     const handleRemoveItem = (itemId) => {
-        // Função para remover um item do carrinho
-        const updatedCartItems = cartItems.filter(item => item.id !== itemId);
-        setCartItems(updatedCartItems);
+        const itemIndex = cartItems.findIndex((item) => item.id === itemId);
+        if (itemIndex !== -1) {
+            const updatedCartItems = [...cartItems];
+            updatedCartItems.splice(itemIndex, 1);
+            setCartItems(updatedCartItems);
+            AsyncStorage.setItem('cartItems', JSON.stringify(updatedCartItems));
+        } else {
+            console.warn(`Item with ID ${itemId} not found in cart`);
+        }
     };
 
-    const handleIncreaseQuantity = (itemId) => {
-        // Função para aumentar a quantidade de um item no carrinho
-        const updatedCartItems = cartItems.map(item => {
+    const handleIncreaseQuantity = async (itemId) => {
+        const itemIndex = cartItems.findIndex((item) => item.id === itemId);
+        if (itemIndex !== -1) {
+            const updatedCartItems = cartItems.slice(); // Cria uma cópia do array cartItems
+    
+            updatedCartItems[itemIndex] = {
+                ...updatedCartItems[itemIndex],
+                quantity: updatedCartItems[itemIndex].quantity + 1,
+            };
+    
+            setCartItems(updatedCartItems);
+            await AsyncStorage.setItem('cartItems', JSON.stringify(updatedCartItems));
+        } else {
+            console.warn(`Item with ID ${itemId} not found in cart`);
+        }
+    };
+    
+
+
+    const handleDecreaseQuantity = async (itemId) => {
+        const updatedCartItems = cartItems.map((item) => {
             if (item.id === itemId) {
-                return { ...item, quantity: item.quantity + 1 };
+                const newQuantity = item.quantity - 1;
+                return {
+                    ...item,
+                    quantity: newQuantity > 0 ? newQuantity : 1,
+                };
             }
             return item;
         });
+
         setCartItems(updatedCartItems);
+        await AsyncStorage.setItem('cartItems', JSON.stringify(updatedCartItems));
     };
 
-    const handleDecreaseQuantity = (itemId) => {
-        // Função para diminuir a quantidade de um item no carrinho
-        const updatedCartItems = cartItems.map(item => {
-            if (item.id === itemId && item.quantity > 1) {
-                return { ...item, quantity: item.quantity - 1 };
-            }
-            return item;
-        });
-        setCartItems(updatedCartItems);
-    };
 
-    const calculateTotalPrice = () => {
-        // Função para calcular o preço total do carrinho
-        return cartItems.reduce((total, item) => total + (item.price * item.quantity), 0);
+
+    const getTotalPrice = () => {
+        return cartItems.reduce((acc, item) => acc + (item.preco * item.quantity), 0);
     };
 
     return (
         <View style={styles.container}>
             <Header />
-
             <View style={styles.productList}>
                 <ScrollView contentContainerStyle={styles.scrollContent}>
                     {cartItems.length === 0 ? (
                         <View style={styles.emptyCart}>
                             <Image source={require('../../assets/sacola.png')} style={styles.imagempty} />
                             <Text style={styles.emptyCartText}>Seu carrinho está vazio !</Text>
-                            <TouchableOpacity style={styles.entrega}  onPress={() => handleTabPress('Home')}>
+                            <TouchableOpacity style={styles.entrega} onPress={() => handleTabPress('Home')}>
                                 <Text style={styles.entregatext}>Conferir produtos</Text>
                             </TouchableOpacity>
                         </View>
                     ) : (
                         <>
                             <Text style={styles.title}>Seu Carrinho</Text>
-                            {cartItems.map(item => (
+                            {cartItems.map((item) => (
                                 <View key={item.id} style={styles.itemContainer}>
                                     <Image source={require('../../assets/imageicon.png')} style={styles.image} />
                                     <View style={styles.productInfo}>
-                                        <Text style={styles.nome}>{item.name}</Text>
-                                        <Text style={styles.valor1}>R${item.price.toFixed(2)}</Text>
-                                        <Text style={styles.valor}>Total: R${(item.price * item.quantity).toFixed(2)}</Text>
+                                        <Text style={styles.cartItemName}>{item.nomeProduto}</Text>
+                                        <Text style={styles.cartItemPrice}>{`R$ ${(item.preco * item.quantity).toFixed(2)}`}</Text>
                                     </View>
                                     <View style={styles.buttonsContainer}>
                                         <Text style={styles.quantidade}>{item.quantity}</Text>
@@ -106,6 +119,7 @@ const Carrinho = () => {
                                         <Image source={require('../../assets/lixeira.png')} style={styles.tabIcon} />
                                     </TouchableOpacity>
                                 </View>
+
                             ))}
                         </>
                     )}
@@ -113,8 +127,8 @@ const Carrinho = () => {
             </View>
 
             <View style={styles.final}>
-                <Text style={styles.total}>Subtotal: R${calculateTotalPrice().toFixed(2)}</Text>
-                <TouchableOpacity style={styles.entrega} onPress={() => navigation.navigate('EnderecoDeEntrega', { subtotal: calculateTotalPrice() })}>
+                <Text style={styles.total}>Subtotal: R${getTotalPrice().toFixed(2)}</Text>
+                <TouchableOpacity style={styles.entrega} onPress={() => navigation.navigate('EnderecoDeEntrega', { subtotal: getTotalPrice() })}>
                     <Text style={styles.entregatext}>Informar endereço de entrega</Text>
                     <Image source={require('../../assets/seta.png')} style={styles.tabIcon} />
                 </TouchableOpacity>
@@ -196,7 +210,7 @@ const styles = StyleSheet.create({
         height: 22
     },
     final: {
-        marginLeft: '20%',
+        marginLeft: '10%',
         alignItems: 'flex-end',
         marginBottom: '20%',
         height: '9%'

@@ -1,11 +1,30 @@
 import React, { useState, useEffect } from 'react';
 import { View, Text, StyleSheet, Image, TouchableOpacity, ScrollView, ActivityIndicator, TextInput } from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const ProdutosCliente = ({ route, navigation }) => {
   const { productId } = route.params; // Obtenção do productId dos parâmetros da rota
   const [productDetails, setProductDetails] = useState(null);
   const [quantity, setQuantity] = useState(1);
+  const [cartItems, setCartItems] = useState([]);
+
+  const handleAddToCart = async () => {
+    const currentCartItems = await AsyncStorage.getItem('cartItems');
+    const updatedCartItems = [...(currentCartItems ? JSON.parse(currentCartItems) : []), { ...productDetails, quantity }];
+    setCartItems(updatedCartItems);
+    AsyncStorage.setItem('cartItems', JSON.stringify(updatedCartItems));
+};
+
+useEffect(() => {
+  const saveCartItems = async () => {
+      if (cartItems.length > 0) {
+          await AsyncStorage.setItem('cartItems', JSON.stringify(cartItems));
+      }
+  };
+  saveCartItems();
+}, [cartItems]);
+
 
   useEffect(() => {
     const fetchProductDetails = async () => {
@@ -52,14 +71,14 @@ const ProdutosCliente = ({ route, navigation }) => {
         <Text style={styles.lineThrough}>{`R$ ${preco.toFixed(2)}`}</Text>
         <Text style={styles.discountPrice}>{`R$ ${(preco * (1 - porcentagemDesconto / 100)).toFixed(2)}`}</Text>
         <View style={styles.quantitySection}>
-          <TextInput 
-            style={styles.quantityInput} 
+          <TextInput
+            style={styles.quantityInput}
             keyboardType="numeric"
             onChangeText={(text) => setQuantity(text)}
             value={String(quantity)}
             placeholder="Qty"
           />
-          <TouchableOpacity style={styles.addToCartButton}>
+          <TouchableOpacity style={styles.addToCartButton} onPress={handleAddToCart}>
             <Text style={styles.addToCartText}>Adicionar ao carrinho</Text>
           </TouchableOpacity>
         </View>
