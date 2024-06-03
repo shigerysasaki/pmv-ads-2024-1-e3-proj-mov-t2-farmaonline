@@ -8,10 +8,10 @@ import Dados from './pages/autenticacao/cadastro/Dados';
 import EditarProduto from './pages/telas/EditarProduto';
 import Produtos from './pages/telas/Produtos';
 import Historico from './pages/telas/Historico';
-import Mais from './pages/telas/mais'; 
+import Mais from './pages/telas/Mais'; 
 import Home from './pages/telaClientes/Home';
 import Carrinho from './pages/telas/Carrinho';
-import Andamento from './pages/telas/andamento';
+import Andamento from './pages/telas/Andamento';
 import ProdutosCliente from './pages/telaClientes/ProdutosCliente';
 import EnderecoDeEntrega from './pages/telaClientes/EnderecoDeEntrega';
 import DetalhesDaConta from './pages/telaClientes/DetalhesDaConta';
@@ -23,7 +23,7 @@ export default function App() {
   return (
     <NavigationContainer>
       <Stack.Navigator>
-      
+        
         <Stack.Screen name="Login" component={Login} />
         <Stack.Screen name="Dados" component={Dados} />
         <Stack.Screen name="Produtos" component={Produtos} />
