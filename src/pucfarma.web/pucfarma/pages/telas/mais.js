@@ -1,27 +1,31 @@
 import React, { useState } from 'react';
-import { View, Image, Text, StyleSheet, TouchableOpacity, TextInput, Tab, } from 'react-native';
-import Footeradm from '../template/footer';
-import Header2 from '../template/header2';
+import { View, Image, Text, StyleSheet, TouchableOpacity, TextInput, Tab, handleTabPress } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
+
+
 import Footer from '../template/footer';
+import Header2 from '../template/header2';
 
 const Mais = () => {
   const navigation = useNavigation();
 
-  // Função para lidar com o logout
-  const handleLogout = () => {
-    navigation.navigate('Login');
+  const [activeTab, setActiveTab] = useState('Home');
+
+  const handleTabPress = (tab) => {
+    setActiveTab(tab);
+    navigation.navigate(tab);
   };
 
   return (
     <View style={styles.container}>
-      <Header2/>
+      <Header2 />
+
       <View style={styles.tabsContainer}>
       <TouchableOpacity style={styles.tab} onPress={() => navigation.navigate('DetalhesDaConta')}>
           <Image source={require('../../assets/perfil-de-usuario.png')} style={styles.tabIcon} />
           <Text style={styles.tabText}>Detalhes da conta</Text>
         </TouchableOpacity>
-        <TouchableOpacity style={styles.tab} onPress={() => handleTabPress('PedidosAndamento')}>
+        <TouchableOpacity style={styles.tab} onPress={() => handleTabPress('PedidosAndamento')} >
           <Image source={require('../../assets/caixa.png')} style={styles.tabIcon} />
           <Text style={styles.tabText}>Pedidos em andamento</Text>
         </TouchableOpacity>
@@ -33,14 +37,14 @@ const Mais = () => {
           <Image source={require('../../assets/relogio.png')} style={styles.tabIcon} />
           <Text style={styles.tabText}>Histórico de compra</Text>
         </TouchableOpacity>
-        <TouchableOpacity style={styles.tab} onPress={() => handleTabPress('InformaçõesLoja')}>
+        <TouchableOpacity style={styles.tab} onPress={() => handleTabPress('InformacoesLoja')}>
           <Image source={require('../../assets/cuidado.png')} style={styles.tabIcon} />
           <Text style={styles.tabText}>Informações da loja</Text>
         </TouchableOpacity>
-      </View> 
+      </View>
 
       <View style={styles.logoutButtonContainer}>
-        <TouchableOpacity style={styles.logoutButton} onPress={handleLogout}>
+        <TouchableOpacity style={styles.logoutButton}>
           <Image source={require('../../assets/sair.png')} style={styles.tabIcon} />
           <Text style={styles.logoutButtonText}>Sair da Conta</Text>
         </TouchableOpacity>
@@ -51,18 +55,22 @@ const Mais = () => {
   );
 };
 
+
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
     backgroundColor: '#EEEEEE',
-    justifyContent: 'center',
-    alignItems: 'center',
+    flex: 1,
+    alignItems: 'center'
+  },
+  chooseImageText: {
+    marginTop: 10,
+    color: '#74b0ff',
   },
   tabsContainer: {
-    alignSelf: 'center',
+    marginTop: 80,
     backgroundColor: 'white',
-    margin: 50,
-    width: 350,
+    width: '95%',
+    height: '50%',
     flexDirection: 'column',
     flexWrap: 'wrap',
   },
@@ -78,17 +86,17 @@ const styles = StyleSheet.create({
   tabText: {
     fontSize: 18,
     color: '#898989',
-    marginLeft: 30,
+    marginLeft: 30
   },
   logoutButtonContainer: {
-    marginBottom: 'auto',
     backgroundColor: 'white',
-    marginTop: 'auto',
+    marginTop: 5,
     height: '10%',
     width: '95%',
     flexDirection: 'row',
     justifyContent: 'center',
     alignItems: 'center',
+    marginBottom: '25%'
   },
   logoutButton: {
     flexDirection: 'row',
@@ -97,8 +105,20 @@ const styles = StyleSheet.create({
     borderRadius: 5,
   },
   logoutButtonText: {
-    color: '#FF949A',
+    color: '#FF949A'
   },
+  img:{
+    flex: 1,
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginTop: 90
+  },
+  perfil:{
+    color: '#74b0ff',
+    fontSize: 18,
+    fontWeight: 'bold',
+    marginBottom: 5
+  }
 });
 
 export default Mais;

@@ -15,7 +15,7 @@ import Andamento from './pages/telas/andamento';
 import ProdutosCliente from './pages/telaClientes/ProdutosCliente';
 import EnderecoDeEntrega from './pages/telaClientes/EnderecoDeEntrega';
 import DetalhesDaConta from './pages/telaClientes/DetalhesDaConta';
-
+import InformacoesLoja from './pages/telas/Loja';
 
 const Stack = createStackNavigator();
 
@@ -48,6 +48,13 @@ export default function App() {
         }} />
         <Stack.Screen name="Home" component={Home} />
         <Stack.Screen name='Andamento' component={Andamento} />
+        <Stack.Screen name='InformacoesLoja' component={InformacoesLoja} options={{
+          headerShown: false,
+          headerTransparent: true,
+          title: '',
+        }}
+         />
+
       </Stack.Navigator>
     </NavigationContainer>
   );
