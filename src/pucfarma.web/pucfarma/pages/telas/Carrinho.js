@@ -28,42 +28,57 @@ const Carrinho = () => {
             }
         };
         getCartItems();
-    }, []);    
+    }, []);
 
     const handleRemoveItem = (itemId) => {
         const itemIndex = cartItems.findIndex((item) => item.id === itemId);
         if (itemIndex !== -1) {
-          const updatedCartItems = [...cartItems];
-          updatedCartItems.splice(itemIndex, 1);
-          setCartItems(updatedCartItems);
-          AsyncStorage.setItem('cartItems', JSON.stringify(updatedCartItems));
+            const updatedCartItems = [...cartItems];
+            updatedCartItems.splice(itemIndex, 1);
+            setCartItems(updatedCartItems);
+            AsyncStorage.setItem('cartItems', JSON.stringify(updatedCartItems));
         } else {
-          console.warn(`Item with ID ${itemId} not found in cart`);
+            console.warn(`Item with ID ${itemId} not found in cart`);
         }
-      };
-        
-      const handleIncreaseQuantity = (itemId) => {
-        const updatedCartItems = cartItems.map((item) =>
-          item.id === itemId ? { ...item, quantity: item.quantity + 1 } : item
-        );
-      
-        setCartItems(updatedCartItems);
-        AsyncStorage.setItem('cartItems', JSON.stringify(updatedCartItems));
-      };
-      
-      const handleDecreaseQuantity = (itemId) => {
+    };
+
+    const handleIncreaseQuantity = async (itemId) => {
+        const itemIndex = cartItems.findIndex((item) => item.id === itemId);
+        if (itemIndex !== -1) {
+            const updatedCartItems = cartItems.slice(); // Cria uma cópia do array cartItems
+    
+            updatedCartItems[itemIndex] = {
+                ...updatedCartItems[itemIndex],
+                quantity: updatedCartItems[itemIndex].quantity + 1,
+            };
+    
+            setCartItems(updatedCartItems);
+            await AsyncStorage.setItem('cartItems', JSON.stringify(updatedCartItems));
+        } else {
+            console.warn(`Item with ID ${itemId} not found in cart`);
+        }
+    };
+    
+
+
+    const handleDecreaseQuantity = async (itemId) => {
         const updatedCartItems = cartItems.map((item) => {
-          if (item.id === itemId) {
-            const newQuantity = item.quantity - 1;
-            return newQuantity > 0 ? { ...item, quantity: newQuantity } : null;
-          }
-          return item;
-        }).filter((item) => item !== null);
-      
+            if (item.id === itemId) {
+                const newQuantity = item.quantity - 1;
+                return {
+                    ...item,
+                    quantity: newQuantity > 0 ? newQuantity : 1,
+                };
+            }
+            return item;
+        });
+
         setCartItems(updatedCartItems);
-        AsyncStorage.setItem('cartItems', JSON.stringify(updatedCartItems));
-      };
-            
+        await AsyncStorage.setItem('cartItems', JSON.stringify(updatedCartItems));
+    };
+
+
+
     const getTotalPrice = () => {
         return cartItems.reduce((acc, item) => acc + (item.preco * item.quantity), 0);
     };
@@ -104,7 +119,7 @@ const Carrinho = () => {
                                         <Image source={require('../../assets/lixeira.png')} style={styles.tabIcon} />
                                     </TouchableOpacity>
                                 </View>
-                                
+
                             ))}
                         </>
                     )}
@@ -112,7 +127,7 @@ const Carrinho = () => {
             </View>
 
             <View style={styles.final}>
-            <Text style={styles.total}>Subtotal: R${getTotalPrice().toFixed(2)}</Text>
+                <Text style={styles.total}>Subtotal: R${getTotalPrice().toFixed(2)}</Text>
                 <TouchableOpacity style={styles.entrega} onPress={() => navigation.navigate('EnderecoDeEntrega', { subtotal: getTotalPrice() })}>
                     <Text style={styles.entregatext}>Informar endereço de entrega</Text>
                     <Image source={require('../../assets/seta.png')} style={styles.tabIcon} />
