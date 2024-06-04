@@ -1,6 +1,10 @@
-import React, { useState, useEffect } from 'react';
-import { View, Text, StyleSheet, TouchableOpacity, Image, FlatList, TextInput, Alert, ScrollView } from 'react-native';
+import React, { startTransition, useState } from 'react';
+import { View, Text, StyleSheet, TouchableOpacity, Image, FlatList, TextInput, Alert, } from 'react-native';
+import { ScrollView } from 'react-native-gesture-handler';
 import Footer from '../template/footer';
+import { useEffect } from 'react';
+
+
 
 const categories = [
   { id: 0, name: 'Medicamentos', style: { backgroundColor: '#FF949A' } },
@@ -15,20 +19,16 @@ const categories = [
 const HomeScreen = ({ navigation }) => {
   const [searchText, setSearchText] = useState('');
   const [produtos, setProdutos] = useState([]);
+  const [carrinho, setCarrinho] = useState([]);
   const [produtosFiltrados, setProdutosFiltrados] = useState([]);
   const [categoriaSelecionada, setCategoriaSelecionada] = useState(null);
 
-  const adicionarAoCarrinho = (produto) => {
-    Alert.alert('Produto Adicionado', 'O produto foi adicionado ao carrinho.');
-  };
 
-  const handleCategoryPress = (category) => {
-    if (category.id === categoriaSelecionada?.id) {
-      // Se a categoria selecionada for a mesma que a atual, limpe os filtros
-      setCategoriaSelecionada(null);
+  const formatarParaReais = (valor) => {
+    if (valor !== undefined) {
+      return valor.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
     } else {
-      // Caso contrário, defina a nova categoria selecionada
-      setCategoriaSelecionada(category);
+      return ''; // ou qualquer outro valor padrão desejado
     }
   };
 
@@ -54,8 +54,28 @@ const HomeScreen = ({ navigation }) => {
     setProdutosFiltrados(filteredProducts);
   }, [searchText, produtos, categoriaSelecionada]);
 
+  
+  const comprar = () => {
+    console.log('Botão pressionado');
+  };
+  
+  const handleCategoryPress = (category) => {
+    if (category.id === categoriaSelecionada?.id) {
+      // Se a categoria selecionada for a mesma que a atual, limpe os filtros
+      setCategoriaSelecionada(null);
+    } else {
+      // Caso contrário, defina a nova categoria selecionada
+      setCategoriaSelecionada(category);
+    }
+  };    
+
+  
+
   return (
+
+    
     <ScrollView style={styles.container}>
+
       {/* Barra de Pesquisa */}
       <View style={styles.inputIconContainer}>
         <Image
@@ -69,79 +89,65 @@ const HomeScreen = ({ navigation }) => {
           onChangeText={setSearchText}
           value={searchText}
         />
-      </View>
+      </View>  
+      
+       
 
-      {/* Categorias */}
-      <Text style={styles.tituloCategorias}>Categorias</Text>
-      <View style={styles.containerCategorias}>
-        <ScrollView horizontal style={styles.header}>
-          {categories.map(category => (
-            <TouchableOpacity 
-              key={category.id} 
-              style={[styles.categoryItem, category.style]}
-              onPress={() => handleCategoryPress(category)}
-            >
-              <Text style={styles.categoryText}>{category.name}</Text>
+    <View style={styles.container}>
+      <ScrollView>
+        {/* Conteúdo da sua página */}
+        {/* Categorias */}
+        <Text style={styles.tituloCategorias}>Categorias</Text>
+        <View style={styles.containerCategorias}>
+          <ScrollView horizontal style={styles.header}>
+            {categories.map(category => (
+              <TouchableOpacity 
+                key={category.id} 
+                style={[styles.categoryItem, category.style]}
+                onPress={() => handleCategoryPress(category)}
+              >
+                <Text style={styles.categoryText}>{category.name}</Text>
+              </TouchableOpacity>
+            ))}
+          </ScrollView>
+        </View>
+      </ScrollView>
+    </View>
+          
+          
+      {/* Outros Produtos */}
+      <Text style={styles.highlightsTitle}>Ofertas</Text>
+      <ScrollView horizontal style={styles.scrowDestaques}>
+      
+      <View style={styles.horizontalScrollView}>
+        <FlatList
+          horizontal
+          data={produtosFiltrados} // Alterado para usar a lista de produtos filtrados
+          keyExtractor={item => item.produtoId.toString()}
+          renderItem={({ item }) => (
+            <TouchableOpacity style={styles.productItem} onPress={() => navigation.navigate('ProdutosCliente', { productId: item.produtoId })}>
+              <Image source={{ uri: `data:image/png;base64,${item.fotoProduto}` }} style={styles.productImage} />
+              <View style={styles.textControl}>
+                <Text style={styles.productName}>{item.nomeProduto}</Text>
+                <Text style={styles.avaliacao}>★: {item.produtoAvaliacao}</Text>
+                <Text style={styles.textoPreco}>Preço: R${item.preco}</Text>
+                <Text style={styles.textoPreco}>{item.categoria}</Text>
+              </View>
+              <TouchableOpacity style={styles.botaoComprar} onPress={() => adicionarAoCarrinho(item)}>
+                <Text style={styles.textoBotao}>Comprar</Text>
+              </TouchableOpacity>
             </TouchableOpacity>
-          ))}
-        </ScrollView>
+          )}
+        />
       </View>
 
-      {/* Produtos */}
-      <Text style={styles.highlightsTitle}>Destaques</Text>
-      <ScrollView horizontal style={styles.scrowDestaques}>
-        <View style={styles.horizontalScrollView}>
-          <FlatList
-            horizontal
-            data={produtosFiltrados}
-            keyExtractor={item => item.produtoId.toString()}
-            renderItem={({ item }) => (
-              <TouchableOpacity style={styles.productItem} onPress={() => navigation.navigate('ProdutosCliente', { productId: item.produtoId })}>
-                <Image source={{ uri: `data:image/png;base64,${item.fotoProduto}` }} style={styles.productImage} />
-                <View style={styles.textControl}>
-                  <Text style={styles.productName}>{item.nomeProduto}</Text>
-                  <Text style={styles.avaliacao}>★: {item.produtoAvaliacao}</Text>
-                  <Text style={styles.textoPreco}>Preço: R${item.preco}</Text>
-                  <Text style={styles.textoPreco}>{item.categoria}</Text>
-                </View>
-                <TouchableOpacity style={styles.botaoComprar} onPress={() => adicionarAoCarrinho(item)}>
-                  <Text style={styles.textoBotao}>Comprar</Text>
-                </TouchableOpacity>
-              </TouchableOpacity>
-            )}
-          />
-        </View>
-      </ScrollView>
-            {/* outros */}
-            <Text style={styles.highlightsTitle}>Outros</Text>
-      <ScrollView horizontal style={styles.scrowDestaques}>
-        <View style={styles.horizontalScrollView}>
-          <FlatList
-            horizontal
-            data={produtosFiltrados}
-            keyExtractor={item => item.produtoId.toString()}
-            renderItem={({ item }) => (
-              <TouchableOpacity style={styles.productItem} onPress={() => navigation.navigate('ProdutosCliente', { productId: item.produtoId })}>
-                <Image source={{ uri: `data:image/png;base64,${item.fotoProduto}` }} style={styles.productImage} />
-                <View style={styles.textControl}>
-                  <Text style={styles.productName}>{item.nomeProduto}</Text>
-                  <Text style={styles.avaliacao}>★: {item.produtoAvaliacao}</Text>
-                  <Text style={styles.textoPreco}>Preço: R${item.preco}</Text>
-                  <Text style={styles.textoPreco}>{item.categoria}</Text>
-                </View>
-                <TouchableOpacity style={styles.botaoComprar} onPress={() => adicionarAoCarrinho(item)}>
-                  <Text style={styles.textoBotao}>Comprar</Text>
-                </TouchableOpacity>
-              </TouchableOpacity>
-            )}
-          />
-        </View>
-      </ScrollView>
 
+      </ScrollView>
       <Footer/>
     </ScrollView>
   );
 };
+
 const styles = StyleSheet.create({
   container: {
     backgroundColor: '#F4F4F4',
@@ -204,7 +210,7 @@ inputIconContainer: {
     borderRadius: 5,
     borderColor:'#E9E9E9',
     width: 160,
-    height: 250,
+    height: 290,
     marginBottom: 50,
     marginLeft: 10,
     
@@ -216,7 +222,6 @@ inputIconContainer: {
     backgroundColor: '#E9E9E9',
     borderColor:'#E9E9E9',
   },
-  
   productName: {
     fontSize: 16,
     marginTop: 5,
@@ -248,7 +253,7 @@ inputIconContainer: {
   },
   scrowDestaques:{
     flex:1,
-    height: 300,
+    height: 350,
     flexDirection: 'row',
     overflowX: 'scroll',
   },
@@ -270,8 +275,7 @@ inputIconContainer: {
     paddingVertical: 10,
     borderRadius: 5,
     alignItems: 'center',
-    margin: 8,
-    height: 40,
+    margin: 8
     
   },
   textoBotao: {

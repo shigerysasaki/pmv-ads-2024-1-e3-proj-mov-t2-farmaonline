@@ -15,7 +15,7 @@ import Andamento from './pages/telas/andamento';
 import ProdutosCliente from './pages/telaClientes/ProdutosCliente';
 import EnderecoDeEntrega from './pages/telaClientes/EnderecoDeEntrega';
 import DetalhesDaConta from './pages/telaClientes/DetalhesDaConta';
-
+import Ofertas from './pages/telaClientes/Ofertas';
 
 const Stack = createStackNavigator();
 
@@ -39,7 +39,7 @@ export default function App() {
         <Stack.Screen name="ProdutosCliente" component={ProdutosCliente} />
         <Stack.Screen name="DetalhesDaConta" component={DetalhesDaConta} />
         <Stack.Screen name="EnderecoDeEntrega" component={EnderecoDeEntrega} />
-        
+        <Stack.Screen name="Ofertas" component={Ofertas} />
        
         <Stack.Screen name="Mais" component={Mais} options={{
           headerShown: false,
