@@ -20,7 +20,8 @@ export default function EditarProduto() {
 
     const navigation = useNavigation();
     const route = useRoute();
-    const { productId } = route.params;
+    const productId = route.params?.productId;
+
 
     useEffect(() => {
         (async () => {
@@ -34,6 +35,7 @@ export default function EditarProduto() {
             fetchProductDetails(productId);
         }
     }, [productId]);
+    
 
     const fetchProductDetails = async (id) => {
         try {
