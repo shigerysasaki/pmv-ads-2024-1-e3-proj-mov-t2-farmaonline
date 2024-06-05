@@ -36,7 +36,11 @@ const HomeScreen = ({ navigation }) => {
   });
   
   const formatarParaReais = (valor) => {
-    return valor.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
+    if (valor !== undefined) {
+      return valor.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
+    } else {
+      return ''; // ou qualquer outro valor padrão desejado
+    }
   };
 
 
