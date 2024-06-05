@@ -1,10 +1,8 @@
-import React, { startTransition, useState } from 'react';
-import { View, Text, StyleSheet, TouchableOpacity, Image, FlatList, TextInput, Alert, } from 'react-native';
-import { ScrollView } from 'react-native-gesture-handler';
+import React, { useEffect, useState } from 'react';
+import { View, Text, StyleSheet, TouchableOpacity, Image, FlatList, TextInput, Alert } from 'react-native';
+
 import Footer from '../template/footer';
-import { useEffect } from 'react';
-
-
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const categories = [
   { id: 0, name: 'Medicamentos', style: { backgroundColor: '#FF949A' } },
@@ -19,23 +17,18 @@ const categories = [
 const HomeScreen = ({ navigation }) => {
   const [searchText, setSearchText] = useState('');
   const [produtos, setProdutos] = useState([]);
-  const [carrinho, setCarrinho] = useState([]);
   const [produtosFiltrados, setProdutosFiltrados] = useState([]);
   const [categoriaSelecionada, setCategoriaSelecionada] = useState(null);
-
+  const [cartItems, setCartItems] = useState([]);
 
   const formatarParaReais = (valor) => {
-    if (valor !== undefined) {
-      return valor.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
-    } else {
-      return ''; // ou qualquer outro valor padrão desejado
-    }
+    return valor !== undefined ? valor.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' }) : '';
   };
 
   useEffect(() => {
     const fetchProdutos = async () => {
       try {
-        const response = await fetch('http://10.0.2.2:5035/api/Produto');
+        const response = await fetch('http://10.0.2.2:5035/api/Produto/Oferta');
         const data = await response.json();
         setProdutos(data);
       } catch (error) {
@@ -54,28 +47,33 @@ const HomeScreen = ({ navigation }) => {
     setProdutosFiltrados(filteredProducts);
   }, [searchText, produtos, categoriaSelecionada]);
 
-  
-  const comprar = () => {
-    console.log('Botão pressionado');
-  };
-  
   const handleCategoryPress = (category) => {
     if (category.id === categoriaSelecionada?.id) {
-      // Se a categoria selecionada for a mesma que a atual, limpe os filtros
       setCategoriaSelecionada(null);
     } else {
-      // Caso contrário, defina a nova categoria selecionada
       setCategoriaSelecionada(category);
     }
-  };    
+  };
 
-  
+  const handleAddToCart = async (produto) => {
+    try {
+      // Adiciona o produto ao carrinho
+      const updatedCartItems = [...cartItems, { ...produto, quantity: 1 }];
+      setCartItems(updatedCartItems);
+      await AsyncStorage.setItem('cartItems', JSON.stringify(updatedCartItems));
+
+      // Exibe a mensagem informando que o produto foi adicionado ao carrinho
+      Alert.alert('Produto Adicionado', 'O produto foi adicionado ao carrinho.');
+
+    } catch (error) {
+      console.error('Erro ao adicionar produto ao carrinho:', error);
+      // Exibe uma mensagem de erro, se necessário
+      // alert('Erro ao adicionar produto ao carrinho!');
+    }
+  };
 
   return (
-
-    
-    <ScrollView style={styles.container}>
-
+    <View style={styles.container}>
       {/* Barra de Pesquisa */}
       <View style={styles.inputIconContainer}>
         <Image
@@ -89,90 +87,76 @@ const HomeScreen = ({ navigation }) => {
           onChangeText={setSearchText}
           value={searchText}
         />
-      </View>  
-      
-       
+      </View>
 
-    <View style={styles.container}>
-      <ScrollView>
-        {/* Conteúdo da sua página */}
-        {/* Categorias */}
-        <Text style={styles.tituloCategorias}>Categorias</Text>
-        <View style={styles.containerCategorias}>
-          <ScrollView horizontal style={styles.header}>
-            {categories.map(category => (
-              <TouchableOpacity 
-                key={category.id} 
-                style={[styles.categoryItem, category.style]}
-                onPress={() => handleCategoryPress(category)}
-              >
-                <Text style={styles.categoryText}>{category.name}</Text>
-              </TouchableOpacity>
-            ))}
-          </ScrollView>
-        </View>
-      </ScrollView>
-    </View>
-          
-          
-      {/* Outros Produtos */}
-      <Text style={styles.highlightsTitle}>Ofertas</Text>
-      <ScrollView horizontal style={styles.scrowDestaques}>
-      
-      <View style={styles.horizontalScrollView}>
+      {/* Categorias */}
+      <Text style={styles.tituloCategorias}>Categorias</Text>
+      <View style={styles.containerCategorias}>
         <FlatList
           horizontal
-          data={produtosFiltrados} // Alterado para usar a lista de produtos filtrados
-          keyExtractor={item => item.produtoId.toString()}
+          data={categories}
+          keyExtractor={item => item.id.toString()}
           renderItem={({ item }) => (
-            <TouchableOpacity style={styles.productItem} onPress={() => navigation.navigate('ProdutosCliente', { productId: item.produtoId })}>
-              <Image source={{ uri: `data:image/png;base64,${item.fotoProduto}` }} style={styles.productImage} />
-              <View style={styles.textControl}>
-                <Text style={styles.productName}>{item.nomeProduto}</Text>
-                <Text style={styles.avaliacao}>★: {item.produtoAvaliacao}</Text>
-                <Text style={styles.textoPreco}>Preço: R${item.preco}</Text>
-                <Text style={styles.textoPreco}>{item.categoria}</Text>
-              </View>
-              <TouchableOpacity style={styles.botaoComprar} onPress={() => adicionarAoCarrinho(item)}>
-                <Text style={styles.textoBotao}>Comprar</Text>
-              </TouchableOpacity>
+            <TouchableOpacity 
+              key={item.id} 
+              style={[styles.categoryItem, item.style]}
+              onPress={() => handleCategoryPress(item)}
+            >
+              <Text style={styles.categoryText}>{item.name}</Text>
             </TouchableOpacity>
           )}
         />
       </View>
 
-
-      </ScrollView>
+      {/* Produtos com Desconto */}
+      <Text style={styles.highlightsTitle}>Ofertas</Text>
+      <FlatList
+        horizontal
+        data={produtosFiltrados}
+        keyExtractor={item => item.produtoId.toString()}
+        renderItem={({ item }) => (
+          <TouchableOpacity style={styles.productItem} onPress={() => navigation.navigate('ProdutosCliente', { productId: item.produtoId })}>
+            <Image source={{ uri: `data:image/png;base64,${item.fotoProduto}` }} style={styles.productImage} />
+            <View style={styles.textControl}>
+              <Text style={styles.productName}>{item.nomeProduto}</Text>
+              <Text style={styles.avaliacao}>★: {item.produtoAvaliacao}</Text>
+              <Text style={styles.textoPreco}>Preço: {formatarParaReais(item.preco)}</Text>
+              <Text style={styles.textoPreco}>{item.categoria}</Text>
+            </View>
+            <TouchableOpacity style={styles.botaoComprar} onPress={() => handleAddToCart(item)}>
+              <Text style={styles.textoBotao}>Comprar</Text>
+            </TouchableOpacity>
+          </TouchableOpacity>
+        )}
+      />
       <Footer/>
-    </ScrollView>
+    </View>
   );
 };
 
 const styles = StyleSheet.create({
   container: {
+    flex: 1,
     backgroundColor: '#F4F4F4',
     width: '100%',
-    
   },
-
   iconStyle: {
     marginLeft: 10,
     marginRight: 10,
     width: 20,
     height: 20,
   },
-inputIconContainer: {
+  inputIconContainer: {
     flexDirection: 'row',
     backgroundColor: '#fff',
     borderRadius: 20,
-    flex: 1,
+    height: 50,
     alignItems: 'center',
     width: 250,
-    alignSelf:'center',
+    alignSelf: 'center',
     margin: 10,
     borderWidth: 1,
     borderColor: '#74B0FF',
-
   },
   header: {
     flexDirection: 'row',
@@ -201,26 +185,23 @@ inputIconContainer: {
     marginLeft: 10,
     margin: 10,
     color: '#74B0FF',
-    
   },
   productItem: {
     justifyContent: 'center',
     alignItems: 'start',
     backgroundColor: '#fff',
     borderRadius: 5,
-    borderColor:'#E9E9E9',
+    borderColor: '#E9E9E9',
     width: 160,
     height: 290,
     marginBottom: 50,
     marginLeft: 10,
-    
-    
   },
   productImage: {
     width: 'auto',
     height: 100,
     backgroundColor: '#E9E9E9',
-    borderColor:'#E9E9E9',
+    borderColor: '#E9E9E9',
   },
   productName: {
     fontSize: 16,
@@ -232,7 +213,7 @@ inputIconContainer: {
     fontSize: 14,
     marginBottom: 5,
     textAlign: 'center',
-    color:'#26CE55',
+    color: '#26CE55',
     textAlign: 'left',
   },
   tituloCategorias: {
@@ -242,32 +223,27 @@ inputIconContainer: {
   },
   containerCategorias: {
     height: 60,
-    
   },
   textControl: {
-    textAlign:'left',
+    textAlign: 'left',
     marginLeft: 10,
     height: 'auto',
     padding: 5,
-    
   },
-  scrowDestaques:{
-    flex:1,
+  scrowDestaques: {
+    flex: 1,
     height: 350,
     flexDirection: 'row',
     overflowX: 'scroll',
   },
-  
-  nomeProduto:{
+  nomeProduto: {
     color: '#FFD260',
   },
-
-  avaliacao:{
+  avaliacao: {
     color: '#FFD260',
   },
-  
-  textoPreco:{
-    color: '#26CE55'
+  textoPreco: {
+    color: '#26CE55',
   },
   botaoComprar: {
     backgroundColor: '#74B0FF',
@@ -275,14 +251,12 @@ inputIconContainer: {
     paddingVertical: 10,
     borderRadius: 5,
     alignItems: 'center',
-    margin: 8
-    
+    margin: 8,
   },
   textoBotao: {
     color: 'white',
     fontSize: 16,
   },
-
 });
 
 export default HomeScreen;

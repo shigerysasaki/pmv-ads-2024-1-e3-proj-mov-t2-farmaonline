@@ -17,10 +17,9 @@ const HomeScreen = ({ navigation }) => {
   const [produtos, setProdutos] = useState([]);
   const [produtosFiltrados, setProdutosFiltrados] = useState([]);
   const [categoriaSelecionada, setCategoriaSelecionada] = useState(null);
+  const [cartItems, setCartItems] = useState([]);
+  
 
-  const adicionarAoCarrinho = (produto) => {
-    Alert.alert('Produto Adicionado', 'O produto foi adicionado ao carrinho.');
-  };
 
   const handleCategoryPress = (category) => {
     if (category.id === categoriaSelecionada?.id) {
@@ -104,7 +103,7 @@ const HomeScreen = ({ navigation }) => {
                   <Text style={styles.textoPreco}>Preço: R${item.preco}</Text>
                   <Text style={styles.textoPreco}>{item.categoria}</Text>
                 </View>
-                <TouchableOpacity style={styles.botaoComprar} onPress={() => adicionarAoCarrinho(item)}>
+                <TouchableOpacity style={styles.botaoComprar} onPress={() => navigation.navigate('ProdutosCliente', { productId: item.produtoId })}> 
                   <Text style={styles.textoBotao}>Comprar</Text>
                 </TouchableOpacity>
               </TouchableOpacity>
@@ -129,7 +128,7 @@ const HomeScreen = ({ navigation }) => {
                   <Text style={styles.textoPreco}>Preço: R${item.preco}</Text>
                   <Text style={styles.textoPreco}>{item.categoria}</Text>
                 </View>
-                <TouchableOpacity style={styles.botaoComprar} onPress={() => adicionarAoCarrinho(item)}>
+                <TouchableOpacity style={styles.botaoComprar} onPress={() => navigation.navigate('ProdutosCliente', { productId: item.produtoId })}> 
                   <Text style={styles.textoBotao}>Comprar</Text>
                 </TouchableOpacity>
               </TouchableOpacity>
@@ -144,6 +143,7 @@ const HomeScreen = ({ navigation }) => {
 };
 const styles = StyleSheet.create({
   container: {
+    flex: 1,
     backgroundColor: '#F4F4F4',
     width: '100%',
     
@@ -159,7 +159,6 @@ inputIconContainer: {
     flexDirection: 'row',
     backgroundColor: '#fff',
     borderRadius: 20,
-    flex: 1,
     alignItems: 'center',
     width: 250,
     alignSelf:'center',

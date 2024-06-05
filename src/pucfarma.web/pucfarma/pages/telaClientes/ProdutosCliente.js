@@ -1,7 +1,9 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, StyleSheet, Image, TouchableOpacity, ScrollView, ActivityIndicator, TextInput } from 'react-native';
+import { View, Text, StyleSheet, Image, TouchableOpacity, ScrollView, ActivityIndicator, TextInput, Alert } from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+
+
 
 const ProdutosCliente = ({ route, navigation }) => {
   const { productId } = route.params; // Obtenção do productId dos parâmetros da rota
@@ -14,16 +16,17 @@ const ProdutosCliente = ({ route, navigation }) => {
     const updatedCartItems = [...(currentCartItems ? JSON.parse(currentCartItems) : []), { ...productDetails, quantity }];
     setCartItems(updatedCartItems);
     AsyncStorage.setItem('cartItems', JSON.stringify(updatedCartItems));
-};
-
-useEffect(() => {
-  const saveCartItems = async () => {
-      if (cartItems.length > 0) {
-          await AsyncStorage.setItem('cartItems', JSON.stringify(cartItems));
-      }
+    Alert.alert('Produto Adicionado', 'O produto foi adicionado ao carrinho com sucesso!');
   };
-  saveCartItems();
-}, [cartItems]);
+
+  useEffect(() => {
+    const saveCartItems = async () => {
+      if (cartItems.length > 0) {
+        await AsyncStorage.setItem('cartItems', JSON.stringify(cartItems));
+      }
+    };
+    saveCartItems();
+  }, [cartItems]);
 
 
   useEffect(() => {
@@ -103,7 +106,9 @@ useEffect(() => {
           </View>
         ))}
       </View>
+
     </ScrollView>
+    
   );
 };
 
@@ -237,6 +242,7 @@ const styles = StyleSheet.create({
     fontSize: 16,
     color: '#FFD700', // Gold color for the stars
   },
+
 });
 
 
