@@ -22,37 +22,21 @@ const Stack = createStackNavigator();
 export default function App() {
   return (
     <NavigationContainer>
-      <Stack.Navigator>
-      
+      <Stack.Navigator>   
         <Stack.Screen name="Login" component={Login} />
         <Stack.Screen name="Dados" component={Dados} />
         <Stack.Screen name="Produtos" component={Produtos} />
         <Stack.Screen name="EditarProduto" component={EditarProduto} />
         <Stack.Screen name="Cadastro" component={Cadastro} />
         <Stack.Screen name="Historico" component={Historico} />
-        <Stack.Screen name="Carrinho" component={Carrinho}options={{
-          headerShown: false,
-          headerTransparent: true,
-          title: '',
-        }} 
-        />
-        <Stack.Screen name="ProdutosCliente" component={ProdutosCliente} />
+        <Stack.Screen name="Carrinho" component={Carrinho}options={{headerShown: false,headerTransparent: true,title: '',}} />
+        <Stack.Screen name="ProdutosCliente" component={ProdutosCliente} options={{headerShown: false,headerTransparent: true,title: '',}}/>
         <Stack.Screen name="DetalhesDaConta" component={DetalhesDaConta} />
         <Stack.Screen name="EnderecoDeEntrega" component={EnderecoDeEntrega} />
-        
-       
-        <Stack.Screen name="Mais" component={Mais} options={{
-          headerShown: false,
-          headerTransparent: true,
-          title: '',
-        }} />
-        <Stack.Screen name="Home" component={Home} />
+        <Stack.Screen name="Mais" component={Mais} options={{headerShown: false,headerTransparent: true,title: '',}} />
+        <Stack.Screen name="Home" component={Home}options={{headerShown: false,headerTransparent: true,title: '',}}  />
         <Stack.Screen name='Andamento' component={Andamento} />
-        <Stack.Screen name='InformacoesLoja' component={InformacoesLoja} options={{
-          headerShown: false,
-          headerTransparent: true,
-          title: '',
-        }}
+        <Stack.Screen name='InformacoesLoja' component={InformacoesLoja} options={{headerShown: false,headerTransparent: true,title: '',}}
          />
 
       </Stack.Navigator>

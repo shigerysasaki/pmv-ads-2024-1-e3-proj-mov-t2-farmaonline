@@ -2,9 +2,9 @@ import React, { startTransition, useState } from 'react';
 import { View, Text, StyleSheet, TouchableOpacity, Image, FlatList, TextInput, Alert  } from 'react-native';
 import { ScrollView } from 'react-native-gesture-handler';
 import Footer from '../template/footer';
+import Header from '../template/header';
 import { Button } from 'react-native-elements';
 import { useEffect } from 'react';
-
 
 const categories = [
   { id: 1, name: 'Medicamentos', style: { backgroundColor: '#FF949A' } },
@@ -16,11 +16,22 @@ const categories = [
   { id: 7, name: 'Dermocosmeticos', style: { backgroundColor: '#FFF3C9' } },
 ];
 
-const HomeScreen = ({ navigation }) => {
+const HomeScreen = ({ navigation, route }) => {
+  const { selectedCategory } = route.params || {};
   const [searchText, setSearchText] = useState('');
   const [produtos, setProdutos] = useState([]);
   const [carrinho, setCarrinho] = useState([]);
   const [produtosFiltrados, setProdutosFiltrados] = useState([]);
+
+  const categoriaMapping = {
+    0: 'Medicamentos',
+    1: 'Beleza',
+    2: 'Maternidade',
+    3: 'Suplementos',
+    4: 'Higiene',
+    5: 'Produtos Infantis',
+    6: 'Dermocosmeticos'
+  };
 
   const adicionarAoCarrinho = (produto) => {
     setCarrinho([...carrinho, produto]);
@@ -32,6 +43,7 @@ const HomeScreen = ({ navigation }) => {
       try {
         const response = await fetch('http://10.0.2.2:5035/api/Produto');
         const data = await response.json();
+        console.log('Produtos recebidos da API:', data); // Log dos produtos recebidos
         setProdutos(data);
       } catch (error) {
         console.error('Erro ao buscar produtos:', error);
@@ -41,25 +53,27 @@ const HomeScreen = ({ navigation }) => {
     fetchProdutos();
   }, []);
 
-  // Atualiza a lista de produtos filtrados sempre que o texto da pesquisa muda
   useEffect(() => {
     const filteredProducts = produtos.filter(produto =>
       produto.nomeProduto.toLowerCase().includes(searchText.toLowerCase())
     );
+    console.log('Produtos filtrados pela pesquisa:', filteredProducts); // Log dos produtos filtrados pela pesquisa
     setProdutosFiltrados(filteredProducts);
   }, [searchText, produtos]);
 
-  
-  const comprar = () => {
-    console.log('Botão pressionado');
-  };
-
-
-  
+  useEffect(() => {
+    if (selectedCategory) {
+      const categoryFilteredProducts = produtos.filter(produto =>
+        categoriaMapping[produto.categoria] && categoriaMapping[produto.categoria].toLowerCase() === selectedCategory.toLowerCase()
+      );
+      console.log('Produtos filtrados por categoria:', categoryFilteredProducts); // Log dos produtos filtrados por categoria
+      setProdutosFiltrados(categoryFilteredProducts);
+    }
+  }, [selectedCategory, produtos]);
 
   return (
     <ScrollView style={styles.container}>
-      {/* Barra de Pesquisa */}
+      <Header navigation={navigation} />
       <View style={styles.inputIconContainer}>
         <Image
           source={require('../../assets/lupa.png')}
@@ -72,11 +86,8 @@ const HomeScreen = ({ navigation }) => {
           onChangeText={setSearchText}
           value={searchText}
         />
-      </View>  
+      </View>
       
-       
-
-      {/* Categorias */}
       <Text style={styles.tituloCategorias}>Categorias</Text>
       <View style={styles.containerCategorias}>
         <ScrollView horizontal style={styles.header}>
@@ -89,60 +100,53 @@ const HomeScreen = ({ navigation }) => {
             </TouchableOpacity>
           ))}
         </ScrollView>
-      </View>  
+      </View>
           
-      {/* Destaques */}
       <Text style={styles.highlightsTitle}>Destaques</Text>
       <ScrollView horizontal style={styles.scrowDestaques}>
-      
-      <View style={styles.horizontalScrollView}>
-        <FlatList
-          horizontal
-          data={produtosFiltrados} // Alterado para usar a lista de produtos filtrados
-          keyExtractor={item => item.produtoId.toString()}
-          renderItem={({ item }) => (
-            <TouchableOpacity style={styles.productItem} onPress={() => navigation.navigate('ProdutosCliente', { productId: item.produtoId })}>
-              <Image source={{ uri: `data:image/png;base64,${item.fotoProduto}` }} style={styles.productImage} />
-              <View style={styles.textControl}>
-                <Text style={styles.productName}>{item.nomeProduto}</Text>
-                <Text style={styles.avaliacao}>★: {item.produtoAvaliacao}</Text>
-                <Text style={styles.textoPreco}>Preço: R${item.preco}</Text>
-              </View>
-              <Button title="Comprar" onPress={() => adicionarAoCarrinho(item)} buttonStyle={{ width: 140, alignSelf: 'center', height: 40 }} />
-            </TouchableOpacity>
-          )}
-        />
-      </View>
-
+        <View style={styles.horizontalScrollView}>
+          <FlatList
+            horizontal
+            data={produtosFiltrados}
+            keyExtractor={item => item.produtoId.toString()}
+            renderItem={({ item }) => (
+              <TouchableOpacity style={styles.productItem} onPress={() => navigation.navigate('ProdutosCliente', { productId: item.produtoId })}>
+                <Image source={{ uri: `data:image/png;base64,${item.fotoProduto}` }} style={styles.productImage} />
+                <View style={styles.textControl}>
+                  <Text style={styles.productName}>{item.nomeProduto}</Text>
+                  <Text style={styles.avaliacao}>★: {item.produtoAvaliacao}</Text>
+                  <Text style={styles.textoPreco}>Preço: R${item.preco}</Text>
+                </View>
+                <Button title="Comprar" onPress={() => adicionarAoCarrinho(item)} buttonStyle={{ width: 140, alignSelf: 'center', height: 40 }} />
+              </TouchableOpacity>
+            )}
+          />
+        </View>
       </ScrollView>
           
-      {/* Outros Produtos */}
       <Text style={styles.highlightsTitle}>Outros Produtos</Text>
       <ScrollView horizontal style={styles.scrowDestaques}>
-      
-      <View style={styles.horizontalScrollView}>
-        <FlatList
-          horizontal
-          data={produtosFiltrados} // Alterado para usar a lista de produtos filtrados
-          keyExtractor={item => item.produtoId.toString()}
-          renderItem={({ item }) => (
-            <TouchableOpacity style={styles.productItem} onPress={() => navigation.navigate('ProdutosCliente', { productId: item.produtoId })}>
-              <Image source={{ uri: `data:image/png;base64,${item.fotoProduto}` }} style={styles.productImage} />
-              <View style={styles.textControl}>
-                <Text style={styles.productName}>{item.nomeProduto}</Text>
-                <Text style={styles.avaliacao}>★: {item.produtoAvaliacao}</Text>
-                <Text style={styles.textoPreco}>Preço: R${item.preco}</Text>
-                <Text style={styles.textoPreco}>{item.categoria}</Text>
-              </View>
-              <Button title="Comprar" onPress={() => adicionarAoCarrinho(item)} buttonStyle={{ width: 140, alignSelf: 'center', height: 40 }} />
-            </TouchableOpacity>
-          )}
-        />
-      </View>
-
-
+        <View style={styles.horizontalScrollView}>
+          <FlatList
+            horizontal
+            data={produtosFiltrados}
+            keyExtractor={item => item.produtoId.toString()}
+            renderItem={({ item }) => (
+              <TouchableOpacity style={styles.productItem} onPress={() => navigation.navigate('ProdutosCliente', { productId: item.produtoId })}>
+                <Image source={{ uri: `data:image/png;base64,${item.fotoProduto}` }} style={styles.productImage} />
+                <View style={styles.textControl}>
+                  <Text style={styles.productName}>{item.nomeProduto}</Text>
+                  <Text style={styles.avaliacao}>★: {item.produtoAvaliacao}</Text>
+                  <Text style={styles.textoPreco}>Preço: R${item.preco}</Text>
+                  <Text style={styles.textoPreco}>{categoriaMapping[item.categoria]}</Text>
+                </View>
+                <Button title="Comprar" onPress={() => adicionarAoCarrinho(item)} buttonStyle={{ width: 140, alignSelf: 'center', height: 40 }} />
+              </TouchableOpacity>
+            )}
+          />
+        </View>
       </ScrollView>
-      <Footer/>
+      <Footer />
     </ScrollView>
   );
 };

@@ -2,28 +2,30 @@ import React, { useState, useEffect } from 'react';
 import { View, Text, StyleSheet, Image, TouchableOpacity, ScrollView, ActivityIndicator, TextInput } from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import Footer from '../template/footer';
+import Header from '../template/header';
 
-const ProdutosCliente = ({ route, navigation }) => {
+const ProdutosCliente = ({ route, navigation, userId }) => {
   const { productId } = route.params; // Obtenção do productId dos parâmetros da rota
   const [productDetails, setProductDetails] = useState(null);
   const [quantity, setQuantity] = useState(1);
   const [cartItems, setCartItems] = useState([]);
 
   const handleAddToCart = async () => {
-    const currentCartItems = await AsyncStorage.getItem('cartItems');
+    const currentCartItems = await AsyncStorage.getItem('cartItems_${userId}');
     const updatedCartItems = [...(currentCartItems ? JSON.parse(currentCartItems) : []), { ...productDetails, quantity }];
     setCartItems(updatedCartItems);
     AsyncStorage.setItem('cartItems', JSON.stringify(updatedCartItems));
-};
-
-useEffect(() => {
-  const saveCartItems = async () => {
-      if (cartItems.length > 0) {
-          await AsyncStorage.setItem('cartItems', JSON.stringify(cartItems));
-      }
   };
-  saveCartItems();
-}, [cartItems]);
+
+  useEffect(() => {
+    const saveCartItems = async () => {
+      if (cartItems.length > 0) {
+        await AsyncStorage.setItem('cartItems_${userId}', JSON.stringify(cartItems));
+      }
+    };
+    saveCartItems();
+  }, [cartItems]);
 
 
   useEffect(() => {
@@ -52,71 +54,63 @@ useEffect(() => {
   }
 
   const { nomeProduto, fabricante, fotoProduto, preco, descricao, avaliacoes, porcentagemDesconto } = productDetails;
-
+  
   return (
-    <ScrollView style={styles.container}>
-      <View style={styles.header}>
-        <TouchableOpacity onPress={() => navigation.goBack()}>
-          <Icon name="arrow-back" size={24} color="#000" />
-        </TouchableOpacity>
-        <TouchableOpacity onPress={() => console.log('Menu Options')}>
-          <Icon name="ellipsis-vertical" size={24} color="#000" />
-        </TouchableOpacity>
-      </View>
-      <Image style={styles.productImage} source={{ uri: `data:image/png;base64,${fotoProduto}` }} />
-      <View style={styles.productCard}>
-        <Text style={styles.productName}>{nomeProduto}</Text>
-        <Text style={styles.manufacturer}>{fabricante}</Text>
-        <Text style={styles.rating}>{avaliacoes && avaliacoes.length > 0 ? `${avaliacoes.reduce((acc, curr) => acc + curr.nota, 0) / avaliacoes.length} (${avaliacoes.length} avaliações)` : 'Sem avaliações'}</Text>
-        <Text style={styles.lineThrough}>{`R$ ${preco.toFixed(2)}`}</Text>
-        <Text style={styles.discountPrice}>{`R$ ${(preco * (1 - porcentagemDesconto / 100)).toFixed(2)}`}</Text>
-        <View style={styles.quantitySection}>
-          <TextInput
-            style={styles.quantityInput}
-            keyboardType="numeric"
-            onChangeText={(text) => setQuantity(text)}
-            value={String(quantity)}
-            placeholder="Qty"
-          />
-          <TouchableOpacity style={styles.addToCartButton} onPress={handleAddToCart}>
-            <Text style={styles.addToCartText}>Adicionar ao carrinho</Text>
-          </TouchableOpacity>
-        </View>
-      </View>
-
-      <View style={styles.descriptionSection}>
-        <Text style={styles.descriptionTitle}>Descrição</Text>
-        <Text style={styles.descriptionText}>{descricao}</Text>
-      </View>
-
-      <View style={styles.reviewSection}>
-        <Text style={styles.reviewTitle}>Avaliações</Text>
-        <Text style={styles.reviewCount}>{avaliacoes ? `${avaliacoes.length} comentários` : '0 comentários'}</Text>
-        {avaliacoes && avaliacoes.map((avaliacao, index) => (
-          <View key={index} style={styles.reviewCard}>
-            <Icon name="person-circle" size={40} color="#000" />
-            <View style={styles.reviewContent}>
-              <Text style={styles.reviewerName}>{avaliacao.usuarioId} (User ID)</Text>
-              <Text style={styles.reviewerReview}>{avaliacao.comentario}</Text>
-              <Text style={styles.reviewerRating}>⭐ {avaliacao.nota}</Text>
-            </View>
+    <View style={styles.container}>
+      <ScrollView contentContainerStyle={styles.scrollViewContent}>
+      <Header navigation={navigation} />
+        <Image style={styles.productImage} source={{ uri: `data:image/png;base64,${fotoProduto}` }} />
+        <View style={styles.productCard}>
+          <Text style={styles.productName}>{nomeProduto}</Text>
+          <Text style={styles.manufacturer}>{fabricante}</Text>
+          <Text style={styles.rating}>{avaliacoes && avaliacoes.length > 0 ? `${avaliacoes.reduce((acc, curr) => acc + curr.nota, 0) / avaliacoes.length} (${avaliacoes.length} avaliações)` : 'Sem avaliações'}</Text>
+          <Text style={styles.lineThrough}>{`R$ ${preco.toFixed(2)}`}</Text>
+          <Text style={styles.discountPrice}>{`R$ ${(preco * (1 - porcentagemDesconto / 100)).toFixed(2)}`}</Text>
+          <View style={styles.quantitySection}>
+            <TextInput
+              style={styles.quantityInput}
+              keyboardType="numeric"
+              onChangeText={(text) => setQuantity(text)}
+              value={String(quantity)}
+              placeholder="Qty"
+            />
+            <TouchableOpacity style={styles.addToCartButton} onPress={handleAddToCart}>
+              <Text style={styles.addToCartText}>Adicionar ao carrinho</Text>
+            </TouchableOpacity>
           </View>
-        ))}
-      </View>
-    </ScrollView>
+        </View>
+
+        <View style={styles.descriptionSection}>
+          <Text style={styles.descriptionTitle}>Descrição</Text>
+          <Text style={styles.descriptionText}>{descricao}</Text>
+        </View>
+
+        <View style={styles.reviewSection}>
+          <Text style={styles.reviewTitle}>Avaliações</Text>
+          <Text style={styles.reviewCount}>{avaliacoes ? `${avaliacoes.length} comentários` : '0 comentários'}</Text>
+          {avaliacoes && avaliacoes.map((avaliacao, index) => (
+            <View key={index} style={styles.reviewCard}>
+              <Icon name="person-circle" size={40} color="#000" />
+              <View style={styles.reviewContent}>
+                <Text style={styles.reviewerName}>{avaliacao.usuarioId} (User ID)</Text>
+                <Text style={styles.reviewerReview}>{avaliacao.comentario}</Text>
+                <Text style={styles.reviewerRating}>⭐ {avaliacao.nota}</Text>
+              </View>
+            </View>
+          ))}
+        </View>
+      </ScrollView>
+      <Footer style={styles.footer} />
+    </View>
   );
 };
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    padding: 10,
   },
-  header: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    marginBottom: 20,
+  scrollViewContent: {
+    paddingBottom: 20,
   },
   productImage: {
     width: '100%',
@@ -203,7 +197,7 @@ const styles = StyleSheet.create({
     paddingTop: 10,
     borderTopWidth: 1,
     borderTopColor: '#ccc',
-    backgroundColor: '#fff'
+    backgroundColor: '#fff',
   },
   reviewTitle: {
     fontSize: 20,
@@ -219,7 +213,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     marginBottom: 10,
     alignItems: 'center',
-    backgroundColor: '#fff'
+    backgroundColor: '#fff',
   },
   reviewContent: {
     marginLeft: 10,
