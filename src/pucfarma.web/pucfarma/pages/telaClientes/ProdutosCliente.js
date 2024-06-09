@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, StyleSheet, Image, TouchableOpacity, ScrollView, ActivityIndicator, TextInput } from 'react-native';
+import { View, Text, StyleSheet, Image, TouchableOpacity, ScrollView, ActivityIndicator, TextInput, Alert } from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import Footer from '../template/footer';
@@ -16,6 +16,7 @@ const ProdutosCliente = ({ route, navigation, userId }) => {
     const updatedCartItems = [...(currentCartItems ? JSON.parse(currentCartItems) : []), { ...productDetails, quantity }];
     setCartItems(updatedCartItems);
     AsyncStorage.setItem('cartItems', JSON.stringify(updatedCartItems));
+    Alert.alert('Produto Adicionado', 'O produto foi adicionado ao carrinho com sucesso!');
   };
 
   useEffect(() => {
@@ -102,6 +103,7 @@ const ProdutosCliente = ({ route, navigation, userId }) => {
       </ScrollView>
       <Footer style={styles.footer} />
     </View>
+    
   );
 };
 
@@ -231,6 +233,7 @@ const styles = StyleSheet.create({
     fontSize: 16,
     color: '#FFD700', // Gold color for the stars
   },
+
 });
 
 

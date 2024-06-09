@@ -1,26 +1,24 @@
-import React, { startTransition, useState } from 'react';
-import { View, Text, StyleSheet, TouchableOpacity, Image, FlatList, TextInput, Alert  } from 'react-native';
-import { ScrollView } from 'react-native-gesture-handler';
+import React, { useState, useEffect } from 'react';
+import { View, Text, StyleSheet, TouchableOpacity, Image, FlatList, TextInput, Alert, ScrollView } from 'react-native';
 import Footer from '../template/footer';
 import Header from '../template/header';
 import { Button } from 'react-native-elements';
 import { useEffect } from 'react';
 
 const categories = [
-  { id: 1, name: 'Medicamentos', style: { backgroundColor: '#FF949A' } },
-  { id: 2, name: 'Beleza', style: { backgroundColor: '#EBE4FF' } },
-  { id: 3, name: 'Maternidade', style: { backgroundColor: '#F9E7FF' } },
-  { id: 4, name: 'Suplementos', style: { backgroundColor: '#E5FFFE' } },
-  { id: 5, name: 'Higiene', style: { backgroundColor: '#CFFFC8' } },
-  { id: 6, name: 'Produtos Infantis', style: { backgroundColor: '#C8EEFF' } },
-  { id: 7, name: 'Dermocosmeticos', style: { backgroundColor: '#FFF3C9' } },
+  { id: 0, name: 'Medicamentos', style: { backgroundColor: '#FF949A' } },
+  { id: 1, name: 'Beleza', style: { backgroundColor: '#EBE4FF' } },
+  { id: 2, name: 'Maternidade', style: { backgroundColor: '#F9E7FF' } },
+  { id: 3, name: 'Suplementos', style: { backgroundColor: '#E5FFFE' } },
+  { id: 4, name: 'Higiene', style: { backgroundColor: '#CFFFC8' } },
+  { id: 5, name: 'Produtos Infantis', style: { backgroundColor: '#C8EEFF' } },
+  { id: 6, name: 'Dermocosmeticos', style: { backgroundColor: '#FFF3C9' } },
 ];
 
 const HomeScreen = ({ navigation, route }) => {
   const { selectedCategory } = route.params || {};
   const [searchText, setSearchText] = useState('');
   const [produtos, setProdutos] = useState([]);
-  const [carrinho, setCarrinho] = useState([]);
   const [produtosFiltrados, setProdutosFiltrados] = useState([]);
 
   const categoriaMapping = {
@@ -36,6 +34,19 @@ const HomeScreen = ({ navigation, route }) => {
   const adicionarAoCarrinho = (produto) => {
     setCarrinho([...carrinho, produto]);
     Alert.alert('Produto Adicionado', 'O produto foi adicionado ao carrinho.');
+  const [categoriaSelecionada, setCategoriaSelecionada] = useState(null);
+  const [cartItems, setCartItems] = useState([]);
+  
+
+
+  const handleCategoryPress = (category) => {
+    if (category.id === categoriaSelecionada?.id) {
+      // Se a categoria selecionada for a mesma que a atual, limpe os filtros
+      setCategoriaSelecionada(null);
+    } else {
+      // Caso contrário, defina a nova categoria selecionada
+      setCategoriaSelecionada(category);
+    }
   };
 
   useEffect(() => {
@@ -55,7 +66,8 @@ const HomeScreen = ({ navigation, route }) => {
 
   useEffect(() => {
     const filteredProducts = produtos.filter(produto =>
-      produto.nomeProduto.toLowerCase().includes(searchText.toLowerCase())
+      produto.nomeProduto.toLowerCase().includes(searchText.toLowerCase()) &&
+      (categoriaSelecionada === null || produto.categoria === categoriaSelecionada.id)
     );
     console.log('Produtos filtrados pela pesquisa:', filteredProducts); // Log dos produtos filtrados pela pesquisa
     setProdutosFiltrados(filteredProducts);
@@ -70,6 +82,8 @@ const HomeScreen = ({ navigation, route }) => {
       setProdutosFiltrados(categoryFilteredProducts);
     }
   }, [selectedCategory, produtos]);
+
+  }, [searchText, produtos, categoriaSelecionada]);
 
   return (
     <ScrollView style={styles.container}>
@@ -87,7 +101,8 @@ const HomeScreen = ({ navigation, route }) => {
           value={searchText}
         />
       </View>
-      
+
+      {/* Categorias */}
       <Text style={styles.tituloCategorias}>Categorias</Text>
       <View style={styles.containerCategorias}>
         <ScrollView horizontal style={styles.header}>
@@ -95,13 +110,15 @@ const HomeScreen = ({ navigation, route }) => {
             <TouchableOpacity 
               key={category.id} 
               style={[styles.categoryItem, category.style]}
+              onPress={() => handleCategoryPress(category)}
             >
               <Text style={styles.categoryText}>{category.name}</Text>
             </TouchableOpacity>
           ))}
         </ScrollView>
       </View>
-          
+
+      {/* Produtos */}
       <Text style={styles.highlightsTitle}>Destaques</Text>
       <ScrollView horizontal style={styles.scrowDestaques}>
         <View style={styles.horizontalScrollView}>
@@ -116,15 +133,18 @@ const HomeScreen = ({ navigation, route }) => {
                   <Text style={styles.productName}>{item.nomeProduto}</Text>
                   <Text style={styles.avaliacao}>★: {item.produtoAvaliacao}</Text>
                   <Text style={styles.textoPreco}>Preço: R${item.preco}</Text>
+                  <Text style={styles.textoPreco}>{item.categoria}</Text>
                 </View>
-                <Button title="Comprar" onPress={() => adicionarAoCarrinho(item)} buttonStyle={{ width: 140, alignSelf: 'center', height: 40 }} />
+                <TouchableOpacity style={styles.botaoComprar} onPress={() => navigation.navigate('ProdutosCliente', { productId: item.produtoId })}> 
+                  <Text style={styles.textoBotao}>Comprar</Text>
+                </TouchableOpacity>
               </TouchableOpacity>
             )}
           />
         </View>
       </ScrollView>
-          
-      <Text style={styles.highlightsTitle}>Outros Produtos</Text>
+            {/* outros */}
+            <Text style={styles.highlightsTitle}>Outros</Text>
       <ScrollView horizontal style={styles.scrowDestaques}>
         <View style={styles.horizontalScrollView}>
           <FlatList
@@ -138,21 +158,24 @@ const HomeScreen = ({ navigation, route }) => {
                   <Text style={styles.productName}>{item.nomeProduto}</Text>
                   <Text style={styles.avaliacao}>★: {item.produtoAvaliacao}</Text>
                   <Text style={styles.textoPreco}>Preço: R${item.preco}</Text>
-                  <Text style={styles.textoPreco}>{categoriaMapping[item.categoria]}</Text>
+                  <Text style={styles.textoPreco}>{item.categoria}</Text>
                 </View>
-                <Button title="Comprar" onPress={() => adicionarAoCarrinho(item)} buttonStyle={{ width: 140, alignSelf: 'center', height: 40 }} />
+                <TouchableOpacity style={styles.botaoComprar} onPress={() => navigation.navigate('ProdutosCliente', { productId: item.produtoId })}> 
+                  <Text style={styles.textoBotao}>Comprar</Text>
+                </TouchableOpacity>
               </TouchableOpacity>
             )}
           />
         </View>
       </ScrollView>
-      <Footer />
+
+      <Footer/>
     </ScrollView>
   );
 };
-
 const styles = StyleSheet.create({
   container: {
+    flex: 1,
     backgroundColor: '#F4F4F4',
     width: '100%',
     
@@ -168,7 +191,6 @@ inputIconContainer: {
     flexDirection: 'row',
     backgroundColor: '#fff',
     borderRadius: 20,
-    flex: 1,
     alignItems: 'center',
     width: 250,
     alignSelf:'center',
@@ -213,7 +235,7 @@ inputIconContainer: {
     borderRadius: 5,
     borderColor:'#E9E9E9',
     width: 160,
-    height: 310,
+    height: 250,
     marginBottom: 50,
     marginLeft: 10,
     
@@ -221,12 +243,11 @@ inputIconContainer: {
   },
   productImage: {
     width: 'auto',
-    height: 140,
-    margin: 15,
+    height: 100,
     backgroundColor: '#E9E9E9',
     borderColor:'#E9E9E9',
-    resizeMode: 'contain',
   },
+  
   productName: {
     fontSize: 16,
     marginTop: 5,
@@ -258,7 +279,7 @@ inputIconContainer: {
   },
   scrowDestaques:{
     flex:1,
-    height: 350,
+    height: 300,
     flexDirection: 'row',
     overflowX: 'scroll',
   },
@@ -273,6 +294,20 @@ inputIconContainer: {
   
   textoPreco:{
     color: '#26CE55'
+  },
+  botaoComprar: {
+    backgroundColor: '#74B0FF',
+    paddingHorizontal: 20,
+    paddingVertical: 10,
+    borderRadius: 5,
+    alignItems: 'center',
+    margin: 8,
+    height: 40,
+    
+  },
+  textoBotao: {
+    color: 'white',
+    fontSize: 16,
   },
 
 });

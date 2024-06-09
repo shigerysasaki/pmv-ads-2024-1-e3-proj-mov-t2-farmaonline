@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { View, Image, Text, StyleSheet, TouchableOpacity, ScrollView } from 'react-native';
+import { View, Image, Text, StyleSheet, TouchableOpacity, ScrollView, Modal, TextInput } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
@@ -9,7 +9,8 @@ const Andamento = () => {
   const navigation = useNavigation();
 
   const [botaoTexto, setBotaoTexto] = useState("Recebi meu pedido");
-  const [botaoTextoAnterior, setBotaoTextoAnterior] = useState("");
+  const [modalVisible, setModalVisible] = useState(false);
+  const [descricaoProblema, setDescricaoProblema] = useState("");
 
   const [pedido, setPedido] = useState({
     id: '000000',
@@ -17,15 +18,33 @@ const Andamento = () => {
     prevEntrega: '00/00/0000',
     metodoPagamento: 'Via App - Cartão de crédito',
     produtos: [
-      { nome: 'Produto_001', imagem: require('../../assets/quadrado.png'), quantidade: 1, preco: 10.0 },
-      { nome: 'Produto_002', imagem: require('../../assets/quadrado.png'), quantidade: 2, preco: 15.0 },
-      { nome: 'Produto_003', imagem: require('../../assets/quadrado.png'), quantidade: 3, preco: 20.0 },
+      { nome: 'Paracetamol', imagem: require('../../assets/paracetamol.png'), quantidade: 1, preco: 10.0 },
+      { nome: 'Gel Massageador', imagem: require('../../assets/creme.png'), quantidade: 2, preco: 15.0 },
+      { nome: 'Dipirona', imagem: require('../../assets/dipirona.png'), quantidade: 3, preco: 20.0 },
     ],
   });
 
   useEffect(() => {
     setPedido({ ...pedido, id: '123456', dataCompra: '01/01/2023', prevEntrega: '10/01/2023' });
   }, []);
+
+  const handleButtonClick = () => {
+    if (botaoTexto === "Recebi meu pedido") {
+      setBotaoTexto("Pedido recebido");
+    } else {
+      setBotaoTexto("Recebi meu pedido");
+    }
+  };
+
+  const handleRelatarProblema = () => {
+    setModalVisible(true);
+  };
+
+  const handleEnviarProblema = () => {
+    console.log('Descrição do problema:', descricaoProblema);
+    setModalVisible(false);
+    setDescricaoProblema("");
+  };
 
   return (
     <SafeAreaView style={styles.safeContainer}>
@@ -61,27 +80,50 @@ const Andamento = () => {
           </View>
 
           <View style={styles.buttonContainer}>
-            <TouchableOpacity style={styles.button} onPress={() => { navigation.navigate('Home'); }}>
+            <TouchableOpacity style={styles.button} onPress={handleRelatarProblema}>
               <Image source={require('../../assets/atencao.png')} style={styles.buttonIcon} />
               <Text style={styles.buttonText}>Relatar problema</Text>
             </TouchableOpacity>
 
             <TouchableOpacity
               style={styles.button2}
-              onPress={() => {
-                if (botaoTexto === "Confirmar Entrega") {
-                  setBotaoTextoAnterior(botaoTexto);
-                  setBotaoTexto("Pedido recebido");
-                } else {
-                  setBotaoTexto(botaoTextoAnterior);
-                }
-              }}>
+              onPress={handleButtonClick}>
               <Image source={require('../../assets/check.png')} style={styles.buttonIcon} />
               <Text style={styles.buttonText}>{botaoTexto}</Text>
             </TouchableOpacity>
           </View>
         </ScrollView>
         <Footer />
+
+        <Modal
+          animationType="slide"
+          transparent={true}
+          visible={modalVisible}
+          onRequestClose={() => {
+            setModalVisible(!modalVisible);
+          }}>
+          <View style={styles.modalOverlay}>
+            <View style={styles.modalContainer}>
+              <Text style={styles.modalTitle}>Descreva o problema</Text>
+              <TextInput
+                style={styles.input}
+                multiline
+                numberOfLines={4}
+                onChangeText={setDescricaoProblema}
+                value={descricaoProblema}
+                placeholder="Digite a descrição do problema aqui"
+              />
+              <View style={styles.modalButtonContainer}>
+                <TouchableOpacity style={[styles.button2, styles.modalButton]} onPress={handleEnviarProblema}>
+                  <Text style={styles.buttonText}>Enviar</Text>
+                </TouchableOpacity>
+                <TouchableOpacity style={[styles.button, styles.modalButton]} onPress={() => setModalVisible(false)}>
+                  <Text style={styles.buttonText}>Cancelar</Text>
+                </TouchableOpacity>
+              </View>
+            </View>
+          </View>
+        </Modal>
       </View>
     </SafeAreaView>
   );
@@ -203,6 +245,41 @@ const styles = StyleSheet.create({
   buttonIcon: {
     width: 18,
     height: 18,
+  },
+  modalOverlay: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: 'rgba(0,0,0,0.5)',
+  },
+  modalContainer: {
+    width: '80%',
+    backgroundColor: 'white',
+    padding: 20,
+    borderRadius: 10,
+    alignItems: 'center',
+  },
+  modalTitle: {
+    fontSize: 18,
+    marginBottom: 10,
+  },
+  input: {
+    width: '100%',
+    height: 100,
+    borderColor: '#ccc',
+    borderWidth: 1,
+    marginBottom: 10,
+    padding: 10,
+    textAlignVertical: 'top',
+  },
+  modalButtonContainer: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    width: '100%',
+  },
+  modalButton: {
+    flex: 1,
+    marginHorizontal: 5,
   },
 });
 

@@ -1,4 +1,6 @@
 import React, { useState } from 'react';
+import { View, Image, Text, StyleSheet, TouchableOpacity, TextInput, Tab, } from 'react-native';
+import Header2 from '../template/header2';
 import { View, Image, Text, StyleSheet, TouchableOpacity, TextInput, Tab, handleTabPress } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 
@@ -14,6 +16,13 @@ const Mais = () => {
   const handleTabPress = (tab) => {
     setActiveTab(tab);
     navigation.navigate(tab);
+  // Função para lidar com o logout
+  const handleLogout = () => {
+    try {
+      navigation.navigate('Login');
+    } catch (error) {
+      console.error("Erro ao navegar para 'Login':", error);
+    }
   };
 
   return (
