@@ -19,7 +19,7 @@ const Carrinho = () => {
     useEffect(() => {
         const getCartItems = async () => {
             try {
-                const storedCartItems = await AsyncStorage.getItem('cartItems');
+                const storedCartItems = await AsyncStorage.getItem('cartItems_${userId}');
                 if (storedCartItems) {
                     setCartItems(JSON.parse(storedCartItems));
                 }
@@ -85,7 +85,7 @@ const Carrinho = () => {
 
     return (
         <View style={styles.container}>
-            <Header />
+          <Header navigation={navigation} />
             <View style={styles.productList}>
                 <ScrollView contentContainerStyle={styles.scrollContent}>
                     {cartItems.length === 0 ? (

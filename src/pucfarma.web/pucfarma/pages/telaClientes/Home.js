@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { View, Text, StyleSheet, TouchableOpacity, Image, FlatList, TextInput, Alert, ScrollView } from 'react-native';
 import Footer from '../template/footer';
+import Header from '../template/header';
 
 const categories = [
   { id: 0, name: 'Medicamentos', style: { backgroundColor: '#FF949A' } },
@@ -12,13 +13,13 @@ const categories = [
   { id: 6, name: 'Dermocosmeticos', style: { backgroundColor: '#FFF3C9' } },
 ];
 
-const HomeScreen = ({ navigation }) => {
+const HomeScreen = ({ navigation, route }) => {
   const [searchText, setSearchText] = useState('');
   const [produtos, setProdutos] = useState([]);
   const [produtosFiltrados, setProdutosFiltrados] = useState([]);
   const [categoriaSelecionada, setCategoriaSelecionada] = useState(null);
   const [cartItems, setCartItems] = useState([]);
-  
+  const { selectedCategory } = route.params || {};
 
 
   const handleCategoryPress = (category) => {
@@ -53,8 +54,30 @@ const HomeScreen = ({ navigation }) => {
     setProdutosFiltrados(filteredProducts);
   }, [searchText, produtos, categoriaSelecionada]);
 
+
+  const categoriaMapping = {
+    0: 'Medicamentos',
+    1: 'Beleza',
+    2: 'Maternidade',
+    3: 'Suplementos',
+    4: 'Higiene',
+    5: 'Produtos Infantis',
+    6: 'Dermocosmeticos'
+  };
+
+  useEffect(() => {
+    if (selectedCategory) {
+      const categoryFilteredProducts = produtos.filter(produto =>
+        categoriaMapping[produto.categoria] && categoriaMapping[produto.categoria].toLowerCase() === selectedCategory.toLowerCase()
+      );
+      console.log('Produtos filtrados por categoria:', categoryFilteredProducts); // Log dos produtos filtrados por categoria
+      setProdutosFiltrados(categoryFilteredProducts);
+    }
+  }, [selectedCategory, produtos]);
+
   return (
     <ScrollView style={styles.container}>
+      <Header navigation={navigation} />
       {/* Barra de Pesquisa */}
       <View style={styles.inputIconContainer}>
         <Image
@@ -75,8 +98,8 @@ const HomeScreen = ({ navigation }) => {
       <View style={styles.containerCategorias}>
         <ScrollView horizontal style={styles.header}>
           {categories.map(category => (
-            <TouchableOpacity 
-              key={category.id} 
+            <TouchableOpacity
+              key={category.id}
               style={[styles.categoryItem, category.style]}
               onPress={() => handleCategoryPress(category)}
             >
@@ -103,7 +126,7 @@ const HomeScreen = ({ navigation }) => {
                   <Text style={styles.textoPreco}>Preço: R${item.preco}</Text>
                   <Text style={styles.textoPreco}>{item.categoria}</Text>
                 </View>
-                <TouchableOpacity style={styles.botaoComprar} onPress={() => navigation.navigate('ProdutosCliente', { productId: item.produtoId })}> 
+                <TouchableOpacity style={styles.botaoComprar} onPress={() => navigation.navigate('ProdutosCliente', { productId: item.produtoId })}>
                   <Text style={styles.textoBotao}>Comprar</Text>
                 </TouchableOpacity>
               </TouchableOpacity>
@@ -111,8 +134,8 @@ const HomeScreen = ({ navigation }) => {
           />
         </View>
       </ScrollView>
-            {/* outros */}
-            <Text style={styles.highlightsTitle}>Outros</Text>
+      {/* outros */}
+      <Text style={styles.highlightsTitle}>Outros</Text>
       <ScrollView horizontal style={styles.scrowDestaques}>
         <View style={styles.horizontalScrollView}>
           <FlatList
@@ -128,7 +151,7 @@ const HomeScreen = ({ navigation }) => {
                   <Text style={styles.textoPreco}>Preço: R${item.preco}</Text>
                   <Text style={styles.textoPreco}>{item.categoria}</Text>
                 </View>
-                <TouchableOpacity style={styles.botaoComprar} onPress={() => navigation.navigate('ProdutosCliente', { productId: item.produtoId })}> 
+                <TouchableOpacity style={styles.botaoComprar} onPress={() => navigation.navigate('ProdutosCliente', { productId: item.produtoId })}>
                   <Text style={styles.textoBotao}>Comprar</Text>
                 </TouchableOpacity>
               </TouchableOpacity>
@@ -137,7 +160,7 @@ const HomeScreen = ({ navigation }) => {
         </View>
       </ScrollView>
 
-      <Footer/>
+      <Footer />
     </ScrollView>
   );
 };
@@ -146,7 +169,7 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: '#F4F4F4',
     width: '100%',
-    
+
   },
 
   iconStyle: {
@@ -155,13 +178,13 @@ const styles = StyleSheet.create({
     width: 20,
     height: 20,
   },
-inputIconContainer: {
+  inputIconContainer: {
     flexDirection: 'row',
     backgroundColor: '#fff',
     borderRadius: 20,
     alignItems: 'center',
     width: 250,
-    alignSelf:'center',
+    alignSelf: 'center',
     margin: 10,
     borderWidth: 1,
     borderColor: '#74B0FF',
@@ -194,28 +217,28 @@ inputIconContainer: {
     marginLeft: 10,
     margin: 10,
     color: '#74B0FF',
-    
+
   },
   productItem: {
     justifyContent: 'center',
     alignItems: 'start',
     backgroundColor: '#fff',
     borderRadius: 5,
-    borderColor:'#E9E9E9',
+    borderColor: '#E9E9E9',
     width: 160,
     height: 250,
     marginBottom: 50,
     marginLeft: 10,
-    
-    
+
+
   },
   productImage: {
     width: 'auto',
     height: 100,
     backgroundColor: '#E9E9E9',
-    borderColor:'#E9E9E9',
+    borderColor: '#E9E9E9',
   },
-  
+
   productName: {
     fontSize: 16,
     marginTop: 5,
@@ -226,7 +249,7 @@ inputIconContainer: {
     fontSize: 14,
     marginBottom: 5,
     textAlign: 'center',
-    color:'#26CE55',
+    color: '#26CE55',
     textAlign: 'left',
   },
   tituloCategorias: {
@@ -236,31 +259,31 @@ inputIconContainer: {
   },
   containerCategorias: {
     height: 60,
-    
+
   },
   textControl: {
-    textAlign:'left',
+    textAlign: 'left',
     marginLeft: 10,
     height: 'auto',
     padding: 5,
-    
+
   },
-  scrowDestaques:{
-    flex:1,
+  scrowDestaques: {
+    flex: 1,
     height: 300,
     flexDirection: 'row',
     overflowX: 'scroll',
   },
-  
-  nomeProduto:{
+
+  nomeProduto: {
     color: '#FFD260',
   },
 
-  avaliacao:{
+  avaliacao: {
     color: '#FFD260',
   },
-  
-  textoPreco:{
+
+  textoPreco: {
     color: '#26CE55'
   },
   botaoComprar: {
@@ -271,7 +294,7 @@ inputIconContainer: {
     alignItems: 'center',
     margin: 8,
     height: 40,
-    
+
   },
   textoBotao: {
     color: 'white',

@@ -1,8 +1,7 @@
 import React from 'react';
-import { View, Text, TextInput, StyleSheet, TouchableOpacity } from 'react-native';
+import { View, Text, TextInput, StyleSheet, TouchableOpacity, Image } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { useRoute } from '@react-navigation/native';
-import { Ionicons } from '@expo/vector-icons';
 
 const Header2 = () => {
   const navigation = useNavigation();
@@ -11,7 +10,7 @@ const Header2 = () => {
   return (
     <View style={styles.header}>
       <TouchableOpacity onPress={() => navigation.goBack()} style={styles.back}>
-        <Ionicons name="arrow-back" size={30} color="#898989" />
+      <Image source={require('../../assets/back.png')} style={styles.tabIcon} />
       </TouchableOpacity>
       <Text style={styles.texto}>{route.name}</Text>
     </View>
@@ -20,7 +19,6 @@ const Header2 = () => {
 
 const styles = StyleSheet.create({
   header: {
-
     top: 0,
     width: '100%',
     height: '9%',
@@ -34,7 +32,6 @@ const styles = StyleSheet.create({
     
   },
   texto: {
-    marginTop:10,
     color: '#898989',
     fontSize : 20,
     fontWeight: 'bold',
@@ -44,8 +41,13 @@ const styles = StyleSheet.create({
   },
   back: {
     position: 'absolute',
-    left: 10,
-  }
+    left: 25,
+  },
+  tabIcon: {
+    width: 30,
+    height: 30,
+
+},
 });
 
 export default Header2;
