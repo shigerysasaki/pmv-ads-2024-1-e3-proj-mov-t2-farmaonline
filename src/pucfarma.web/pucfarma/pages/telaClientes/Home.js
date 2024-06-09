@@ -2,8 +2,6 @@ import React, { useState, useEffect } from 'react';
 import { View, Text, StyleSheet, TouchableOpacity, Image, FlatList, TextInput, Alert, ScrollView } from 'react-native';
 import Footer from '../template/footer';
 import Header from '../template/header';
-import { Button } from 'react-native-elements';
-import { useEffect } from 'react';
 
 const categories = [
   { id: 0, name: 'Medicamentos', style: { backgroundColor: '#FF949A' } },
@@ -16,27 +14,12 @@ const categories = [
 ];
 
 const HomeScreen = ({ navigation, route }) => {
-  const { selectedCategory } = route.params || {};
   const [searchText, setSearchText] = useState('');
   const [produtos, setProdutos] = useState([]);
   const [produtosFiltrados, setProdutosFiltrados] = useState([]);
-
-  const categoriaMapping = {
-    0: 'Medicamentos',
-    1: 'Beleza',
-    2: 'Maternidade',
-    3: 'Suplementos',
-    4: 'Higiene',
-    5: 'Produtos Infantis',
-    6: 'Dermocosmeticos'
-  };
-
-  const adicionarAoCarrinho = (produto) => {
-    setCarrinho([...carrinho, produto]);
-    Alert.alert('Produto Adicionado', 'O produto foi adicionado ao carrinho.');
   const [categoriaSelecionada, setCategoriaSelecionada] = useState(null);
   const [cartItems, setCartItems] = useState([]);
-  
+  const { selectedCategory } = route.params || {};
 
 
   const handleCategoryPress = (category) => {
@@ -54,7 +37,6 @@ const HomeScreen = ({ navigation, route }) => {
       try {
         const response = await fetch('http://10.0.2.2:5035/api/Produto');
         const data = await response.json();
-        console.log('Produtos recebidos da API:', data); // Log dos produtos recebidos
         setProdutos(data);
       } catch (error) {
         console.error('Erro ao buscar produtos:', error);
@@ -69,9 +51,19 @@ const HomeScreen = ({ navigation, route }) => {
       produto.nomeProduto.toLowerCase().includes(searchText.toLowerCase()) &&
       (categoriaSelecionada === null || produto.categoria === categoriaSelecionada.id)
     );
-    console.log('Produtos filtrados pela pesquisa:', filteredProducts); // Log dos produtos filtrados pela pesquisa
     setProdutosFiltrados(filteredProducts);
-  }, [searchText, produtos]);
+  }, [searchText, produtos, categoriaSelecionada]);
+
+
+  const categoriaMapping = {
+    0: 'Medicamentos',
+    1: 'Beleza',
+    2: 'Maternidade',
+    3: 'Suplementos',
+    4: 'Higiene',
+    5: 'Produtos Infantis',
+    6: 'Dermocosmeticos'
+  };
 
   useEffect(() => {
     if (selectedCategory) {
@@ -83,11 +75,10 @@ const HomeScreen = ({ navigation, route }) => {
     }
   }, [selectedCategory, produtos]);
 
-  }, [searchText, produtos, categoriaSelecionada]);
-
   return (
     <ScrollView style={styles.container}>
       <Header navigation={navigation} />
+      {/* Barra de Pesquisa */}
       <View style={styles.inputIconContainer}>
         <Image
           source={require('../../assets/lupa.png')}
@@ -107,8 +98,8 @@ const HomeScreen = ({ navigation, route }) => {
       <View style={styles.containerCategorias}>
         <ScrollView horizontal style={styles.header}>
           {categories.map(category => (
-            <TouchableOpacity 
-              key={category.id} 
+            <TouchableOpacity
+              key={category.id}
               style={[styles.categoryItem, category.style]}
               onPress={() => handleCategoryPress(category)}
             >
@@ -135,7 +126,7 @@ const HomeScreen = ({ navigation, route }) => {
                   <Text style={styles.textoPreco}>Preço: R${item.preco}</Text>
                   <Text style={styles.textoPreco}>{item.categoria}</Text>
                 </View>
-                <TouchableOpacity style={styles.botaoComprar} onPress={() => navigation.navigate('ProdutosCliente', { productId: item.produtoId })}> 
+                <TouchableOpacity style={styles.botaoComprar} onPress={() => navigation.navigate('ProdutosCliente', { productId: item.produtoId })}>
                   <Text style={styles.textoBotao}>Comprar</Text>
                 </TouchableOpacity>
               </TouchableOpacity>
@@ -143,8 +134,8 @@ const HomeScreen = ({ navigation, route }) => {
           />
         </View>
       </ScrollView>
-            {/* outros */}
-            <Text style={styles.highlightsTitle}>Outros</Text>
+      {/* outros */}
+      <Text style={styles.highlightsTitle}>Outros</Text>
       <ScrollView horizontal style={styles.scrowDestaques}>
         <View style={styles.horizontalScrollView}>
           <FlatList
@@ -160,7 +151,7 @@ const HomeScreen = ({ navigation, route }) => {
                   <Text style={styles.textoPreco}>Preço: R${item.preco}</Text>
                   <Text style={styles.textoPreco}>{item.categoria}</Text>
                 </View>
-                <TouchableOpacity style={styles.botaoComprar} onPress={() => navigation.navigate('ProdutosCliente', { productId: item.produtoId })}> 
+                <TouchableOpacity style={styles.botaoComprar} onPress={() => navigation.navigate('ProdutosCliente', { productId: item.produtoId })}>
                   <Text style={styles.textoBotao}>Comprar</Text>
                 </TouchableOpacity>
               </TouchableOpacity>
@@ -169,7 +160,7 @@ const HomeScreen = ({ navigation, route }) => {
         </View>
       </ScrollView>
 
-      <Footer/>
+      <Footer />
     </ScrollView>
   );
 };
@@ -178,7 +169,7 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: '#F4F4F4',
     width: '100%',
-    
+
   },
 
   iconStyle: {
@@ -187,13 +178,13 @@ const styles = StyleSheet.create({
     width: 20,
     height: 20,
   },
-inputIconContainer: {
+  inputIconContainer: {
     flexDirection: 'row',
     backgroundColor: '#fff',
     borderRadius: 20,
     alignItems: 'center',
     width: 250,
-    alignSelf:'center',
+    alignSelf: 'center',
     margin: 10,
     borderWidth: 1,
     borderColor: '#74B0FF',
@@ -226,28 +217,28 @@ inputIconContainer: {
     marginLeft: 10,
     margin: 10,
     color: '#74B0FF',
-    
+
   },
   productItem: {
     justifyContent: 'center',
     alignItems: 'start',
     backgroundColor: '#fff',
     borderRadius: 5,
-    borderColor:'#E9E9E9',
+    borderColor: '#E9E9E9',
     width: 160,
     height: 250,
     marginBottom: 50,
     marginLeft: 10,
-    
-    
+
+
   },
   productImage: {
     width: 'auto',
     height: 100,
     backgroundColor: '#E9E9E9',
-    borderColor:'#E9E9E9',
+    borderColor: '#E9E9E9',
   },
-  
+
   productName: {
     fontSize: 16,
     marginTop: 5,
@@ -258,7 +249,7 @@ inputIconContainer: {
     fontSize: 14,
     marginBottom: 5,
     textAlign: 'center',
-    color:'#26CE55',
+    color: '#26CE55',
     textAlign: 'left',
   },
   tituloCategorias: {
@@ -268,31 +259,31 @@ inputIconContainer: {
   },
   containerCategorias: {
     height: 60,
-    
+
   },
   textControl: {
-    textAlign:'left',
+    textAlign: 'left',
     marginLeft: 10,
     height: 'auto',
     padding: 5,
-    
+
   },
-  scrowDestaques:{
-    flex:1,
+  scrowDestaques: {
+    flex: 1,
     height: 300,
     flexDirection: 'row',
     overflowX: 'scroll',
   },
-  
-  nomeProduto:{
+
+  nomeProduto: {
     color: '#FFD260',
   },
 
-  avaliacao:{
+  avaliacao: {
     color: '#FFD260',
   },
-  
-  textoPreco:{
+
+  textoPreco: {
     color: '#26CE55'
   },
   botaoComprar: {
@@ -303,7 +294,7 @@ inputIconContainer: {
     alignItems: 'center',
     margin: 8,
     height: 40,
-    
+
   },
   textoBotao: {
     color: 'white',
