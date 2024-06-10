@@ -53,6 +53,18 @@ namespace pucfarma.api.Controllers
                 return BadRequest();
             }
 
+            var existingUsuario = await _context.Usuarios.FindAsync(id);
+
+            if (existingUsuario == null)
+            {
+                return NotFound();
+            }
+
+            if (existingUsuario.senha != usuarioModel.senha)
+            {
+                usuarioModel.senha = BCrypt.Net.BCrypt.HashPassword(usuarioModel.senha);
+            }
+
             var existingEmail = _context.Usuarios.FirstOrDefault(u => u.email == usuarioModel.email && u.usuarioId != id);
 
             if (existingEmail != null)
@@ -60,7 +72,6 @@ namespace pucfarma.api.Controllers
                 return BadRequest(new { erro = "O e-mail fornecido já está em uso." });
             }
 
-            usuarioModel.senha = BCrypt.Net.BCrypt.HashPassword(usuarioModel.senha);
             _context.Entry(usuarioModel).State = EntityState.Modified;
 
             try

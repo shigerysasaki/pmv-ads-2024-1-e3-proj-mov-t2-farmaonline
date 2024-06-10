@@ -1,13 +1,28 @@
 import React, { useState } from 'react';
-import { View, TouchableOpacity, Text, StyleSheet, Image, Modal } from 'react-native';
+import { View, StyleSheet, Image, TouchableOpacity, Text, ScrollView } from 'react-native';
 import { MaterialIcons } from '@expo/vector-icons';
 import Footer from './footer';
 
-const Header = () => {
-  const [menuOpen, setMenuOpen] = useState(false);
+const Header = ({ navigation }) => {
+  const [menuVisible, setMenuVisible] = useState(false);
+
+  const categories = [
+    { id: 1, name: 'Medicamentos', style: styles.med, textStyle: styles.textomed },
+    { id: 2, name: 'Beleza', style: styles.bel, textStyle: styles.textobel },
+    { id: 3, name: 'Maternidade', style: styles.mat, textStyle: styles.textomat },
+    { id: 4, name: 'Suplementos', style: styles.sup, textStyle: styles.textosup },
+    { id: 5, name: 'Higiene', style: styles.hig, textStyle: styles.textohig },
+    { id: 6, name: 'Produtos infantis', style: styles.inf, textStyle: styles.textoinf },
+    { id: 7, name: 'Dermocosméticos', style: styles.derm, textStyle: styles.textoderm },
+  ];
 
   const toggleMenu = () => {
-    setMenuOpen(!menuOpen); // Inverte o estado do menu
+    setMenuVisible(!menuVisible);
+  };
+
+  const navigateToCategory = (category) => {
+    setMenuVisible(false);
+    navigation.navigate('Home', { selectedCategory: category });
   };
 
 
@@ -18,45 +33,22 @@ const Header = () => {
       </View>
       <View style={styles.menuContainer}>
         <TouchableOpacity onPress={toggleMenu} style={styles.toggle}>
-          <MaterialIcons name="menu" size={30} color="#74b0ff" />
+          <Image source={require('../../assets/menu.png')} style={styles.tabIcon} />
         </TouchableOpacity>
-      </View>
-      <Modal
-        visible={menuOpen}
-        transparent={true}
-        animationType='slide'
-        onRequestClose={() => setMenuOpen(false)}
-      >
-        <View style={styles.modalContainer}>
-          <View style={styles.menu}>
-          <TouchableOpacity onPress={() => setMenuOpen(false)} style={styles.closeButton}>
-            <Text style={styles.closeButtonText}>Fechar</Text>
-          </TouchableOpacity>
-            <TouchableOpacity style={styles.med}>
-              <Text style={styles.textomed}>Medicamentos</Text>
-            </TouchableOpacity>
-            <TouchableOpacity style={styles.bel}>
-              <Text style={styles.textobel}>Beleza</Text>
-            </TouchableOpacity>
-            <TouchableOpacity style={styles.mat}>
-              <Text style={styles.textomat}>Maternidade</Text>
-            </TouchableOpacity>
-            <TouchableOpacity style={styles.sup}>
-              <Text style={styles.textosup}>Suplementos</Text>
-            </TouchableOpacity>
-            <TouchableOpacity style={styles.hig}>
-              <Text style={styles.textohig}>Higiene</Text>
-            </TouchableOpacity>
-            <TouchableOpacity style={styles.inf}>
-              <Text style={styles.textoinf}>Produtos infantis</Text>
-            </TouchableOpacity>
-            <TouchableOpacity style={styles.derm}>
-              <Text style={styles.textoderm}>Dermocosméticos</Text>
-            </TouchableOpacity>
+        {menuVisible && (
+          <View showsVerticalScrollIndicator={false} style={styles.scrollView}>
+            {categories.map(category => (
+              <TouchableOpacity 
+                key={category.id} 
+                style={[styles.category, category.style]} 
+                onPress={() => navigateToCategory(category.name)}
+              >
+                <Text style={category.textStyle}>{category.name}</Text>
+              </TouchableOpacity>
+            ))}
           </View>
-        </View>
-        <Footer/>
-      </Modal>
+        )}
+      </View>
     </View>
   );
 };
@@ -66,61 +58,50 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
-    paddingHorizontal: 20,
-    paddingTop: 10,
-    backgroundColor: '#FFFFFF',
-    borderBottomWidth: 1,
-    borderBottomColor: '#EEEEEE',
+    paddingHorizontal: 10,
+    paddingVertical: 15,
+    backgroundColor: '#fff',
+    zIndex: 999,
   },
   logoContainer: {
     flex: 1,
-    justifyContent: 'center',
-    alignItems: 'flex-start',
   },
   logo: {
-    width: 70,
-    height: 70,
+    width: 100,
+    height: 60,
+    resizeMode: 'contain',
   },
   menuContainer: {
-    justifyContent: 'center',
+    flex: 3,
+    flexDirection: 'column',
     alignItems: 'flex-end',
   },
   toggle: {
-    marginRight: 20,
+    marginRight: 25,
   },
-  modalContainer: {
-    flex: 1,
+  tabIcon: {
+    width: 25,
+    height: 25
+},
+  scrollView: {
+    position: 'absolute',
+    top: 60,
+    backgroundColor: '#fff',
+    zIndex: 999,
+    maxHeight: 500,
+    width: '80%',
     justifyContent: 'center',
-    alignItems: 'flex-end',
+    alignItems: 'center'
   },
-  menu: {
-    width: 400,
-    marginTop: 40,
-    backgroundColor: '#FFFFFF',
-    paddingVertical: 10,
-    paddingHorizontal: 15,
-  },
-  menuItem: {
-    paddingVertical: 10,
-    paddingHorizontal: 15,
-  },
-  menuText: {
-    fontSize: 16,
-    fontWeight: 'bold',
-    color: '#333333',
-  },
-  closeButton: {
+  category: {
     padding: 10,
-    alignSelf: 'flex-end',
-  },
-  closeButtonText: {
-    fontSize: 16,
-    fontWeight: 'bold',
-    color: '#74b0ff',
+    marginVertical: 5,
+    justifyContent: 'center',
+    alignItems: 'center',
   },
   med: {
-    width: 350,
-    height: 70,
+    width: 200,
+    height: 50,
     margin: 10,
     backgroundColor: '#ffeaeb',
     borderWidth: 1,
@@ -129,13 +110,13 @@ const styles = StyleSheet.create({
     justifyContent: 'center'
   },
   textomed: {
-    fontSize: 20,
+    fontSize: 17,
     fontWeight: 'bold',
     color: '#ff949a'
   },
   bel: {
-    width: 350,
-    height: 70,
+    width: 200,
+    height: 50,
     margin: 10,
     backgroundColor: '#ebe4ff',
     borderWidth: 1,
@@ -144,13 +125,13 @@ const styles = StyleSheet.create({
     justifyContent: 'center'
   },
   textobel: {
-    fontSize: 20,
+    fontSize: 17,
     fontWeight: 'bold',
     color: '#b094ff'
   },
   mat: {
-    width: 350,
-    height: 70,
+    width: 200,
+    height: 50,
     margin: 10,
     backgroundColor: '#f9e7ff',
     borderWidth: 1,
@@ -159,13 +140,13 @@ const styles = StyleSheet.create({
     justifyContent: 'center'
   },
   textomat: {
-    fontSize: 20,
+    fontSize: 17,
     fontWeight: 'bold',
     color: '#e394ff'
   },
   sup: {
-    width: 350,
-    height: 70,
+    width: 200,
+    height: 50,
     margin: 10,
     backgroundColor: '#e4fffe',
     borderWidth: 1,
@@ -174,13 +155,13 @@ const styles = StyleSheet.create({
     justifyContent: 'center'
   },
   textosup: {
-    fontSize: 20,
+    fontSize: 17,
     fontWeight: 'bold',
     color: '#82dbd6'
   },
   hig: {
-    width: 350,
-    height: 70,
+    width: 200,
+    height: 50,
     margin: 10,
     backgroundColor: '#cfffc8',
     borderWidth: 1,
@@ -189,13 +170,13 @@ const styles = StyleSheet.create({
     justifyContent: 'center'
   },
   textohig: {
-    fontSize: 20,
+    fontSize: 17,
     fontWeight: 'bold',
     color: '#3aC224'
   },
   inf: {
-    width: 350,
-    height: 70,
+    width: 200,
+    height: 50,
     margin: 10,
     backgroundColor: '#E5FFFE',
     borderWidth: 1,
@@ -204,13 +185,13 @@ const styles = StyleSheet.create({
     justifyContent: 'center'
   },
   textoinf: {
-    fontSize: 20,
+    fontSize: 17,
     fontWeight: 'bold',
     color: '#74B0FF'
   },
   derm: {
-    width: 350,
-    height: 70,
+    width: 200,
+    height: 50,
     margin: 10,
     backgroundColor: '#FFF3C9',
     borderWidth: 1,
@@ -219,7 +200,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center'
   },
   textoderm: {
-    fontSize: 20,
+    fontSize: 17,
     fontWeight: 'bold',
     color: '#DBAE3D'
   },

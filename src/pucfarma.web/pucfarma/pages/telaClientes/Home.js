@@ -1,30 +1,35 @@
-import React, { startTransition, useState } from 'react';
-import { View, Text, StyleSheet, TouchableOpacity, Image, FlatList, TextInput, Alert, Button  } from 'react-native';
-import { ScrollView } from 'react-native-gesture-handler';
+import React, { useState, useEffect } from 'react';
+import { View, Text, StyleSheet, TouchableOpacity, Image, FlatList, TextInput, Alert, ScrollView } from 'react-native';
 import Footer from '../template/footer';
-/*import { Button } from 'react-native-elements';*/
-import { useEffect } from 'react';
-
+import Header from '../template/header';
 
 const categories = [
-  { id: 1, name: 'Medicamentos', style: { backgroundColor: '#FF949A' } },
-  { id: 2, name: 'Beleza', style: { backgroundColor: '#EBE4FF' } },
-  { id: 3, name: 'Maternidade', style: { backgroundColor: '#F9E7FF' } },
-  { id: 4, name: 'Suplementos', style: { backgroundColor: '#E5FFFE' } },
-  { id: 5, name: 'Higiene', style: { backgroundColor: '#CFFFC8' } },
-  { id: 6, name: 'Produtos Infantis', style: { backgroundColor: '#C8EEFF' } },
-  { id: 7, name: 'Dermocosmeticos', style: { backgroundColor: '#FFF3C9' } },
+  { id: 0, name: 'Medicamentos', style: { backgroundColor: '#FF949A' } },
+  { id: 1, name: 'Beleza', style: { backgroundColor: '#EBE4FF' } },
+  { id: 2, name: 'Maternidade', style: { backgroundColor: '#F9E7FF' } },
+  { id: 3, name: 'Suplementos', style: { backgroundColor: '#E5FFFE' } },
+  { id: 4, name: 'Higiene', style: { backgroundColor: '#CFFFC8' } },
+  { id: 5, name: 'Produtos Infantis', style: { backgroundColor: '#C8EEFF' } },
+  { id: 6, name: 'Dermocosmeticos', style: { backgroundColor: '#FFF3C9' } },
 ];
 
-const HomeScreen = ({ navigation }) => {
+const HomeScreen = ({ navigation, route }) => {
   const [searchText, setSearchText] = useState('');
   const [produtos, setProdutos] = useState([]);
-  const [carrinho, setCarrinho] = useState([]);
   const [produtosFiltrados, setProdutosFiltrados] = useState([]);
+  const [categoriaSelecionada, setCategoriaSelecionada] = useState(null);
+  const [cartItems, setCartItems] = useState([]);
+  const { selectedCategory } = route.params || {};
 
-  const adicionarAoCarrinho = (produto) => {
-    setCarrinho([...carrinho, produto]);
-    Alert.alert('Produto Adicionado', 'O produto foi adicionado ao carrinho.');
+
+  const handleCategoryPress = (category) => {
+    if (category.id === categoriaSelecionada?.id) {
+      // Se a categoria selecionada for a mesma que a atual, limpe os filtros
+      setCategoriaSelecionada(null);
+    } else {
+      // Caso contrário, defina a nova categoria selecionada
+      setCategoriaSelecionada(category);
+    }
   };
 
   useEffect(() => {
@@ -41,24 +46,38 @@ const HomeScreen = ({ navigation }) => {
     fetchProdutos();
   }, []);
 
-  // Atualiza a lista de produtos filtrados sempre que o texto da pesquisa muda
   useEffect(() => {
     const filteredProducts = produtos.filter(produto =>
-      produto.nomeProduto.toLowerCase().includes(searchText.toLowerCase())
+      produto.nomeProduto.toLowerCase().includes(searchText.toLowerCase()) &&
+      (categoriaSelecionada === null || produto.categoria === categoriaSelecionada.id)
     );
     setProdutosFiltrados(filteredProducts);
-  }, [searchText, produtos]);
+  }, [searchText, produtos, categoriaSelecionada]);
 
-  
-  const comprar = () => {
-    console.log('Botão pressionado');
+
+  const categoriaMapping = {
+    0: 'Medicamentos',
+    1: 'Beleza',
+    2: 'Maternidade',
+    3: 'Suplementos',
+    4: 'Higiene',
+    5: 'Produtos Infantis',
+    6: 'Dermocosmeticos'
   };
 
-
-  
+  useEffect(() => {
+    if (selectedCategory) {
+      const categoryFilteredProducts = produtos.filter(produto =>
+        categoriaMapping[produto.categoria] && categoriaMapping[produto.categoria].toLowerCase() === selectedCategory.toLowerCase()
+      );
+      console.log('Produtos filtrados por categoria:', categoryFilteredProducts); // Log dos produtos filtrados por categoria
+      setProdutosFiltrados(categoryFilteredProducts);
+    }
+  }, [selectedCategory, produtos]);
 
   return (
     <ScrollView style={styles.container}>
+      <Header navigation={navigation} />
       {/* Barra de Pesquisa */}
       <View style={styles.inputIconContainer}>
         <Image
@@ -72,86 +91,85 @@ const HomeScreen = ({ navigation }) => {
           onChangeText={setSearchText}
           value={searchText}
         />
-      </View>  
-      
-       
+      </View>
 
       {/* Categorias */}
       <Text style={styles.tituloCategorias}>Categorias</Text>
       <View style={styles.containerCategorias}>
         <ScrollView horizontal style={styles.header}>
           {categories.map(category => (
-            <TouchableOpacity 
-              key={category.id} 
+            <TouchableOpacity
+              key={category.id}
               style={[styles.categoryItem, category.style]}
+              onPress={() => handleCategoryPress(category)}
             >
               <Text style={styles.categoryText}>{category.name}</Text>
             </TouchableOpacity>
           ))}
         </ScrollView>
-      </View>  
-          
-      {/* Destaques */}
+      </View>
+
+      {/* Produtos */}
       <Text style={styles.highlightsTitle}>Destaques</Text>
       <ScrollView horizontal style={styles.scrowDestaques}>
-      
-      <View style={styles.horizontalScrollView}>
-        <FlatList
-          horizontal
-          data={produtosFiltrados} // Alterado para usar a lista de produtos filtrados
-          keyExtractor={item => item.produtoId.toString()}
-          renderItem={({ item }) => (
-            <TouchableOpacity style={styles.productItem} onPress={() => navigation.navigate('ProdutosCliente', { productId: item.produtoId })}>
-              <Image source={{ uri: `data:image/png;base64,${item.fotoProduto}` }} style={styles.productImage} />
-              <View style={styles.textControl}>
-                <Text style={styles.productName}>{item.nomeProduto}</Text>
-                <Text style={styles.avaliacao}>★: {item.produtoAvaliacao}</Text>
-                <Text style={styles.textoPreco}>Preço: R${item.preco}</Text>
-              </View>
-              <Button title="Comprar" onPress={() => adicionarAoCarrinho(item)} buttonStyle={{ width: 140, alignSelf: 'center', height: 40 }} />
-            </TouchableOpacity>
-          )}
-        />
-      </View>
-
+        <View style={styles.horizontalScrollView}>
+          <FlatList
+            horizontal
+            data={produtosFiltrados}
+            keyExtractor={item => item.produtoId.toString()}
+            renderItem={({ item }) => (
+              <TouchableOpacity style={styles.productItem} onPress={() => navigation.navigate('ProdutosCliente', { productId: item.produtoId })}>
+                <Image source={{ uri: `data:image/png;base64,${item.fotoProduto}` }} style={styles.productImage} />
+                <View style={styles.textControl}>
+                  <Text style={styles.productName}>{item.nomeProduto}</Text>
+                  <Text style={styles.avaliacao}>★: {item.produtoAvaliacao}</Text>
+                  <Text style={styles.textoPreco}>Preço: R${item.preco}</Text>
+                  <Text style={styles.textoPreco}>{item.categoria}</Text>
+                </View>
+                <TouchableOpacity style={styles.botaoComprar} onPress={() => navigation.navigate('ProdutosCliente', { productId: item.produtoId })}>
+                  <Text style={styles.textoBotao}>Comprar</Text>
+                </TouchableOpacity>
+              </TouchableOpacity>
+            )}
+          />
+        </View>
       </ScrollView>
-          
-      {/* Outros Produtos */}
-      <Text style={styles.highlightsTitle}>Outros Produtos</Text>
+      {/* outros */}
+      <Text style={styles.highlightsTitle}>Outros</Text>
       <ScrollView horizontal style={styles.scrowDestaques}>
-      
-      <View style={styles.horizontalScrollView}>
-        <FlatList
-          horizontal
-          data={produtosFiltrados} // Alterado para usar a lista de produtos filtrados
-          keyExtractor={item => item.produtoId.toString()}
-          renderItem={({ item }) => (
-            <TouchableOpacity style={styles.productItem} onPress={() => navigation.navigate('ProdutosCliente', { productId: item.produtoId })}>
-              <Image source={{ uri: `data:image/png;base64,${item.fotoProduto}` }} style={styles.productImage} />
-              <View style={styles.textControl}>
-                <Text style={styles.productName}>{item.nomeProduto}</Text>
-                <Text style={styles.avaliacao}>★: {item.produtoAvaliacao}</Text>
-                <Text style={styles.textoPreco}>Preço: R${item.preco}</Text>
-                <Text style={styles.textoPreco}>{item.categoria}</Text>
-              </View>
-              <Button title="Comprar" onPress={() => adicionarAoCarrinho(item)} buttonStyle={{ width: 140, alignSelf: 'center', height: 40 }} />
-            </TouchableOpacity>
-          )}
-        />
-      </View>
-
-
+        <View style={styles.horizontalScrollView}>
+          <FlatList
+            horizontal
+            data={produtosFiltrados}
+            keyExtractor={item => item.produtoId.toString()}
+            renderItem={({ item }) => (
+              <TouchableOpacity style={styles.productItem} onPress={() => navigation.navigate('ProdutosCliente', { productId: item.produtoId })}>
+                <Image source={{ uri: `data:image/png;base64,${item.fotoProduto}` }} style={styles.productImage} />
+                <View style={styles.textControl}>
+                  <Text style={styles.productName}>{item.nomeProduto}</Text>
+                  <Text style={styles.avaliacao}>★: {item.produtoAvaliacao}</Text>
+                  <Text style={styles.textoPreco}>Preço: R${item.preco}</Text>
+                  <Text style={styles.textoPreco}>{item.categoria}</Text>
+                </View>
+                <TouchableOpacity style={styles.botaoComprar} onPress={() => navigation.navigate('ProdutosCliente', { productId: item.produtoId })}>
+                  <Text style={styles.textoBotao}>Comprar</Text>
+                </TouchableOpacity>
+              </TouchableOpacity>
+            )}
+          />
+        </View>
       </ScrollView>
-      <Footer/>
+
+      <Footer />
     </ScrollView>
   );
 };
-
 const styles = StyleSheet.create({
   container: {
+    flex: 1,
     backgroundColor: '#F4F4F4',
     width: '100%',
-    
+
   },
 
   iconStyle: {
@@ -160,14 +178,13 @@ const styles = StyleSheet.create({
     width: 20,
     height: 20,
   },
-inputIconContainer: {
+  inputIconContainer: {
     flexDirection: 'row',
     backgroundColor: '#fff',
     borderRadius: 20,
-    flex: 1,
     alignItems: 'center',
     width: 250,
-    alignSelf:'center',
+    alignSelf: 'center',
     margin: 10,
     borderWidth: 1,
     borderColor: '#74B0FF',
@@ -200,29 +217,28 @@ inputIconContainer: {
     marginLeft: 10,
     margin: 10,
     color: '#74B0FF',
-    
+
   },
   productItem: {
     justifyContent: 'center',
     alignItems: 'start',
     backgroundColor: '#fff',
     borderRadius: 5,
-    borderColor:'#E9E9E9',
+    borderColor: '#E9E9E9',
     width: 160,
-    height: 310,
+    height: 250,
     marginBottom: 50,
     marginLeft: 10,
-    
-    
+
+
   },
   productImage: {
     width: 'auto',
-    height: 140,
-    margin: 15,
+    height: 100,
     backgroundColor: '#E9E9E9',
-    borderColor:'#E9E9E9',
-    resizeMode: 'contain',
+    borderColor: '#E9E9E9',
   },
+
   productName: {
     fontSize: 16,
     marginTop: 5,
@@ -233,7 +249,7 @@ inputIconContainer: {
     fontSize: 14,
     marginBottom: 5,
     textAlign: 'center',
-    color:'#26CE55',
+    color: '#26CE55',
     textAlign: 'left',
   },
   tituloCategorias: {
@@ -243,32 +259,46 @@ inputIconContainer: {
   },
   containerCategorias: {
     height: 60,
-    
+
   },
   textControl: {
-    textAlign:'left',
+    textAlign: 'left',
     marginLeft: 10,
     height: 'auto',
     padding: 5,
-    
+
   },
-  scrowDestaques:{
-    flex:1,
-    height: 350,
+  scrowDestaques: {
+    flex: 1,
+    height: 300,
     flexDirection: 'row',
     overflowX: 'scroll',
   },
-  
-  nomeProduto:{
+
+  nomeProduto: {
     color: '#FFD260',
   },
 
-  avaliacao:{
+  avaliacao: {
     color: '#FFD260',
   },
-  
-  textoPreco:{
+
+  textoPreco: {
     color: '#26CE55'
+  },
+  botaoComprar: {
+    backgroundColor: '#74B0FF',
+    paddingHorizontal: 20,
+    paddingVertical: 10,
+    borderRadius: 5,
+    alignItems: 'center',
+    margin: 8,
+    height: 40,
+
+  },
+  textoBotao: {
+    color: 'white',
+    fontSize: 16,
   },
 
 });

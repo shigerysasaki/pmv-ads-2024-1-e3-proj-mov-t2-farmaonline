@@ -2,7 +2,6 @@ import React, { useState } from 'react';
 import { View, Image, Text, StyleSheet, TouchableOpacity, TextInput, Tab, handleTabPress } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 
-
 import Footer from '../template/footer';
 import Header2 from '../template/header2';
 
@@ -14,7 +13,14 @@ const Mais = () => {
   const handleTabPress = (tab) => {
     setActiveTab(tab);
     navigation.navigate(tab);
-  };
+  // Função para lidar com o logout
+  const handleLogout = () => {
+    try {
+      navigation.navigate('Login');
+    } catch (error) {
+      console.error("Erro ao navegar para 'Login':", error);
+    }
+  }};
 
   return (
     <View style={styles.container}>
@@ -37,7 +43,7 @@ const Mais = () => {
           <Image source={require('../../assets/relogio.png')} style={styles.tabIcon} />
           <Text style={styles.tabText}>Histórico de compra</Text>
         </TouchableOpacity>
-        <TouchableOpacity style={styles.tab} onPress={() => handleTabPress('InformaçõesLoja')}>
+        <TouchableOpacity style={styles.tab} onPress={() => handleTabPress('InformacoesLoja')}>
           <Image source={require('../../assets/cuidado.png')} style={styles.tabIcon} />
           <Text style={styles.tabText}>Informações da loja</Text>
         </TouchableOpacity>
