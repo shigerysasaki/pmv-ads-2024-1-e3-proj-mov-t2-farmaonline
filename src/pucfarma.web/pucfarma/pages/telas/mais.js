@@ -33,7 +33,7 @@ const Mais = () => {
           <Image source={require('../../assets/estrela.png')} style={styles.tabIcon} />
           <Text style={styles.tabText}>Avaliações pendentes</Text>
         </TouchableOpacity>
-        <TouchableOpacity style={styles.tab} onPress={() => handleTabPress('HistoricoCompra')}>
+        <TouchableOpacity style={styles.tab} onPress={() => navigation.navigate('HistoricoPedidosCliente')}>
           <Image source={require('../../assets/relogio.png')} style={styles.tabIcon} />
           <Text style={styles.tabText}>Histórico de compra</Text>
         </TouchableOpacity>
