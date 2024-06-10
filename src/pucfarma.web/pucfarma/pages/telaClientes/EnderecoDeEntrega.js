@@ -18,7 +18,7 @@ export default function PerfilClienteScreen() {
     const [complemento, setComplemento] = useState('');
     const [precoEntrega, setPrecoEntrega] = useState(0);
     const route = useRoute();
-    const subtotal = route.params?.subtotal || 0; // Valor do subtotal vindo dos parâmetros da rota
+    const subtotal = route.params?.subtotal || 0;
 
     useEffect(() => {
         const keyboardDidShowListener = Keyboard.addListener(
@@ -59,19 +59,19 @@ export default function PerfilClienteScreen() {
                     'Content-Type': 'application/json',
                 }
             });
-    
+
             if (!response.ok) {
                 const errorText = await response.text();
                 throw new Error('Erro na requisição: ' + response.status + ' - ' + errorText);
             }
-    
+
             const responseText = await response.text();
             console.log('Resposta completa:', responseText);
-    
+
             if (!responseText) {
                 throw new Error('Resposta vazia do servidor.');
             }
-    
+
             let data;
             try {
                 data = JSON.parse(responseText);
@@ -80,7 +80,7 @@ export default function PerfilClienteScreen() {
                 console.error('Erro ao parsear JSON:', jsonError.message);
                 throw new Error('Erro ao parsear JSON: ' + jsonError.message);
             }
-    
+
             setUsuario(data);
             setCep(data.cep);
             setCidade(data.cidade);
@@ -89,14 +89,14 @@ export default function PerfilClienteScreen() {
             setBairro(data.bairro);
             setNumero(data.numero);
             setComplemento(data.complemento);
-    
+
         } catch (error) {
             console.error('Erro:', error);
             Alert.alert('Erro', 'Não foi possível obter os dados do usuário. Por favor, tente novamente mais tarde.');
         }
     };
-    
-    
+
+
 
     const atualizarPrecoEntrega = (cep) => {
         const precoEntrega = calcularPrecoEntrega(cep);
@@ -129,12 +129,12 @@ export default function PerfilClienteScreen() {
                 bairro: bairro,
                 rua: rua,
                 numero: numero,
-                complemento: complemento,                
+                complemento: complemento,
                 tipoUsuario: usuario.tipoUsuario
             };
-    
-            console.log("Updated Usuario:", JSON.stringify(updatedUsuario, null, 2)); 
-    
+
+            console.log("Updated Usuario:", JSON.stringify(updatedUsuario, null, 2));
+
             const response = await fetch("http://10.0.2.2:5035/api/Cadastro/" + usuario.usuarioId, {
                 method: 'PUT',
                 headers: {
@@ -142,12 +142,12 @@ export default function PerfilClienteScreen() {
                 },
                 body: JSON.stringify(updatedUsuario)
             });
-  
+
             if (!response.ok) {
                 const errorText = await response.text();
                 throw new Error('Erro na requisição: ' + response.status + ' - ' + errorText);
             }
-             
+
             Alert.alert('Dados atualizados', 'O Endereço foi atualizado com sucesso!');
             navigation.navigate('Selecionarpagamento')
         } catch (error) {
@@ -155,7 +155,7 @@ export default function PerfilClienteScreen() {
             Alert.alert('Erro', 'Não foi possível atualizar o cadastro. Por favor, tente novamente mais tarde.');
         }
     };
-    
+
 
     const estados = [
         'Acre', 'Alagoas', 'Amapá', 'Amazonas', 'Bahia', 'Ceará', 'Distrito Federal', 'Espírito Santo', 'Goiás', 'Maranhão', 'Mato Grosso', 'Mato Grosso do Sul', 'Minas Gerais', 'Pará', 'Paraíba', 'Paraná', 'Pernambuco', 'Piauí', 'Rio de Janeiro', 'Rio Grande do Norte', 'Rio Grande do Sul', 'Rondônia', 'Roraima', 'Santa Catarina', 'São Paulo', 'Sergipe', 'Tocantins'
@@ -170,12 +170,12 @@ export default function PerfilClienteScreen() {
             <Header style={styles.header} />
 
             <View style={styles.content}>
+
+                <View style={styles.topo}>
+                    <Text style={styles.addresstopoText}>Endereço de entrega</Text>
+                </View>
+
                 <ScrollView contentContainerStyle={styles.scrollViewContent}>
-                    <View style={styles.topo}>
-                        <Text style={styles.addresstopoText}>Endereço de entrega</Text>
-                    </View>
-
-
                     <View style={styles.inputContainer}>
                         <Text style={styles.label}>CEP</Text>
                         <TextInput
@@ -308,7 +308,7 @@ const styles = StyleSheet.create({
     topo: {
         width: '100%',
         backgroundColor: '#F4F4F4',
-        padding: 10,
+        marginTop:5,
     },
 
     scrollViewContent: {
@@ -327,7 +327,7 @@ const styles = StyleSheet.create({
         fontWeight: 'bold',
         fontSize: 20,
         textAlign: 'center',
-        marginTop: -28,
+        marginTop: -50,
         marginBottom: 10
     },
     input: {
@@ -401,7 +401,7 @@ const styles = StyleSheet.create({
         marginTop: 20,
 
         padding: 20,
-        alignItems: 'flex-end', 
+        alignItems: 'flex-end',
     },
 
     summaryText: {
@@ -413,7 +413,7 @@ const styles = StyleSheet.create({
     summaryTextTotal: {
         fontSize: 18,
         color: '#26CE55',
-        fontWeight: 'bold', 
+        fontWeight: 'bold',
     },
 
 
@@ -427,22 +427,22 @@ const styles = StyleSheet.create({
         marginTop: 25,
         marginBottom: 25,
         alignItems: 'center',
-        alignSelf: 'flex-end', 
-        flexDirection: 'row', 
-        justifyContent: 'space-between', 
-        position: 'relative', 
+        alignSelf: 'flex-end',
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        position: 'relative',
     },
     pagamentoText: {
         color: '#fff',
         fontSize: 16,
         fontWeight: 'bold',
-        textAlign: 'left', 
+        textAlign: 'left',
     },
     tabIcon: {
         width: 40,
         height: 40,
-        position: 'absolute', 
-        right: 1, 
-        alignSelf: 'center', 
+        position: 'absolute',
+        right: 1,
+        alignSelf: 'center',
     },
 });
