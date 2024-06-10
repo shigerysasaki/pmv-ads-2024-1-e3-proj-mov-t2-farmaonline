@@ -53,8 +53,13 @@ namespace pucfarma.api.Controllers
                 return BadRequest();
             }
 
-            var existingUsuario = await _context.Usuarios.FindAsync(id);
+            var existingEmail = await _context.Usuarios.FirstOrDefaultAsync(u => u.email == usuarioModel.email && u.usuarioId != id);
+            if (existingEmail != null)
+            {
+                return BadRequest(new { erro = "O e-mail fornecido já está em uso." });
+            }
 
+            var existingUsuario = await _context.Usuarios.FindAsync(id);
             if (existingUsuario == null)
             {
                 return NotFound();
@@ -65,18 +70,12 @@ namespace pucfarma.api.Controllers
                 usuarioModel.senha = BCrypt.Net.BCrypt.HashPassword(usuarioModel.senha);
             }
 
-            var existingEmail = _context.Usuarios.FirstOrDefault(u => u.email == usuarioModel.email && u.usuarioId != id);
-
-            if (existingEmail != null)
-            {
-                return BadRequest(new { erro = "O e-mail fornecido já está em uso." });
-            }
-
-            _context.Entry(usuarioModel).State = EntityState.Modified;
+            _context.Entry(existingUsuario).CurrentValues.SetValues(usuarioModel);
 
             try
             {
                 await _context.SaveChangesAsync();
+                return Ok(usuarioModel);
             }
             catch (DbUpdateConcurrencyException)
             {
@@ -86,12 +85,11 @@ namespace pucfarma.api.Controllers
                 }
                 else
                 {
-                    throw;
+                    return StatusCode(500);
                 }
             }
-
-            return NoContent();
         }
+
 
         // POST: api/Cadastro
         [HttpPost]
