@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import { View, StyleSheet, Image, TouchableOpacity, Text, ScrollView } from 'react-native';
 import { MaterialIcons } from '@expo/vector-icons';
-import Footer from './footer';
 
 const Header = ({ navigation }) => {
   const [menuVisible, setMenuVisible] = useState(false);
@@ -24,7 +23,6 @@ const Header = ({ navigation }) => {
     setMenuVisible(false);
     navigation.navigate('Home', { selectedCategory: category });
   };
-
 
   return (
     <View style={styles.header}>
