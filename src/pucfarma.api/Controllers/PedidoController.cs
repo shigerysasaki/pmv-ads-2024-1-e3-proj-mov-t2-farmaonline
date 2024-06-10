@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Claims;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -103,5 +104,21 @@ namespace pucfarma.api.Controllers
             return _context.Pedidos.Any(e => e.pedidoId == id);
         }
 
+        [HttpGet("PedidosUsuarioLogado")]
+        public async Task<ActionResult<IEnumerable<PedidoModel>>> GetPedidosUsuarioLogado()
+        {
+            int id = Convert.ToInt32(User.FindFirstValue(ClaimTypes.NameIdentifier));
+
+            var pedidosUsuarioLogado = await _context.Pedidos
+                                                .Where(p => p.usuarioId == id)
+                                                .ToListAsync();
+
+            if (pedidosUsuarioLogado == null || pedidosUsuarioLogado.Count == 0)
+            {
+                return NotFound(new { message = "O usuário não realizou nenhum pedido." });
+            }
+
+            return pedidosUsuarioLogado;
+        }
     }
 }
