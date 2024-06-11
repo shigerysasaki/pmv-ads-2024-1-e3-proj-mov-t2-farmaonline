@@ -18,7 +18,7 @@ import DetalhesDaConta from './pages/telaClientes/DetalhesDaConta';
 import Ofertas from './pages/telaClientes/Ofertas';
 import InformacoesLoja from './pages/telas/Loja/'
 import HistoricoPedidosCliente from './pages/telaClientes/HistoricoPedidosCliente';
-
+import Selecionarpagamento from './pages/telaClientes/Selecionarpagamento';
 
 const Stack = createStackNavigator();
 
@@ -36,11 +36,13 @@ export default function App() {
         <Stack.Screen name="Carrinho" component={Carrinho}options={{headerShown: false,headerTransparent: true,title: '',}} />
         <Stack.Screen name="ProdutosCliente" component={ProdutosCliente} options={{headerShown: false,headerTransparent: true,title: '',}}/>
         <Stack.Screen name="DetalhesDaConta" component={DetalhesDaConta} />
-        <Stack.Screen name="EnderecoDeEntrega" component={EnderecoDeEntrega} />
+        <Stack.Screen name="EnderecoDeEntrega" component={EnderecoDeEntrega} options={{headerShown: false,headerTransparent: true,title: '',}} /> 
         <Stack.Screen name="HistoricoPedidosCliente" component={HistoricoPedidosCliente} />
         <Stack.Screen name="Ofertas" component={Ofertas} />
         <Stack.Screen name="Mais" component={Mais} options={{headerShown: false,headerTransparent: true,title: '',}} />
         <Stack.Screen name="Home" component={Home} options={{headerShown: false,headerTransparent: true,title: '',}} />
+        <Stack.Screen name="Selecionarpagamento" component={Selecionarpagamento} options={{headerShown: false,headerTransparent: true,title: '',}}/>
+
         <Stack.Screen name='Andamento' component={Andamento} />
         <Stack.Screen name='InformacoesLoja' component={InformacoesLoja} options={{headerShown: false,headerTransparent: true,title: '',}} />
       </Stack.Navigator>
