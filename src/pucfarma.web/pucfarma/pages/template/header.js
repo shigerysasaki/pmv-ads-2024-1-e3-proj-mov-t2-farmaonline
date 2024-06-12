@@ -24,6 +24,14 @@ const Header = ({ navigation }) => {
     navigation.navigate('Home', { selectedCategory: category });
   };
 
+  const handleSearch = () => {
+    // Lógica para lidar com a pesquisa
+  };
+
+  const handleCart = () => {
+    // Lógica para lidar com o carrinho
+  };
+
   return (
     <View style={styles.header}>
       <View style={styles.logoContainer}>
@@ -33,6 +41,14 @@ const Header = ({ navigation }) => {
         <TouchableOpacity onPress={toggleMenu} style={styles.toggle}>
           <Image source={require('../../assets/menu.png')} style={styles.tabIcon} />
         </TouchableOpacity>
+        <View style={styles.iconContainer}>
+          <TouchableOpacity onPress={handleSearch}>
+            <MaterialIcons name="search" size={24} color="black" />
+          </TouchableOpacity>
+          <TouchableOpacity onPress={handleCart}>
+            <MaterialIcons name="shopping-cart" size={24} color="black" />
+          </TouchableOpacity>
+        </View>
         {menuVisible && (
           <View showsVerticalScrollIndicator={false} style={styles.scrollView}>
             {categories.map(category => (
@@ -57,7 +73,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'space-between',
     paddingHorizontal: 10,
-    paddingVertical: 15,
+    paddingVertical: 30, // Aumentando o padding vertical para aumentar a altura
     backgroundColor: '#fff',
     zIndex: 999,
   },
@@ -71,16 +87,21 @@ const styles = StyleSheet.create({
   },
   menuContainer: {
     flex: 3,
-    flexDirection: 'column',
-    alignItems: 'flex-end',
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'flex-end',
   },
   toggle: {
     marginRight: 25,
   },
   tabIcon: {
     width: 25,
-    height: 25
-},
+    height: 25,
+  },
+  iconContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
   scrollView: {
     position: 'absolute',
     top: 60,
@@ -89,7 +110,7 @@ const styles = StyleSheet.create({
     maxHeight: 500,
     width: '80%',
     justifyContent: 'center',
-    alignItems: 'center'
+    alignItems: 'center',
   },
   category: {
     padding: 10,
@@ -105,12 +126,12 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderColor: '#ff949a',
     alignItems: 'center',
-    justifyContent: 'center'
+    justifyContent: 'center',
   },
   textomed: {
     fontSize: 17,
     fontWeight: 'bold',
-    color: '#ff949a'
+    color: '#ff949a',
   },
   bel: {
     width: 200,
@@ -120,12 +141,12 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderColor: '#b094ff',
     alignItems: 'center',
-    justifyContent: 'center'
+    justifyContent: 'center',
   },
   textobel: {
     fontSize: 17,
     fontWeight: 'bold',
-    color: '#b094ff'
+    color: '#b094ff',
   },
   mat: {
     width: 200,
@@ -135,12 +156,12 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderColor: '#e394ff',
     alignItems: 'center',
-    justifyContent: 'center'
+    justifyContent: 'center',
   },
   textomat: {
     fontSize: 17,
     fontWeight: 'bold',
-    color: '#e394ff'
+    color: '#e394ff',
   },
   sup: {
     width: 200,
@@ -150,12 +171,12 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderColor: '#82dbd6',
     alignItems: 'center',
-    justifyContent: 'center'
+    justifyContent: 'center',
   },
   textosup: {
     fontSize: 17,
     fontWeight: 'bold',
-    color: '#82dbd6'
+    color: '#82dbd6',
   },
   hig: {
     width: 200,
@@ -165,12 +186,12 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderColor: '#3aC224',
     alignItems: 'center',
-    justifyContent: 'center'
+    justifyContent: 'center',
   },
   textohig: {
     fontSize: 17,
     fontWeight: 'bold',
-    color: '#3aC224'
+    color: '#3aC224',
   },
   inf: {
     width: 200,
@@ -180,12 +201,12 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderColor: '#74B0FF',
     alignItems: 'center',
-    justifyContent: 'center'
+    justifyContent: 'center',
   },
   textoinf: {
     fontSize: 17,
     fontWeight: 'bold',
-    color: '#74B0FF'
+    color: '#74B0FF',
   },
   derm: {
     width: 200,
@@ -195,12 +216,12 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderColor: '#DBAE3D',
     alignItems: 'center',
-    justifyContent: 'center'
+    justifyContent: 'center',
   },
   textoderm: {
     fontSize: 17,
     fontWeight: 'bold',
-    color: '#DBAE3D'
+    color: '#DBAE3D',
   },
 });
 
