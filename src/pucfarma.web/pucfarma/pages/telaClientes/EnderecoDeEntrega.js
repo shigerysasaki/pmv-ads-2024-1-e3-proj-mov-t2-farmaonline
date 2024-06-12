@@ -129,11 +129,11 @@ export default function PerfilClienteScreen() {
                 bairro: bairro,
                 rua: rua,
                 numero: numero,
-                complemento: complemento,                
+                complemento: complemento,
                 tipoUsuario: usuario.tipoUsuario
             };
     
-            console.log("Updated Usuario:", JSON.stringify(updatedUsuario, null, 2)); 
+            console.log("Updated Usuario:", JSON.stringify(updatedUsuario, null, 2));
     
             const response = await fetch("http://10.0.2.2:5035/api/Cadastro/" + usuario.usuarioId, {
                 method: 'PUT',
@@ -142,14 +142,16 @@ export default function PerfilClienteScreen() {
                 },
                 body: JSON.stringify(updatedUsuario)
             });
-  
+    
             if (!response.ok) {
                 const errorText = await response.text();
                 throw new Error('Erro na requisição: ' + response.status + ' - ' + errorText);
             }
-             
+    
             Alert.alert('Dados atualizados', 'O Endereço foi atualizado com sucesso!');
-            navigation.navigate('Selecionarpagamento')
+            
+            // Navegar para a próxima tela passando o subtotal como parâmetro
+            navigation.navigate('Selecionarpagamento', { subtotal: subtotal });
         } catch (error) {
             console.error('Erro:', error);
             Alert.alert('Erro', 'Não foi possível atualizar o cadastro. Por favor, tente novamente mais tarde.');

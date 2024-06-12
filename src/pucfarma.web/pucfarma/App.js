@@ -36,7 +36,7 @@ export default function App() {
         <Stack.Screen name="Carrinho" component={Carrinho}options={{headerShown: false,headerTransparent: true,title: '',}} />
         <Stack.Screen name="ProdutosCliente" component={ProdutosCliente} options={{headerShown: false,headerTransparent: true,title: '',}}/>
         <Stack.Screen name="DetalhesDaConta" component={DetalhesDaConta} />
-        <Stack.Screen name="EnderecoDeEntrega" component={EnderecoDeEntrega} options={{headerShown: false,headerTransparent: true,title: '',}} /> 
+        <Stack.Screen name="EnderecoDeEntrega" component={EnderecoDeEntrega} options={{headerShown: false,headerTransparent: true,title: '',}} />
         <Stack.Screen name="HistoricoPedidosCliente" component={HistoricoPedidosCliente} />
         <Stack.Screen name="Ofertas" component={Ofertas} />
         <Stack.Screen name="Mais" component={Mais} options={{headerShown: false,headerTransparent: true,title: '',}} />
