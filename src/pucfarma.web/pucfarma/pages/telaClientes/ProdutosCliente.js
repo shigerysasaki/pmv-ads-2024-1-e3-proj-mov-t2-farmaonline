@@ -110,6 +110,7 @@ const ProdutosCliente = ({ route, navigation, userId }) => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    padding: 10,
   },
   scrollViewContent: {
     paddingBottom: 20,

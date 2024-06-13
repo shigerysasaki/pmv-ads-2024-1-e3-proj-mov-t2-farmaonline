@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Claims;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -102,5 +103,15 @@ namespace pucfarma.api.Controllers
         {
             return _context.Avaliacoes.Any(e => e.avaliacaoId == id);
         }
+
+        [HttpGet("AvaliacoesProduto")]
+        public async Task<ActionResult<IEnumerable<AvaliacaoModel>>> GetAvaliacoesproduto(int ID)
+        {
+            var avaliacoesProduto = await _context.Avaliacoes
+                                                 .Where(p => p.produtoId == ID)
+                                                 .ToListAsync();
+            return avaliacoesProduto;
+        }
+
     }
 }
