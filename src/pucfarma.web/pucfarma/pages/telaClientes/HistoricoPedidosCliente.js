@@ -105,7 +105,7 @@ const HistoricoPedidos = () => {
                         </View>
 
                         <View style={styles.additionalInfo}>
-                            <Text style={{ color: '#898989' }}>Id do pedido: {pedido.id}</Text>
+                            <Text style={{ color: '#898989' }}>Id do pedido: {pedido.pedidoId}</Text>
                             <Text style={{ color: '#898989' }}>Data da compra: {formatarData(pedido.dataPedido)}</Text>
                             <Text style={{ color: '#898989' }}>Previsão de entrega: {formatarData(pedido.previsaoEntrega)}</Text>
                             <Text style={{ color: '#898989' }}>Método de pagamento: {formatarMetodoPagamento(pedido.metodoPagamento)}</Text>
