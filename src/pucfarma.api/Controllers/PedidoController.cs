@@ -2,11 +2,13 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Security.Claims;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using pucfarma.api.Data;
+using pucfarma.api.Enum;
 using pucfarma.api.Models;
 
 namespace pucfarma.api.Controllers
@@ -119,6 +121,40 @@ namespace pucfarma.api.Controllers
             }
 
             return pedidosUsuarioLogado;
+        }
+
+        // POST: api/Pedido/Finalizar
+        [HttpPost("Finalizar")]
+        public async Task<IActionResult> FinalizarPedido(int ID)
+        {
+            var pedido = await _context.Pedidos.FindAsync(ID);
+
+            if (pedido == null)
+            {
+                return BadRequest(new { erro = "Não há um pedido com o ID fornecido." });
+            }
+
+            pedido.status = StatusPedido.Finalizado;
+            await _context.SaveChangesAsync();
+
+            return Ok();
+        }
+
+        // POST: api/Pedido/Cancelar
+        [HttpPost("Cancelar")]
+        public async Task<IActionResult> CancelarPedido(int ID)
+        {
+            var pedido = await _context.Pedidos.FindAsync(ID);
+
+            if (pedido == null)
+            {
+                return BadRequest(new { erro = "Não há um pedido com o ID fornecido." });
+            }
+
+            pedido.status = StatusPedido.Cancelado;
+            await _context.SaveChangesAsync();
+
+            return Ok();
         }
     }
 }
