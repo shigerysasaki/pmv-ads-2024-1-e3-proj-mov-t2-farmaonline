@@ -60,7 +60,7 @@ const HistoricoPedidos = () => {
             ));
         } catch (error) {
             console.error('Erro:', error);
-            Alert.alert('Erro', 'Não foi possível obter os dados dos. Por favor, tente novamente mais tarde.');
+            Alert.alert('Erro', 'Não foi possível obter os dados. Por favor, tente novamente mais tarde.');
         }
     };
 
@@ -94,18 +94,20 @@ const HistoricoPedidos = () => {
             <ScrollView contentContainerStyle={styles.scrollContent}>
                 {pedidos.map(pedido => (
                     <View key={pedido.pedidoId} style={styles.pedidoContainer}>
-                        <View style={styles.pedidoItem}>
-                            <Image source={{ uri: pedido.imagem }} style={styles.avatar} />
-                            <View style={styles.infoContainer}>
-                                <Text style={styles.nome}>{pedido.nome}</Text>
-                                <Text style={styles.preco}>Preço individual: {pedido.preco}</Text>
-                                <Text style={styles.total}>Valor total: <Text style={styles.greenText}>{pedido.total}</Text></Text>
+                        {pedidos.pedidosProduto && pedidos.pedidosProduto.map(pedidoProduto => (
+                            <View style={styles.pedidoItem}>
+                                <Image source={{ uri: pedidoProduto.produto && pedidoProduto.produto.fotoProduto }} style={styles.avatar} />
+                                <View style={styles.infoContainer}>
+                                    <Text style={styles.nome}>{pedidoProduto.produto && pedidoProduto.produto.nomeProduto}</Text>
+                                    <Text style={styles.preco}>Preço individual: {pedidoProduto.produto && pedidoProduto.produto.preco}</Text>
+                                    <Text style={styles.total}>Valor total: <Text style={styles.greenText}>{pedidoProduto.produto && pedidoProduto.produto.preco * pedidoProduto.produto && pedidoProduto.produto.quantidade}</Text></Text>
+                                </View>
+                                <Text style={styles.quantidade}>Quantidade: {pedidoProduto.produto && pedidoProduto.produto.quantidade}</Text>
                             </View>
-                            <Text style={styles.quantidade}>Quantidade: {pedido.quantidade}</Text>
-                        </View>
+                        ))}
 
                         <View style={styles.additionalInfo}>
-                            <Text style={{ color: '#898989' }}>Id do pedido: {pedido.id}</Text>
+                            <Text style={{ color: '#898989' }}>Id do pedido: {pedido.pedidoId}</Text>
                             <Text style={{ color: '#898989' }}>Data da compra: {formatarData(pedido.dataPedido)}</Text>
                             <Text style={{ color: '#898989' }}>Previsão de entrega: {formatarData(pedido.previsaoEntrega)}</Text>
                             <Text style={{ color: '#898989' }}>Método de pagamento: {formatarMetodoPagamento(pedido.metodoPagamento)}</Text>
