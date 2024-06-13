@@ -3,9 +3,8 @@ import { View, Text, StyleSheet, Image, ScrollView } from 'react-native';
 import Footer from '../template/footer';
 
 const HistoricoPedidos = () => {
-
     const [pedidos, setPedidos] = useState([]);
-   
+
     useEffect(() => {
         handleGetPedidosUsuario();
     }, []);
@@ -24,15 +23,14 @@ const HistoricoPedidos = () => {
                 throw new Error('Erro na requisição: ' + response.status + ' - ' + errorText);
             }
 
-            const responseText = await response.text();
-
-            if (!responseText) {
-                throw new Error('Resposta vazia do servidor.');
-            }
-
-            const data = JSON.parse(responseText);
+            const data = await response.json();
             console.log(data);
             setPedidos(data);
+
+            // Após obter os pedidos,busca os produtos de cada pedido
+            data.forEach(pedido => {
+                handleGetPedidoProduto(pedido.pedidoId);
+            });
         } catch (error) {
             console.error('Erro:', error);
             Alert.alert('Erro', 'Não foi possível obter os dados do usuário. Por favor, tente novamente mais tarde.');
@@ -55,12 +53,14 @@ const HistoricoPedidos = () => {
 
             const data = await response.json();
             console.log(data);
+
+            // Atualizar os pedidos com os produtos correspondentes
             setPedidos(prevPedidos => prevPedidos.map(pedido =>
                 pedido.pedidoId === pedidoId ? { ...pedido, produtos: data } : pedido
             ));
         } catch (error) {
             console.error('Erro:', error);
-            Alert.alert('Erro', 'Não foi possível obter os dados do usuário. Por favor, tente novamente mais tarde.');
+            Alert.alert('Erro', 'Não foi possível obter os dados dos. Por favor, tente novamente mais tarde.');
         }
     };
 
@@ -92,36 +92,35 @@ const HistoricoPedidos = () => {
     return (
         <View style={styles.container}>
             <ScrollView contentContainerStyle={styles.scrollContent}>
-                <View style={styles.pedidoContainer}>
-                    {pedidos.map(produto => (
-                        <View key={produto.produtoId} style={styles.pedidoItem}>
-                            <Image source={{ uri: produto.fotoProduto }} style={styles.avatar} />
+                {pedidos.map(pedido => (
+                    <View key={pedido.pedidoId} style={styles.pedidoContainer}>
+                        <View style={styles.pedidoItem}>
+                            <Image source={{ uri: pedido.imagem }} style={styles.avatar} />
                             <View style={styles.infoContainer}>
-                                <Text style={styles.nome}>{produto.nomeProduto}</Text>
-                                <Text style={styles.preco}>Preço individual: {produto.preco}</Text>
-                                <Text style={styles.total}>Valor total: <Text style={styles.greenText}>{produto.total}</Text></Text>
+                                <Text style={styles.nome}>{pedido.nome}</Text>
+                                <Text style={styles.preco}>Preço individual: {pedido.preco}</Text>
+                                <Text style={styles.total}>Valor total: <Text style={styles.greenText}>{pedido.total}</Text></Text>
                             </View>
-                            <Text style={styles.quantidade}>Quantidade: {produto.quantidade}</Text>
+                            <Text style={styles.quantidade}>Quantidade: {pedido.quantidade}</Text>
                         </View>
-                    ))}
 
-                    {pedidos.map(pedido => (
-                        <><View style={styles.additionalInfo}>
-                            <Text style={{ color: '#898989' }}>Id do pedido: {pedido.pedidoId}</Text>
+                        <View style={styles.additionalInfo}>
+                            <Text style={{ color: '#898989' }}>Id do pedido: {pedido.id}</Text>
                             <Text style={{ color: '#898989' }}>Data da compra: {formatarData(pedido.dataPedido)}</Text>
                             <Text style={{ color: '#898989' }}>Previsão de entrega: {formatarData(pedido.previsaoEntrega)}</Text>
                             <Text style={{ color: '#898989' }}>Método de pagamento: {formatarMetodoPagamento(pedido.metodoPagamento)}</Text>
-                        </View><View>
-                                <Text style={styles.totalCompra}>
-                                    Valor total da compra: <Text style={styles.greenText}></Text>
-                                </Text>
+                        </View>
 
-                                <Text style={{ color: '#898989', textAlign: 'center', fontSize: 16, marginTop: 20, marginBottom: 20 }}>
-                                    Pedido entregue em: <Text style={{ color: '#0061E1' }}>{formatarData(pedido.previsaoEntrega)}</Text>
-                                </Text>
-                            </View></>
-                    ))}
-                </View>
+                        <View>
+                            <Text style={styles.totalCompra}>
+                                Valor total da compra: <Text style={styles.greenText}></Text>
+                            </Text>
+                            <Text style={{ color: '#898989', textAlign: 'center', fontSize: 16, marginTop: 20, marginBottom: 20 }}>
+                                Pedido entregue em: <Text style={{ color: '#0061E1' }}>{formatarData(pedido.previsaoEntrega)}</Text>
+                            </Text>
+                        </View>
+                    </View>
+                ))}
             </ScrollView>
             <Footer style={styles.footer} />
         </View>
@@ -129,12 +128,15 @@ const HistoricoPedidos = () => {
 };
 
 const styles = StyleSheet.create({
-
     container: {
-        flex: 1,  
+        flex: 1,
         paddingTop: 20,
     },
-
+    scrollContent: {
+        flexGrow: 1,
+        justifyContent: 'center',
+        alignItems: 'center',
+    },
     pedidoContainer: {
         width: '90%',
         backgroundColor: '#ffffff',
@@ -145,74 +147,59 @@ const styles = StyleSheet.create({
         shadowOpacity: 0.1,
         shadowRadius: 5,
         elevation: 5,
-        alignSelf: 'center',
+        marginBottom: 20,
     },
-
     pedidoItem: {
         flexDirection: 'row',
         alignItems: 'center',
         justifyContent: 'space-between',
         marginBottom: 15,
     },
-
     avatar: {
         width: 60,
         height: 60,
         marginRight: 10,
         borderWidth: 1,
     },
-
     infoContainer: {
         flex: 1,
     },
-
     nome: {
         color: '#74B0FF',
         fontWeight: 'bold',
         fontSize: 14,
     },
-
     preco: {
         color: '#898989',
         fontSize: 12,
     },
-
     total: {
         color: '#898989',
         fontSize: 12,
     },
-
     quantidade: {
         fontSize: 12,
         color: '#898989',
         marginRight: 25,
     },
-
     additionalInfo: {
         marginTop: 20,
     },
-
     greenText: {
         color: '#26CE55',
     },
-
     totalCompra: {
         color: '#898989',
         marginTop: 20,
         fontSize: 16,
-
     },
-
     footer: {
         position: 'absolute',
         bottom: 0,
         left: 0,
         right: 0,
-        height: 60, 
+        height: 60,
     },
 });
-
-
-
 
 export default HistoricoPedidos;
