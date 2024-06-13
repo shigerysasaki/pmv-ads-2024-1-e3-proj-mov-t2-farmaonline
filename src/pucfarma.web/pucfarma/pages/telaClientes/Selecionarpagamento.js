@@ -1,9 +1,15 @@
 import React, { useState } from 'react';
 import { View, Text, TouchableOpacity, StyleSheet, TextInput, Alert, ScrollView } from 'react-native';
+import { useRoute } from '@react-navigation/native';
 import Footer from '../template/footer';
 import Header from '../template/header';
 
 const PagamentoPage = () => {
+  const route = useRoute();
+  const subtotal = route.params?.subtotal || 0; // Recebendo o subtotal dos parâmetros da rota
+  const taxaEntrega = 10.00; // Valor fictício para a taxa de entrega
+  const total = subtotal + taxaEntrega;
+
   const [pagamentoSelecionado, setPagamentoSelecionado] = useState(null);
   const [formaPagamentoSelecionada, setFormaPagamentoSelecionada] = useState(null);
   const [email, setEmail] = useState('');
@@ -12,8 +18,6 @@ const PagamentoPage = () => {
   const [cvv, setCvv] = useState('');
   const [validade, setValidade] = useState('');
   const [emailBoleto, setEmailBoleto] = useState('');
-  const subtotal = 100.00; // Valor fictício para o subtotal
-  const taxaEntrega = 5.00; // Valor fictício para a taxa de entrega
 
   const handleFormaPagamentoSelecionada = (forma) => {
     setFormaPagamentoSelecionada(forma);
@@ -27,8 +31,6 @@ const PagamentoPage = () => {
       setEmailBoleto('');
     }
   };
-
-  const total = subtotal + taxaEntrega;
 
   const finalizarPedido = () => {
     if (pagamentoSelecionado === 'pix' && email === '') {
