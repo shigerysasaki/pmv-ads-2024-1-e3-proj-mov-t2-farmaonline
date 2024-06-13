@@ -2,7 +2,6 @@ import React, { useState, useEffect } from 'react';
 import { View, Image, Text, StyleSheet, TouchableOpacity, ScrollView, Modal, TextInput } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { SafeAreaView } from 'react-native-safe-area-context';
-
 import Footer from '../template/footeradm';
 
 const Andamento = () => {
@@ -11,28 +10,43 @@ const Andamento = () => {
   const [botaoTexto, setBotaoTexto] = useState("Recebi meu pedido");
   const [modalVisible, setModalVisible] = useState(false);
   const [descricaoProblema, setDescricaoProblema] = useState("");
+  const [pedido, setPedido] = useState(null);
 
-  const [pedido, setPedido] = useState({
-    id: '000000',
-    dataCompra: '00/00/0000',
-    prevEntrega: '00/00/0000',
-    metodoPagamento: 'Via App - Cartão de crédito',
-    produtos: [
-      { nome: 'Paracetamol', imagem: require('../../assets/paracetamol.png'), quantidade: 1, preco: 10.0 },
-      { nome: 'Gel Massageador', imagem: require('../../assets/creme.png'), quantidade: 2, preco: 15.0 },
-      { nome: 'Dipirona', imagem: require('../../assets/dipirona.png'), quantidade: 3, preco: 20.0 },
-    ],
-  });
+  const userId = getLoggedInUserId();
+  const orderId = getOrderId();
 
   useEffect(() => {
-    setPedido({ ...pedido, id: '123456', dataCompra: '01/01/2023', prevEntrega: '10/01/2023' });
-  }, []);
+    fetchOrderDetails(userId, orderId);
+  }, [userId, orderId]);
 
-  const handleButtonClick = () => {
-    if (botaoTexto === "Recebi meu pedido") {
-      setBotaoTexto("Pedido recebido");
-    } else {
-      setBotaoTexto("Recebi meu pedido");
+  async function fetchOrderDetails(userId, orderId) {
+    try {
+      const response = await fetch(`http://localhost:3000/api/order-details/${userId}/${orderId}`);
+      const data = await response.json();
+      setPedido(data);
+    } catch (error) {
+      console.error('Erro ao buscar detalhes do pedido:', error);
+    }
+  }
+
+  const handleButtonClick = async () => {
+    try {
+      const response = await fetch(`http://localhost:3000/api/update-order-status/${orderId}`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ status: 'recebido' }),
+      });
+
+      if (response.ok) {
+        setPedido((prevPedido) => ({ ...prevPedido, status: 'recebido' }));
+        setBotaoTexto("Pedido recebido");
+      } else {
+        console.error('Erro ao atualizar o status do pedido');
+      }
+    } catch (error) {
+      console.error('Erro ao atualizar o status do pedido:', error);
     }
   };
 
@@ -46,6 +60,16 @@ const Andamento = () => {
     setDescricaoProblema("");
   };
 
+  if (!pedido) {
+    return (
+      <SafeAreaView style={styles.safeContainer}>
+        <View style={styles.container}>
+          <Text>Carregando...</Text>
+        </View>
+      </SafeAreaView>
+    );
+  }
+
   return (
     <SafeAreaView style={styles.safeContainer}>
       <View style={styles.container}>
@@ -54,7 +78,7 @@ const Andamento = () => {
             {pedido.produtos.map((produto, index) => (
               <View key={index} style={styles.itemContainer}>
                 <TouchableOpacity onPress={() => console.log('Imagem pressionada')} activeOpacity={1}>
-                  <Image source={produto.imagem} style={styles.tabIcon} />
+                  <Image source={{ uri: produto.imagem }} style={styles.tabIcon} />
                 </TouchableOpacity>
                 <View style={styles.textContainer}>
                   <Text style={styles.text1} onPress={() => console.log('Produto pressionado')}>{produto.nome}</Text>
@@ -76,7 +100,7 @@ const Andamento = () => {
           </View>
           <View style={styles.infosContainer}>
             <Text style={styles.infoText2}>Valor total da compra: <Text style={styles.money}> R$ {pedido.produtos.reduce((acc, curr) => acc + curr.quantidade * curr.preco, 0).toFixed(2)}</Text></Text>
-            <Text style={styles.infoText2}>Status do pedido: <Text style={styles.pedidoStatus}>Aguardando pagamento</Text></Text>
+            <Text style={styles.infoText2}>Status do pedido: <Text style={styles.pedidoStatus}>{pedido.status}</Text></Text>
           </View>
 
           <View style={styles.buttonContainer}>
@@ -128,6 +152,16 @@ const Andamento = () => {
     </SafeAreaView>
   );
 };
+
+
+function getLoggedInUserId() {
+  // Lógica para obter o ID do usuário logado
+}
+
+
+function getOrderId() {
+  // Lógica para obter o ID do pedido atual
+}
 
 const styles = StyleSheet.create({
   safeContainer: {
@@ -242,8 +276,7 @@ const styles = StyleSheet.create({
     margin: 4,
     marginLeft: 6,
   },
-  buttonIcon: {
-    width: 18,
+  buttonIcon: { width: 18,
     height: 18,
   },
   modalOverlay: {
