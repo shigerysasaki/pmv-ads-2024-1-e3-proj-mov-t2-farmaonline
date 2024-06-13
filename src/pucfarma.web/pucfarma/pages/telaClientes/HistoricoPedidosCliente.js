@@ -95,11 +95,11 @@ const HistoricoPedidos = () => {
                 {pedidos.map(pedido => (
                     <View key={pedido.pedidoId} style={styles.pedidoContainer}>
                         <View style={styles.pedidoItem}>
-                            <Image source={{ uri: pedido.imagem }} style={styles.avatar} />
+                            <Image source={{ uri: pedido.fotoProduto }} style={styles.avatar} />
                             <View style={styles.infoContainer}>
-                                <Text style={styles.nome}>{pedido.nome}</Text>
+                                <Text style={styles.nome}>{pedido.nomeProduto}</Text>
                                 <Text style={styles.preco}>Preço individual: {pedido.preco}</Text>
-                                <Text style={styles.total}>Valor total: <Text style={styles.greenText}>{pedido.total}</Text></Text>
+                                <Text style={styles.total}>Valor total: <Text style={styles.greenText}>{pedido.preco * pedido.quantidade}</Text></Text>
                             </View>
                             <Text style={styles.quantidade}>Quantidade: {pedido.quantidade}</Text>
                         </View>
