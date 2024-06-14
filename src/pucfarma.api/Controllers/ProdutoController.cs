@@ -28,7 +28,7 @@ namespace pucfarma.api.Controllers
             return await _context.Produtos.ToListAsync();
         }
 
-        // GET: api/Produto
+        // GET: api/Produto/Oferta
         [HttpGet("Oferta")]
         public async Task<ActionResult<IEnumerable<ProdutoModel>>> GetProdutosOferta()
         {
@@ -113,5 +113,35 @@ namespace pucfarma.api.Controllers
         {
             return _context.Produtos.Any(e => e.produtoId == id);
         }
+
+        public class ProdutoQuantidadeResponse
+        {
+            public ProdutoModel Produto { get; set; }
+            public int Quantidade { get; set; }
+        }
+
+        // GET: api/Produto/PedidoProdutoByPedido
+        [HttpGet("PedidoProdutoByPedido")]
+        public async Task<ActionResult<IEnumerable<PedidoProdutoModel>>> GetPedidoProdutoByPedido(int pedidoId)
+        {
+            var pedidosProdutos = await _context.PedidoProduto
+                .Where(pp => pp.pedidoId == pedidoId)
+                .ToListAsync();
+
+            return pedidosProdutos;
+        }
+
+        // POST: api/Produto/ProdutobyPedidoProduto
+        [HttpPost("ProdutobyPedidoProduto")]
+        public async Task<ActionResult<IEnumerable<ProdutoModel>>> GetProdutosbyPedidoProduto([FromBody] List<int> produtosId)
+        {
+            var produtos = await _context.Produtos
+                .Where(p => produtosId.Contains(p.produtoId))
+                .ToListAsync();
+
+            return produtos;
+        }
+
+
     }
 }
