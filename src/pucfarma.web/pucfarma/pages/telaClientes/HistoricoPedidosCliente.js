@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { View, Text, StyleSheet, Image, ScrollView } from 'react-native';
+import { View, Text, StyleSheet, Image, ScrollView, Alert } from 'react-native';
 import Footer from '../template/footer';
 
 const HistoricoPedidos = () => {
@@ -24,13 +24,13 @@ const HistoricoPedidos = () => {
             }
 
             const data = await response.json();
-            console.log(data);
+            console.log("Pedidos recebidos:", data);
             setPedidos(data);
 
-            // Após obter os pedidos,busca os produtos de cada pedido
-            data.forEach(pedido => {
-                handleGetPedidoProduto(pedido.pedidoId);
-            });
+            // Após obter os pedidos, buscar os detalhes dos produtos para cada pedido
+            for (const pedido of data) {
+                await handleGetPedidoProduto(pedido.pedidoId);
+            }
         } catch (error) {
             console.error('Erro:', error);
             Alert.alert('Erro', 'Não foi possível obter os dados do usuário. Por favor, tente novamente mais tarde.');
@@ -39,7 +39,7 @@ const HistoricoPedidos = () => {
 
     const handleGetPedidoProduto = async (pedidoId) => {
         try {
-            const response = await fetch(`http://10.0.2.2:5035/api/PedidoProduto/${pedidoId}`, {
+            const response = await fetch(`http://10.0.2.2:5035/api/Produto/PedidoProdutoByPedido?pedidoId=${pedidoId}`, {
                 method: 'GET',
                 headers: {
                     'Content-Type': 'application/json',
@@ -51,16 +51,38 @@ const HistoricoPedidos = () => {
                 throw new Error('Erro na requisição: ' + response.status + ' - ' + errorText);
             }
 
-            const data = await response.json();
-            console.log(data);
+            const pedidoProdutos = await response.json();
+            console.log(`Pedido ${pedidoId} - Produtos recebidos:`, pedidoProdutos);
 
-            // Atualizar os pedidos com os produtos correspondentes
+            const produtosId = pedidoProdutos.map(pp => pp.produtoId);
+
+            const produtosResponse = await fetch(`http://10.0.2.2:5035/api/Produto/ProdutobyPedidoProduto`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(produtosId)
+            });
+
+            if (!produtosResponse.ok) {
+                const errorText = await produtosResponse.text();
+                throw new Error('Erro na requisição: ' + produtosResponse.status + ' - ' + errorText);
+            }
+
+            const produtos = await produtosResponse.json();
+            console.log(`Pedido ${pedidoId} - Detalhes dos produtos:`, produtos);
+
+            const produtosDetalhados = pedidoProdutos.map(pp => ({
+                ...pp,
+                detalhes: produtos.find(p => p.produtoId === pp.produtoId)
+            }));
+
             setPedidos(prevPedidos => prevPedidos.map(pedido =>
-                pedido.pedidoId === pedidoId ? { ...pedido, produtos: data } : pedido
+                pedido.pedidoId === pedidoId ? { ...pedido, produtos: produtosDetalhados } : pedido
             ));
         } catch (error) {
             console.error('Erro:', error);
-            Alert.alert('Erro', 'Não foi possível obter os dados. Por favor, tente novamente mais tarde.');
+            Alert.alert('Erro', 'Não foi possível obter os dados dos produtos. Por favor, tente novamente mais tarde.');
         }
     };
 
@@ -89,38 +111,45 @@ const HistoricoPedidos = () => {
         }
     };
 
+    const calcularTotalPedido = (produtos) => {
+        let total = 0;
+    
+        produtos.forEach(produto => {
+            total += (produto.detalhes.preco * produto.quantidade);
+        });
+    
+        // Adicionando 10 ao total final
+        total += 10;
+    
+        return total;
+    };
+
     return (
         <View style={styles.container}>
             <ScrollView contentContainerStyle={styles.scrollContent}>
-                {pedidos.map(pedido => (
+                {pedidos.map((pedido) => (
                     <View key={pedido.pedidoId} style={styles.pedidoContainer}>
-                        {pedidos.pedidosProduto && pedidos.pedidosProduto.map(pedidoProduto => (
-                            <View style={styles.pedidoItem}>
-                                <Image source={{ uri: pedidoProduto.produto && pedidoProduto.produto.fotoProduto }} style={styles.avatar} />
-                                <View style={styles.infoContainer}>
-                                    <Text style={styles.nome}>{pedidoProduto.produto && pedidoProduto.produto.nomeProduto}</Text>
-                                    <Text style={styles.preco}>Preço individual: {pedidoProduto.produto && pedidoProduto.produto.preco}</Text>
-                                    <Text style={styles.total}>Valor total: <Text style={styles.greenText}>{pedidoProduto.produto && pedidoProduto.produto.preco * pedidoProduto.produto && pedidoProduto.produto.quantidade}</Text></Text>
-                                </View>
-                                <Text style={styles.quantidade}>Quantidade: {pedidoProduto.produto && pedidoProduto.produto.quantidade}</Text>
-                            </View>
-                        ))}
-
+                        <Text style={styles.nome}>Pedido ID: {pedido.pedidoId}</Text>
+                        <Text>Data: {formatarData(pedido.dataPedido)}</Text>
+                        <Text>Entrega em: {formatarData(pedido.previsaoEntrega)}</Text>
+                        <Text>Método de Pagamento: {formatarMetodoPagamento(pedido.metodoPagamento)}</Text>
                         <View style={styles.additionalInfo}>
-                            <Text style={{ color: '#898989' }}>Id do pedido: {pedido.pedidoId}</Text>
-                            <Text style={{ color: '#898989' }}>Data da compra: {formatarData(pedido.dataPedido)}</Text>
-                            <Text style={{ color: '#898989' }}>Previsão de entrega: {formatarData(pedido.previsaoEntrega)}</Text>
-                            <Text style={{ color: '#898989' }}>Método de pagamento: {formatarMetodoPagamento(pedido.metodoPagamento)}</Text>
+                            {pedido.produtos && pedido.produtos.map((produto) => (
+                                <View key={produto.produtoId} style={styles.produtoContainer}>
+                                    <Image
+                                        style={styles.produtoImagem}
+                                        source={{ uri: `data:image/png;base64,${produto.detalhes.fotoProduto}` }}
+                                    />
+                                    <View style={styles.produtoInfo}>
+                                        <Text style={styles.produtoNome}>{produto.detalhes.nomeProduto}</Text>
+                                        <Text style={styles.produtoPreco}>Preço: R$ {produto.detalhes.preco}</Text>
+                                        <Text style={styles.quantidade}>Quantidade: {produto.quantidade}</Text>
+                                    </View>
+                                </View>
+                            ))}
                         </View>
+                        <Text style={styles.totalCompra}>Total do pedido: R$ {pedido.produtos ? calcularTotalPedido(pedido.produtos) : '-'}</Text>
 
-                        <View>
-                            <Text style={styles.totalCompra}>
-                                Valor total da compra: <Text style={styles.greenText}></Text>
-                            </Text>
-                            <Text style={{ color: '#898989', textAlign: 'center', fontSize: 16, marginTop: 20, marginBottom: 20 }}>
-                                Pedido entregue em: <Text style={{ color: '#0061E1' }}>{formatarData(pedido.previsaoEntrega)}</Text>
-                            </Text>
-                        </View>
                     </View>
                 ))}
             </ScrollView>
@@ -201,6 +230,31 @@ const styles = StyleSheet.create({
         left: 0,
         right: 0,
         height: 60,
+    },
+    produtoContainer: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        marginBottom: 10,
+        borderWidth: 1,
+        borderColor: '#ddd',
+        padding: 10,
+        borderRadius: 5,
+    },
+    produtoImagem: {
+        width: 50,
+        height: 50,
+        marginRight: 10,
+    },
+    produtoInfo: {
+        flex: 1,
+    },
+    produtoNome: {
+        fontWeight: 'bold',
+        fontSize: 14,
+    },
+    produtoPreco: {
+        color: '#898989',
+        fontSize: 12,
     },
 });
 

@@ -32,17 +32,92 @@ const PagamentoPage = () => {
     }
   };
 
-  const finalizarPedido = () => {
-    if (pagamentoSelecionado === 'pix' && email === '') {
-      Alert.alert('Erro', 'Por favor, insira seu e-mail para o pagamento via PIX.');
-      return;
+  const validarPix = async () => {
+    try {
+      const response = await fetch('http://10.0.2.2:5035/api/Pagamento/Pix', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ ID: 123, email }),
+      });
+      const data = await response.json();
+      if (!response.ok) {
+        throw new Error(data.erro || 'Erro ao validar Pix');
+      }
+      return true;
+    } catch (error) {
+      Alert.alert('Erro', error.message);
+      return false;
     }
-    if (pagamentoSelecionado === 'cartaoCredito' && (nomeCartao === '' || numeroCartao === '' || cvv === '' || validade === '')) {
-      Alert.alert('Erro', 'Por favor, preencha todos os campos do cartão de crédito.');
-      return;
+  };
+
+  const validarCartaoCredito = async () => {
+    try {
+      const response = await fetch('http://10.0.2.2:5035/api/Pagamento/BoletoBancario', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ nomeCartao, numeroCartao, cvv, validade }),
+      });
+      const data = await response.json();
+      if (!response.ok) {
+        throw new Error(data.message || 'Erro ao validar cartão de crédito');
+      }
+      return true;
+    } catch (error) {
+      Alert.alert('Erro', error.message);
+      return false;
     }
-    // Simular envio de dados ao backend
-    Alert.alert('Sucesso', 'Pedido finalizado com sucesso!');
+  };
+
+  const validarBoleto = async () => {
+    try {
+      const response = await fetch('http://10.0.2.2:5035/api/Pagamento/Cartao', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ emailBoleto }),
+      });
+      const data = await response.json();
+      if (!response.ok) {
+        throw new Error(data.message || 'Erro ao validar boleto');
+      }
+      return true;
+    } catch (error) {
+      Alert.alert('Erro', error.message);
+      return false;
+    }
+  };
+
+  const finalizarPedido = async () => {
+    let isValid = false;
+    if (pagamentoSelecionado === 'pix') {
+      if (email === '') {
+        Alert.alert('Erro', 'Por favor, insira seu e-mail para o pagamento via PIX.');
+        return;
+      }
+      isValid = await validarPix();
+    } else if (pagamentoSelecionado === 'cartaoCredito') {
+      if (nomeCartao === '' || numeroCartao === '' || cvv === '' || validade === '') {
+        Alert.alert('Erro', 'Por favor, preencha todos os campos do cartão de crédito.');
+        return;
+      }
+      isValid = await validarCartaoCredito();
+    } else if (pagamentoSelecionado === 'boleto') {
+      if (emailBoleto === '') {
+        Alert.alert('Erro', 'Por favor, insira seu e-mail para o boleto.');
+        return;
+      }
+      isValid = await validarBoleto();
+    }
+
+    if (isValid) {
+      // Simular envio de dados ao backend
+      Alert.alert('Sucesso', 'Pedido finalizado com sucesso!');
+    }
   };
 
   return (

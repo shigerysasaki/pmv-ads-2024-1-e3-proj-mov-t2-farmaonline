@@ -1,319 +1,318 @@
-import React, { useState, useEffect } from 'react';
-import { View, Image, Text, StyleSheet, TouchableOpacity, ScrollView, Modal, TextInput } from 'react-native';
-import { useNavigation } from '@react-navigation/native';
-import { SafeAreaView } from 'react-native-safe-area-context';
-import Footer from '../template/footeradm';
+import React, { useState, useEffect } from "react";
+import { View, Text, StyleSheet, Image, ScrollView, Alert, TouchableOpacity } from 'react-native';
+import Footer from '../template/footer';
 
-const Andamento = () => {
-  const navigation = useNavigation();
+const HistoricoPedidos = () => {
+    const [pedidos, setPedidos] = useState([]);
 
-  const [botaoTexto, setBotaoTexto] = useState("Recebi meu pedido");
-  const [modalVisible, setModalVisible] = useState(false);
-  const [descricaoProblema, setDescricaoProblema] = useState("");
-  const [pedido, setPedido] = useState(null);
+    useEffect(() => {
+        handleGetPedidosUsuario();
+    }, []);
 
-  const userId = getLoggedInUserId();
-  const orderId = getOrderId();
+    const handleGetPedidosUsuario = async () => {
+        try {
+            const response = await fetch("http://10.0.2.2:5035/api/Pedido/PedidosUsuarioLogado", {
+                method: 'GET',
+                headers: {
+                    'Content-Type': 'application/json',
+                }
+            });
 
-  useEffect(() => {
-    fetchOrderDetails(userId, orderId);
-  }, [userId, orderId]);
+            if (!response.ok) {
+                const errorText = await response.text();
+                throw new Error('Erro na requisição: ' + response.status + ' - ' + errorText);
+            }
 
-  async function fetchOrderDetails(userId, orderId) {
-    try {
-      const response = await fetch(`http://localhost:3000/api/order-details/${userId}/${orderId}`);
-      const data = await response.json();
-      setPedido(data);
-    } catch (error) {
-      console.error('Erro ao buscar detalhes do pedido:', error);
-    }
-  }
+            const data = await response.json();
+            console.log("Pedidos recebidos:", data);
+            setPedidos(data);
 
-  const handleButtonClick = async () => {
-    try {
-      const response = await fetch(`http://localhost:3000/api/update-order-status/${orderId}`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ status: 'recebido' }),
-      });
+            // Após obter os pedidos, buscar os detalhes dos produtos para cada pedido e verificar o status de cada pedido
+            for (const pedido of data) {
+                await handleGetPedidoProduto(pedido.pedidoId);
+                await verificarStatusPedido(pedido.pedidoId);
+            }
+        } catch (error) {
+            console.error('Erro:', error);
+            Alert.alert('Erro', 'Não foi possível obter os dados do usuário. Por favor, tente novamente mais tarde.');
+        }
+    };
 
-      if (response.ok) {
-        setPedido((prevPedido) => ({ ...prevPedido, status: 'recebido' }));
-        setBotaoTexto("Pedido recebido");
-      } else {
-        console.error('Erro ao atualizar o status do pedido');
-      }
-    } catch (error) {
-      console.error('Erro ao atualizar o status do pedido:', error);
-    }
-  };
+    const handleGetPedidoProduto = async (pedidoId) => {
+        try {
+            const response = await fetch(`http://10.0.2.2:5035/api/Produto/PedidoProdutoByPedido?pedidoId=${pedidoId}`, {
+                method: 'GET',
+                headers: {
+                    'Content-Type': 'application/json',
+                }
+            });
 
-  const handleRelatarProblema = () => {
-    setModalVisible(true);
-  };
+            if (!response.ok) {
+                const errorText = await response.text();
+                throw new Error('Erro na requisição: ' + response.status + ' - ' + errorText);
+            }
 
-  const handleEnviarProblema = () => {
-    console.log('Descrição do problema:', descricaoProblema);
-    setModalVisible(false);
-    setDescricaoProblema("");
-  };
+            const pedidoProdutos = await response.json();
+            console.log(`Pedido ${pedidoId} - Produtos recebidos:`, pedidoProdutos);
 
-  if (!pedido) {
+            const produtosId = pedidoProdutos.map(pp => pp.produtoId);
+
+            const produtosResponse = await fetch(`http://10.0.2.2:5035/api/Produto/ProdutobyPedidoProduto`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(produtosId)
+            });
+
+            if (!produtosResponse.ok) {
+                const errorText = await produtosResponse.text();
+                throw new Error('Erro na requisição: ' + produtosResponse.status + ' - ' + errorText);
+            }
+
+            const produtos = await produtosResponse.json();
+            console.log(`Pedido ${pedidoId} - Detalhes dos produtos:`, produtos);
+
+            const produtosDetalhados = pedidoProdutos.map(pp => ({
+                ...pp,
+                detalhes: produtos.find(p => p.produtoId === pp.produtoId)
+            }));
+
+            setPedidos(prevPedidos => prevPedidos.map(pedido =>
+                pedido.pedidoId === pedidoId ? { ...pedido, produtos: produtosDetalhados } : pedido
+            ));
+        } catch (error) {
+            console.error('Erro:', error);
+            Alert.alert('Erro', 'Não foi possível obter os dados dos produtos. Por favor, tente novamente mais tarde.');
+        }
+    };
+
+    const verificarStatusPedido = async (pedidoId) => {
+        try {
+            const response = await fetch(`http://10.0.2.2:5035/api/Pedido/${pedidoId}`, {
+                method: 'GET',
+                headers: {
+                    'Content-Type': 'application/json',
+                }
+            });
+
+            if (!response.ok) {
+                const errorText = await response.text();
+                throw new Error('Erro na requisição: ' + response.status + ' - ' + errorText);
+            }
+
+            const pedido = await response.json();
+            console.log("Status do pedido:", pedido.status);
+
+            // Atualizar o status do pedido na lista de pedidos
+            setPedidos(prevPedidos => prevPedidos.map(p =>
+                p.pedidoId === pedidoId ? { ...p, status: pedido.status } : p
+            ));
+
+        } catch (error) {
+            console.error('Erro:', error);
+            Alert.alert('Erro', 'Não foi possível verificar o status do pedido. Por favor, tente novamente mais tarde.');
+        }
+    };
+
+    
+
+    const formatarData = (dataString) => {
+        const data = new Date(dataString);
+        const dia = String(data.getDate()).padStart(2, '0');
+        const mes = String(data.getMonth() + 1).padStart(2, '0');
+        const ano = data.getFullYear();
+        return `${dia}/${mes}/${ano}`;
+    };
+
+    const formatarMetodoPagamento = (metodo) => {
+        switch (metodo) {
+            case 0:
+                return "Pix";
+            case 1:
+                return "Dinheiro";
+            case 2:
+                return "Boleto bancário";
+            case 3:
+                return "Cartão de Crédito (via app)";
+            case 4:
+                return "Cartão de Crédito (na entrega)";
+            default:
+                return "";
+        }
+    };
+
+    const calcularTotalPedido = (produtos) => {
+        let total = 0;
+
+        produtos.forEach(produto => {
+            total += (produto.detalhes.preco * produto.quantidade);
+        });
+
+        // Adicionando 10 ao total final
+        total += 10;
+
+        return total;
+    };
+
+    const handlePedidoRecebido = (pedidoId) => {
+        console.log(`Pedido ${pedidoId} recebido!`);
+        // Aqui você pode adicionar lógica para marcar o pedido como recebido, por exemplo, fazer uma requisição PUT para atualizar o status no backend.
+    };
+
     return (
-      <SafeAreaView style={styles.safeContainer}>
         <View style={styles.container}>
-          <Text>Carregando...</Text>
+            <ScrollView contentContainerStyle={styles.scrollContent}>
+                {pedidos.map((pedido) => (
+                    <View key={pedido.pedidoId} style={styles.pedidoContainer}>
+                        <Text style={styles.nome}>Pedido ID: {pedido.pedidoId}</Text>
+                        <Text>Data: {formatarData(pedido.dataPedido)}</Text>
+                        <Text>Entrega em: {formatarData(pedido.previsaoEntrega)}</Text>
+                        <Text>Método de Pagamento: {formatarMetodoPagamento(pedido.metodoPagamento)}</Text>
+                        <View style={styles.additionalInfo}>
+                            {pedido.produtos && pedido.produtos.map((produto) => (
+                                <View key={produto.produtoId} style={styles.produtoContainer}>
+                                    <Image
+                                        style={styles.produtoImagem}
+                                        source={{ uri: `data:image/png;base64,${produto.detalhes.fotoProduto}` }}
+                                    />
+                                    <View style={styles.produtoInfo}>
+                                        <Text style={styles.produtoNome}>{produto.detalhes.nomeProduto}</Text>
+                                        <Text style={styles.produtoPreco}>Preço: R$ {produto.detalhes.preco}</Text>
+                                        <Text style={styles.quantidade}>Quantidade: {produto.quantidade}</Text>
+                                    </View>
+                                </View>
+                            ))}
+                        </View>
+                        <Text style={styles.totalCompra}>Total do pedido: R$ {pedido.produtos ? calcularTotalPedido(pedido.produtos) : '-'}</Text>
+                        <Text>Status: {pedido.status}</Text>
+
+                        {/* Botão Pedido Recebido */}
+                        <TouchableOpacity
+                            style={styles.botaoPedidoRecebido}
+                            onPress={() => handlePedidoRecebido(pedido.pedidoId)}
+                        >
+                            <Text style={styles.textoBotao}>Recebi</Text>
+                        </TouchableOpacity>
+                    </View>
+                ))}
+            </ScrollView>
+            <Footer style={styles.footer} />
         </View>
-      </SafeAreaView>
     );
-  }
-
-  return (
-    <SafeAreaView style={styles.safeContainer}>
-      <View style={styles.container}>
-        <ScrollView style={styles.tabsContainer} contentContainerStyle={styles.tabsContent}>
-          <View style={styles.tab}>
-            {pedido.produtos.map((produto, index) => (
-              <View key={index} style={styles.itemContainer}>
-                <TouchableOpacity onPress={() => console.log('Imagem pressionada')} activeOpacity={1}>
-                  <Image source={{ uri: produto.imagem }} style={styles.tabIcon} />
-                </TouchableOpacity>
-                <View style={styles.textContainer}>
-                  <Text style={styles.text1} onPress={() => console.log('Produto pressionado')}>{produto.nome}</Text>
-                  <Text style={styles.text2}>Preço Individual: <Text>R$ {produto.preco.toFixed(2)}</Text></Text>
-                  <Text style={styles.text2}>Valor total: <Text style={styles.money}>R$ {(produto.quantidade * produto.preco).toFixed(2)}</Text></Text>
-                </View>
-                <View>
-                  <Text style={styles.text3}>Quantidade: <Text>{produto.quantidade}</Text></Text>
-                </View>
-              </View>
-            ))}
-          </View>
-
-          <View style={styles.infosContainer}>
-            <Text style={styles.infoText}>ID do pedido: {pedido.id}</Text>
-            <Text style={styles.infoText}>Data da compra: {pedido.dataCompra}</Text>
-            <Text style={styles.infoText}>Previsão de entrega: {pedido.prevEntrega}</Text>
-            <Text style={styles.infoText}>Método de pagamento: {pedido.metodoPagamento}</Text>
-          </View>
-          <View style={styles.infosContainer}>
-            <Text style={styles.infoText2}>Valor total da compra: <Text style={styles.money}> R$ {pedido.produtos.reduce((acc, curr) => acc + curr.quantidade * curr.preco, 0).toFixed(2)}</Text></Text>
-            <Text style={styles.infoText2}>Status do pedido: <Text style={styles.pedidoStatus}>{pedido.status}</Text></Text>
-          </View>
-
-          <View style={styles.buttonContainer}>
-            <TouchableOpacity style={styles.button} onPress={handleRelatarProblema}>
-              <Image source={require('../../assets/atencao.png')} style={styles.buttonIcon} />
-              <Text style={styles.buttonText}>Relatar problema</Text>
-            </TouchableOpacity>
-
-            <TouchableOpacity
-              style={styles.button2}
-              onPress={handleButtonClick}>
-              <Image source={require('../../assets/check.png')} style={styles.buttonIcon} />
-              <Text style={styles.buttonText}>{botaoTexto}</Text>
-            </TouchableOpacity>
-          </View>
-        </ScrollView>
-        <Footer />
-
-        <Modal
-          animationType="slide"
-          transparent={true}
-          visible={modalVisible}
-          onRequestClose={() => {
-            setModalVisible(!modalVisible);
-          }}>
-          <View style={styles.modalOverlay}>
-            <View style={styles.modalContainer}>
-              <Text style={styles.modalTitle}>Descreva o problema</Text>
-              <TextInput
-                style={styles.input}
-                multiline
-                numberOfLines={4}
-                onChangeText={setDescricaoProblema}
-                value={descricaoProblema}
-                placeholder="Digite a descrição do problema aqui"
-              />
-              <View style={styles.modalButtonContainer}>
-                <TouchableOpacity style={[styles.button2, styles.modalButton]} onPress={handleEnviarProblema}>
-                  <Text style={styles.buttonText}>Enviar</Text>
-                </TouchableOpacity>
-                <TouchableOpacity style={[styles.button, styles.modalButton]} onPress={() => setModalVisible(false)}>
-                  <Text style={styles.buttonText}>Cancelar</Text>
-                </TouchableOpacity>
-              </View>
-            </View>
-          </View>
-        </Modal>
-      </View>
-    </SafeAreaView>
-  );
 };
 
-
-function getLoggedInUserId() {
-  // Lógica para obter o ID do usuário logado
-}
-
-
-function getOrderId() {
-  // Lógica para obter o ID do pedido atual
-}
-
 const styles = StyleSheet.create({
-  safeContainer: {
-    flex: 1,
-    backgroundColor: '#EEEEEE',
-  },
-  container: {
-    flex: 1,
-    backgroundColor: '#EEEEEE',
-  },
-  tabsContainer: {
-    backgroundColor: 'white',
-    flex: 1,
-  },
-  tabsContent: {
-    paddingVertical: 10,
-    paddingHorizontal: 20, 
-  },
-  tab: {
-    backgroundColor: 'white',
-    padding: 10,
-  },
-  itemContainer: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    marginBottom: 10,
-    flexWrap: 'wrap', 
-  },
-  tabIcon: {
-    width: 90,
-    height: 90,
-    marginRight: 10,
-  },
-  textContainer: {
-    flex: 1,
-  },
-  text1: {
-    color: '#74B0FF',
-    fontSize: 15,
-    marginBottom: 5,
-    textAlign: 'left',
-  },
-  text2: {
-    fontSize: 13,
-    color: '#898989',
-    marginTop: 10,
-    textAlign: 'left',
-  },
-  text3: {
-    color: '#898989',
-    fontSize: 13,
-    marginTop: 10,
-    textAlign: 'right',
-  },
-  infosContainer: {
-    marginVertical: 10,
-    marginHorizontal: 20,
-  },
-  infosContainer2: {
-    marginVertical: 10,
-    marginHorizontal: 20,
-    paddingTop: 25,
-  },
-  pedidoStatus: {
-    color: '#74B0FF',
-  },
-  money: {
-    color: '#26CE55',
-    fontSize: 14,
-  },
-  infoText2: {
-    color: '#898989',
-    margin: 5,
-    paddingTop: 12,
-    fontSize: 16,
-  },
-  infoText: {
-    color: '#898989',
-    margin: 4,
-    fontSize: 13,
-  },
-  buttonContainer: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    marginHorizontal: 20,
-    marginTop: 25,
-  },
-  button: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    backgroundColor: '#FF7878',
-    paddingVertical: 5,
-    paddingHorizontal: 12,
-    borderRadius: 8,
-    width: '45%',
-    justifyContent: 'center',
-  },
-  button2: {
-    flexDirection: 'row',
-    justifyContent: 'center',
-    backgroundColor: '#26CE55',
-    paddingVertical: 5,
-    paddingHorizontal: 12,
-    borderRadius: 8,
-    width: '45%',
-    alignItems: 'center',
-  },
-  buttonText: {
-    color: 'white',
-    fontSize: 14,
-    textAlign: 'center',
-    margin: 4,
-    marginLeft: 6,
-  },
-  buttonIcon: { width: 18,
-    height: 18,
-  },
-  modalOverlay: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: 'rgba(0,0,0,0.5)',
-  },
-  modalContainer: {
-    width: '80%',
-    backgroundColor: 'white',
-    padding: 20,
-    borderRadius: 10,
-    alignItems: 'center',
-  },
-  modalTitle: {
-    fontSize: 18,
-    marginBottom: 10,
-  },
-  input: {
-    width: '100%',
-    height: 100,
-    borderColor: '#ccc',
-    borderWidth: 1,
-    marginBottom: 10,
-    padding: 10,
-    textAlignVertical: 'top',
-  },
-  modalButtonContainer: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    width: '100%',
-  },
-  modalButton: {
-    flex: 1,
-    marginHorizontal: 5,
-  },
+    container: {
+        flex: 1,
+        paddingTop: 20,
+    },
+    scrollContent: {
+        flexGrow: 1,
+        justifyContent: 'center',
+        alignItems: 'center',
+    },
+    pedidoContainer: {
+        width: '90%',
+        backgroundColor: '#ffffff',
+        padding: 10,
+        borderRadius: 5,
+        shadowColor: '#000',
+        shadowOffset: { width: 0, height: 2 },
+        shadowOpacity: 0.1,
+        shadowRadius: 5,
+        elevation: 5,
+        marginBottom: 20,
+    },
+    pedidoItem: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        justifyContent: 'space-between',
+        marginBottom: 15,
+    },
+    avatar: {
+        width: 60,
+        height: 60,
+        marginRight: 10,
+        borderWidth: 1,
+    },
+    infoContainer: {
+        flex: 1,
+    },
+    nome: {
+        color: '#74B0FF',
+        fontWeight: 'bold',
+        fontSize: 14,
+    },
+    preco: {
+        color: '#898989',
+        fontSize: 12,
+    },
+    total: {
+        color: '#898989',
+        fontSize: 12,
+    },
+    quantidade: {
+        fontSize: 12,
+        color: '#898989',
+        marginRight: 25,
+    },
+    additionalInfo: {
+        marginTop: 20,
+    },
+    greenText: {
+        color: '#26CE55',
+    },
+    totalCompra: {
+        color: '#898989',
+        marginTop: 20,
+        fontSize: 16,
+    },
+    footer: {
+        position: 'absolute',
+        bottom: 0,
+        left: 0,
+        right: 0,
+        height: 60,
+    },
+    produtoContainer: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        marginBottom: 10,
+        borderWidth: 1,
+        borderColor: '#ddd',
+        padding: 10,
+        borderRadius: 5,
+    },
+    produtoImagem: {
+        width: 50,
+        height: 50,
+        marginRight: 10,
+    },
+    produtoInfo: {
+        flex: 1,
+    },
+    produtoNome: {
+        fontWeight: 'bold',
+        fontSize: 14,
+    },
+    produtoPreco: {
+        color: '#898989',
+        fontSize: 12,
+    },
+    botaoPedidoRecebido: {
+      backgroundColor: '#26CE55',
+      paddingVertical: 10,
+      paddingHorizontal: 20,
+      borderRadius: 5,
+      marginTop: 10,
+      alignItems: 'center',
+    },
+    textoBotao: {
+        color: '#fff',
+        fontSize: 16,
+        fontWeight: 'bold',
+    },
 });
 
-export default Andamento;
+export default HistoricoPedidos;

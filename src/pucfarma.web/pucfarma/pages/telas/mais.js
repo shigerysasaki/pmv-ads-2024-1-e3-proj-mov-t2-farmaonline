@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { View, Image, Text, StyleSheet, TouchableOpacity, TextInput, Tab, handleTabPress } from 'react-native';
+import { View, Image, Text, StyleSheet, TouchableOpacity } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 
 import Footer from '../template/footer';
@@ -7,31 +7,34 @@ import Header2 from '../template/header2';
 
 const Mais = () => {
   const navigation = useNavigation();
-
   const [activeTab, setActiveTab] = useState('Home');
 
   const handleTabPress = (tab) => {
     setActiveTab(tab);
     navigation.navigate(tab);
+  };
+
   // Função para lidar com o logout
   const handleLogout = () => {
     try {
-      navigation.navigate('Login');
+      // Realiza as operações de logout, como limpar tokens de autenticação, etc.
+      // Exemplo: navigation.navigate('Login');
+      console.log("Fazendo logout...");
     } catch (error) {
-      console.error("Erro ao navegar para 'Login':", error);
+      console.error("Erro ao realizar logout:", error);
     }
-  }};
+  };
 
   return (
     <View style={styles.container}>
       <Header2 />
 
       <View style={styles.tabsContainer}>
-      <TouchableOpacity style={styles.tab} onPress={() => navigation.navigate('DetalhesDaConta')}>
+        <TouchableOpacity style={styles.tab} onPress={() => navigation.navigate('DetalhesDaConta')}>
           <Image source={require('../../assets/perfil-de-usuario.png')} style={styles.tabIcon} />
           <Text style={styles.tabText}>Detalhes da conta</Text>
         </TouchableOpacity>
-        <TouchableOpacity style={styles.tab} onPress={() => handleTabPress('PedidosAndamento')} >
+        <TouchableOpacity style={styles.tab} onPress={() => handleTabPress('Andamento')} >
           <Image source={require('../../assets/caixa.png')} style={styles.tabIcon} />
           <Text style={styles.tabText}>Pedidos em andamento</Text>
         </TouchableOpacity>
@@ -50,7 +53,7 @@ const Mais = () => {
       </View>
 
       <View style={styles.logoutButtonContainer}>
-        <TouchableOpacity style={styles.logoutButton}>
+        <TouchableOpacity style={styles.logoutButton} onPress={handleLogout}>
           <Image source={require('../../assets/sair.png')} style={styles.tabIcon} />
           <Text style={styles.logoutButtonText}>Sair da Conta</Text>
         </TouchableOpacity>
@@ -61,16 +64,11 @@ const Mais = () => {
   );
 };
 
-
 const styles = StyleSheet.create({
   container: {
     backgroundColor: '#EEEEEE',
     flex: 1,
     alignItems: 'center'
-  },
-  chooseImageText: {
-    marginTop: 10,
-    color: '#74b0ff',
   },
   tabsContainer: {
     marginTop: 80,
@@ -113,18 +111,6 @@ const styles = StyleSheet.create({
   logoutButtonText: {
     color: '#FF949A'
   },
-  img:{
-    flex: 1,
-    alignItems: 'center',
-    justifyContent: 'center',
-    marginTop: 90
-  },
-  perfil:{
-    color: '#74b0ff',
-    fontSize: 18,
-    fontWeight: 'bold',
-    marginBottom: 5
-  }
 });
 
 export default Mais;
