@@ -11,6 +11,8 @@ const Carrinho = () => {
     const navigation = useNavigation();
     const [activeTab, setActiveTab] = useState('Home');
 
+    
+
     const handleTabPress = (tab) => {
         setActiveTab(tab);
         navigation.navigate(tab);
@@ -83,6 +85,16 @@ const Carrinho = () => {
         return cartItems.reduce((acc, item) => acc + (item.preco * item.quantity), 0);
     };
 
+    const handleSaveCart = async () => {
+        try {
+            await AsyncStorage.setItem('cartItems_${userId}', JSON.stringify(cartItems));
+            alert('Carrinho salvo com sucesso!');
+        } catch (error) {
+            console.error('Erro ao salvar carrinho:', error);
+            alert('Erro ao salvar carrinho. Tente novamente.');
+        }
+    };
+
     return (
         <View style={styles.container}>
           <Header navigation={navigation} />
@@ -128,10 +140,14 @@ const Carrinho = () => {
 
             <View style={styles.final}>
                 <Text style={styles.total}>Subtotal: R${getTotalPrice().toFixed(2)}</Text>
-                <TouchableOpacity style={styles.entrega} onPress={() => navigation.navigate('EnderecoDeEntrega', { subtotal: getTotalPrice() })}>
-                    <Text style={styles.entregatext}>Informar endereço de entrega</Text>
-                    <Image source={require('../../assets/seta.png')} style={styles.tabIcon} />
-                </TouchableOpacity>
+                <TouchableOpacity style={styles.entrega} onPress={() => {
+                handleSaveCart();
+                navigation.navigate('EnderecoDeEntrega', { subtotal: getTotalPrice() });
+            }}>
+                <Text style={styles.entregatext}>Informar endereço de entrega</Text>
+                <Image source={require('../../assets/seta.png')} style={styles.tabIcon} />
+            </TouchableOpacity>
+                
             </View>
 
             <Footer />

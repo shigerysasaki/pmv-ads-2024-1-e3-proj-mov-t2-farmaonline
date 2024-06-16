@@ -11,7 +11,7 @@ import Historico from './pages/telas/Historico';
 import Mais from './pages/telas/Mais'; 
 import Home from './pages/telaClientes/Home';
 import Carrinho from './pages/telas/Carrinho';
-import Andamento from './pages/telas/andamento';
+import Andamento from './pages/telas/Andamento';
 import ProdutosCliente from './pages/telaClientes/ProdutosCliente';
 import EnderecoDeEntrega from './pages/telaClientes/EnderecoDeEntrega';
 import DetalhesDaConta from './pages/telaClientes/DetalhesDaConta';
@@ -43,7 +43,7 @@ export default function App() {
         <Stack.Screen name="Home" component={Home} options={{headerShown: false,headerTransparent: true,title: '',}} />
         <Stack.Screen name="Selecionarpagamento" component={Selecionarpagamento} options={{headerShown: false,headerTransparent: true,title: '',}}/>
 
-        <Stack.Screen name='Andamento' component={Andamento} />
+        <Stack.Screen name="Andamento" component={Andamento} />
         <Stack.Screen name='InformacoesLoja' component={InformacoesLoja} options={{headerShown: false,headerTransparent: true,title: '',}} />
       </Stack.Navigator>
     </NavigationContainer>
