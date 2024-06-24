@@ -38,7 +38,7 @@ const Mais = () => {
           <Image source={require('../../assets/caixa.png')} style={styles.tabIcon} />
           <Text style={styles.tabText}>Pedidos em andamento</Text>
         </TouchableOpacity>
-        <TouchableOpacity style={styles.tab} onPress={() => handleTabPress('AvaliacoesPendentes')}>
+        <TouchableOpacity style={styles.tab} onPress={() => handleTabPress('AvalicoesPendentes')}>
           <Image source={require('../../assets/estrela.png')} style={styles.tabIcon} />
           <Text style={styles.tabText}>Avaliações pendentes</Text>
         </TouchableOpacity>

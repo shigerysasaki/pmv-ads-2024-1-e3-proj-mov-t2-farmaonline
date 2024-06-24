@@ -12,13 +12,15 @@ import Mais from './pages/telas/Mais';
 import Home from './pages/telaClientes/Home';
 import Carrinho from './pages/telas/Carrinho';
 import Andamento from './pages/telas/Andamento';
-import ProdutosCliente from './pages/telaClientes/ProdutosCliente';
+import ProdutosCliente from './pages/telaClientes/ProdutosClientes';
 import EnderecoDeEntrega from './pages/telaClientes/EnderecoDeEntrega';
 import DetalhesDaConta from './pages/telaClientes/DetalhesDaConta';
 import Ofertas from './pages/telaClientes/Ofertas';
 import InformacoesLoja from './pages/telas/Loja/'
 import HistoricoPedidosCliente from './pages/telaClientes/HistoricoPedidosCliente';
 import Selecionarpagamento from './pages/telaClientes/Selecionarpagamento';
+import AvalicoesPendentes from './pages/telaClientes/AvalicoesPendentes';
+import Pedidosadm from './pages/telaClientes/Pedidosadm';
 
 const Stack = createStackNavigator();
 
@@ -30,7 +32,9 @@ export default function App() {
         <Stack.Screen name="Login" component={Login} />
         <Stack.Screen name="Dados" component={Dados} />
         <Stack.Screen name="Produtos" component={Produtos} />
+        <Stack.Screen name="Pedidosadm" component={Pedidosadm} />
         <Stack.Screen name="EditarProduto" component={EditarProduto} />
+        <Stack.Screen name="AvalicoesPendentes" component={AvalicoesPendentes} />
         <Stack.Screen name="Cadastro" component={Cadastro} />
         <Stack.Screen name="Historico" component={Historico} />
         <Stack.Screen name="Carrinho" component={Carrinho}options={{headerShown: false,headerTransparent: true,title: '',}} />

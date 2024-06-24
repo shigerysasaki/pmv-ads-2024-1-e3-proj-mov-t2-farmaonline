@@ -36,14 +36,14 @@ const Footeradm = () => {
         <Text style={[styles.tabLabel, activeTab === 'Produtos' && styles.activeTabLabel]}>Produtos</Text>
       </TouchableOpacity>
       <TouchableOpacity
-        style={[styles.tab, activeTab === 'andamento' && styles.active]}
-        onPress={() => handleTabPress('andamento')}>
-        {activeTab === 'andamento' ? (
+        style={[styles.tab, activeTab === 'Pedidosadm' && styles.active]}
+        onPress={() => handleTabPress('Pedidosadm')}>
+        {activeTab === 'Pedidosadm' ? (
           <Image source={require('../../assets/caixaactive.png')} style={styles.icon} />
         ) : (
           <Image source={require('../../assets/caixa.png')} style={styles.icon} />
         )}
-        <Text style={[styles.tabLabel, activeTab === 'andamento' && styles.activeTabLabel]}>Pedidos</Text>
+        <Text style={[styles.tabLabel, activeTab === 'Pedidosadm' && styles.activeTabLabel]}>Pedidos</Text>
       </TouchableOpacity>
       <TouchableOpacity
         style={[styles.tab, activeTab === 'Historico' && styles.active]}

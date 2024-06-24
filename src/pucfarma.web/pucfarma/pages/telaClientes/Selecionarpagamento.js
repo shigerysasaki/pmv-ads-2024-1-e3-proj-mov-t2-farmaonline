@@ -43,7 +43,7 @@ const PagamentoPage = () => {
       });
       const data = await response.json();
       if (!response.ok) {
-        throw new Error(data.erro || 'Erro ao validar Pix');
+        throw new Error(data.erro || 'Pix validado');
       }
       return true;
     } catch (error) {
